@@ -28,6 +28,13 @@ You will need the following to use this project
 
 This project will use a Metal instance running KVM for the edge host. This will allow you to quickly launch the routing and DNS VMs quickly using the CLI.  This particular layout is not a requirement and there are many ways to build ingress/egress at Equinix.  You could build a 100% VMware layout or connect back to existing infrastructure.
 
+Before you deploy make sure you generate a password for the script.  From any Linux host with whois installed you can quickly generate the password with the following command.
+```shell
+mkpasswd --method=SHA-512 --rounds=4096
+```
+The default script has the password set as ChangeYourPassword **(PLEASE DON'T FORGET TO CHANGE THIS)** \
+Paste the result of the operation to the esx_pw field in the terraform.tfvars file incuded in this repo.
+
 Deploy the KVM edge instance and ESXi nodes.  The terraform.tfvars file is aligned with the default CloudBuilder spreadsheet but can be altered to meet your specific requirements if needed.
 ```shell
 terraform init
@@ -50,10 +57,40 @@ https://github.com/bjenkins-metal/vcf-metal/blob/main/deploy-dns.md
 
 You will need to obtain the CloudBuilder ISO from the my.vmware portal and get the licenses for ESXi, vSAN, vCenter and NSX-T to add to the spreadsheet.
 
-The fastest way to get started is to launch a temporary Windows jump host in your Metal project.  This will give you a quick way to download the large CloudBuilder ISO (18GB) and install it on the first ESXi host to begin the process.  You can use the VPN and do this from your local computer and just wait for the 18GB to upload to the ESXi host.  You will not be able to use the local datastore since this is an OVA install so just be patient when doing this part if you do it remotely.
+The fastest way to get started is to launch a temporary Windows jump host in your Metal project.  This will give you a quick way to download the large CloudBuilder ISO (18GB) and install it on the first ESXi host to begin the process.  You can also use the VPN and do this from your local computer and just wait for the 18GB to upload to the ESXi host if you do not want to run a jump host.  FYI You will not be able to use the local datastore since this is an OVA install so just be patient when doing this part if you do it remotely.
 
-If you have never added a VLAN to a Windows server it could be a little confusing so I will include it here to simplify the process.
-First in the Metal portal launch your Windows host on a c3.small instance.  When it completes the install go to the network tab in the Metal portal and switch the network mode to **Hybrid Bonded** and pick VLAN 1611 (management).  Now RDP into the Windows server and from server manager click local server and then NIC teaming.  Then the teaming interface pops up look at the bottom right window called Adapters and Interfaces.  Click the Team Interfaces tab in that little window and you will see the default bond.  Click on tasks and then Add Interface.  Enter 1611 in the Specific VLAN box and click OK.  You will now have a new adapter to configure called 
-"bond_bond0 - VLAN 1611".  Edit this new adapter the same way you would any adapter and assign an IPv4 address with no gateway.  I use 172.16.11.9 and 255.255.255.0.
+**Tips for the Jump host** \
+If you have never added a VLAN to a Windows server it could be a little confusing so I will include the steps here to simplify the process.
+
+First in the Metal portal launch your Windows host on a c3.small instance \
+When the install is complete click the instance and go to the network tab in the Metal portal \
+Switch the network mode to **Hybrid Bonded** and pick VLAN 1611 \
+RDP into the Windows server \
+From server manager click local server and then NIC teaming \
+From the teaming interface find the bottom right window called Adapters and Interfaces \
+Click the "Team Interfaces" tab in the Adapters and Interfaces window and you will see the default bond \
+Click on tasks and then Add Interface (Sometimes you need to click away from the window and back in for the Add Interface option to appear) \
+Enter 1611 in the Specific VLAN box and click OK \
+You will now have a new adapter to configure called "bond_bond0 - VLAN 1611" \
+Edit this new adapter the same way you would any adapter and assign an IPv4 address with no gateway.  I use 172.16.11.9 and 255.255.255.0
 
 ![windows-vlan](https://user-images.githubusercontent.com/74058939/142064791-7bd305f2-8034-4fe7-97fc-367e770041af.png)
+
+## Access the first host and install CloudBuilder
+
+Now you can use the Windows host to access the infrastructure and deploy CloudBuilder.  From the Windows host use your favorite browser to access https://172.16.11.101 and login as root with the password you assigned to the script in the terraform.tfvars file.
+
+Once logged in go to "Virtual Machines" on the left and click "Create/Register VM" \
+Choose the option "Deploy a virtual machine from an OVF or OVA file \
+name your VM cloudbuilder \
+Click the blue box to select the OVA for cloudbuilder that you downloaded from my.vmware \
+Click next all the way to Additional Settings and axpand Application
+Fill in every box.  Enter a password that will be assigned to the CloudBuilder instance.  The hostname can be cloudbuilder \
+Network 1 IP address is 172.16.11.10 and 254.255.255.0 for the subnet mask with 172.16.11.253 as the gateway \
+The DNS server is 172.16.11.4 \
+The DNS Domain Name and Search path are both sfo.rainpole.io \
+Finally the NTP server is 172.16.11.253
+
+Click next and finish.  Once the instance is up and running open another browser and go to https://172.16.11.10 \
+Login with admin and the password you assigned.
+
