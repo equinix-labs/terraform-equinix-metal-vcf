@@ -84,13 +84,17 @@ Once logged in go to "Virtual Machines" on the left and click "Create/Register V
 Choose the option "Deploy a virtual machine from an OVF or OVA file \
 name your VM cloudbuilder \
 Click the blue box to select the OVA for cloudbuilder that you downloaded from my.vmware \
-Click next all the way to Additional Settings and axpand Application
-Fill in every box.  Enter a password that will be assigned to the CloudBuilder instance.  The hostname can be cloudbuilder \
+Click next all the way to Additional Settings and expand "Application"
+Fill in every box \
+Enter a password that will be assigned to the CloudBuilder instance admin and root user \
+The hostname can be cloudbuilder \
 Network 1 IP address is 172.16.11.10 and 254.255.255.0 for the subnet mask with 172.16.11.253 as the gateway \
 The DNS server is 172.16.11.4 \
 The DNS Domain Name and Search path are both sfo.rainpole.io \
 Finally the NTP server is 172.16.11.253
+Click next and finish
 
-Click next and finish.  Once the instance is up and running open another browser and go to https://172.16.11.10 \
-Login with admin and the password you assigned.
+## Run cloudbuilder and create your VCF stack!
+from the jump host or via VPN open a browser and go to https://172.16.11.10 \
+Login with admin and the password you assigned in the last step \
 
