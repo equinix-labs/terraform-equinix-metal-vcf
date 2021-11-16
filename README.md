@@ -1,4 +1,4 @@
-# VMWare VCF on Equinix Metal
+# VMWare Cloud Foundation on Equinix Metal
 
 VMWare Cloud Foundation is a suite of products that provide an integrated stack of compute, storage and networking with centralized management and lifecycle controls.  VCF is divided into two major components, the management domain and workload domains.  The management domain is 4 ESX hosts with all the control plane virtual machines that will operate the infrastructure.  The workload domains are groups of ESX hosts that will run actual workloads like VDI, Tanzu or general-purpose virtual machines.  The VCF stack will allow you to easily add or remove hosts and build complex network solutions.  The VCF configuration system called CloudBuilder is an opinionated installer what will create the entire stack for you in about 3 hours.  The VCF deployment can be a complex process but with this repo and instructions you should be able to deploy this whole stack in half a day.  VCF paired with Equinix Metal and the Equinix ecosystem will enable you to deploy and manage a private global infrastructure.  Scale out can now be an easy, low risk excercise in regions that are unfamiliar but critical to your business.
 
@@ -45,3 +45,15 @@ https://github.com/bjenkins-metal/vcf-metal/blob/main/deploy-edge.md
 ## Complete the DNS server by following this doc
 
 https://github.com/bjenkins-metal/vcf-metal/blob/main/deploy-dns.md
+
+## Time to run CloudBuilder
+
+You will need to obtain the CloudBuilder ISO from the my.vmware portal and get the licenses for ESXi, vSAN, vCenter and NSX-T to add to the spreadsheet.
+
+The fastest way to get started is to launch a temporary Windows jump host in your Metal project.  This will give you a quick way to download the large CloudBuilder ISO (18GB) and install it on the first ESXi host to begin the process.  You can use the VPN and do this from your local computer and just wait for the 18GB to upload to the ESXi host.  You will not be able to use the local datastore since this is an OVA install so just be patient when doing this part if you do it remotely.
+
+If you have never added a VLAN to a Windows server it could be a little confusing so I will include it here to simplify the process.
+First in the Metal portal launch your Windows host on a c3.small instance.  When it completes the install go to the network tab in the Metal portal and switch the network mode to **Hybrid Bonded** and pick VLAN 1611 (management).  Now RDP into the Windows server and from server manager click local server and then NIC teaming.  Then the teaming interface pops up look at the bottom right window called Adapters and Interfaces.  Click the Team Interfaces tab in that little window and you will see the default bond.  Click on tasks and then Add Interface.  Enter 1611 in the Specific VLAN box and click OK.  You will now have a new adapter to configure called 
+"bond_bond0 - VLAN 1611".  Edit this new adapter the same way you would any adapter and assign an IPv4 address with no gateway.  I use 172.16.11.9 and 255.255.255.0.
+
+![windows-vlan](https://user-images.githubusercontent.com/74058939/142064791-7bd305f2-8034-4fe7-97fc-367e770041af.png)
