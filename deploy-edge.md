@@ -12,12 +12,12 @@ The KVM server is administered on the MGMT IP and only allows for SSH
 
 
 
-Now that the script has run you can launch any NFV or VM that you like.  Below is a Mikrotik example to help get you going quickly but any KVM compatible image will work like the Cisco 1000v or Juniper vSRX if you have the image and license.
+Now that the edge instance has launched you can run any NFV or VM that you like.  Below is a Mikrotik example to help get you going quickly but any KVM compatible image will work like the Cisco 1000v or Juniper vSRX if you have the image and license.
 
 #### Edge Router:  Use the CLI to deploy a Mikrotik RouterOS VM
-The Mikrotik CHR will only run at 1Mbps per interface in unlicensed mode.  It is very easy to get a 60 day trial that will unlock the full speed of the interfaces.  the permanent license is affordable and easy to get.  Visit https://mikrotik.com/ for more info.
+**The Mikrotik CHR will only run at 1Mbps per interface in unlicensed mode**.  It is very easy to get a 60 day trial that will unlock the full speed of the interfaces.  the permanent license is affordable and easy to get.  Visit https://mikrotik.com/ for more info.
 
-Before we begin, find the public IP that you will assign to this cloud router.  If you look at the output below you will see that a subnet with a /29 network is listed below bridge1.  You will be able to use the next IP in line for this VM and the IP listed as the gateway for the VM.
+SSH into the edge instance console and find the public IP that you will assign to this cloud router.  If you look at the output below you will see that a subnet with a /29 network is listed below bridge1.  You will be able to use the next IP in line for this VM and the IP listed as the gateway for the VM.
 
 ```shell
 ip a
@@ -67,20 +67,20 @@ root     pts/0        2021-01-01 00:00 (100.100.10.207)
 ```
 
 
-Now you can connect to the instance and begin the configuration, To exit the console use **CTRL + ]**<br/>
+Now you can open the Mikrotik console and begin the configuration, To exit the console use **CTRL + ]**<br/>
 
 ```shell
 root@edge-gateway:~# virsh console CloudRouter
 Connected to domain CloudRouter
 Escape character is ^]
-MikroTik 6.48.3 (stable)
+MikroTik 6.49 (stable)
 MikroTik Login: 
 ```
-The username is admin and the router will prompt for a password.
+The username is **admin** and the router will prompt for a password.
 
 ### Configure the first interface and set your passwords for the VPN by using the following commands ###
 
-Make sure you change the lines below to fit your deploy, this includes the IP, the gateway and the passwords.  This will enable L2TP VPN on the Mikrotik with a user called "user1" and apply a shared secret and user password.
+Make sure you change the lines below to fit your environment, this includes the IP, the gateway and the passwords.  This will enable L2TP VPN on the Mikrotik with a user called "user1" then apply a shared secret and user password.
 ```shell
 ip address add interface=ether1 address=100.200.20.9/29
 ip route add gateway=100.200.20.8
@@ -97,11 +97,12 @@ ip firewall address-list add list=safe address=100.100.10.207
 ### Now you will need to add the NTP package to the Mikrotik.  
 
 Download the following package suite and unzip it to a local folder.
+
 https://download.mikrotik.com/routeros/6.49/all_packages-x86-6.49.zip
 
 Using Winbox is the easiest way to do the next step.  https://mt.lv/winbox64
 
-Drag the ntp-6.49.npk to the files section in Winbox and **reboot the router twice**.
+Drag the ntp-6.49.npk to the files section in Winbox and **reboot the router twice**. The first reboot will install the package, the second reboot will enable it.
 
 
 ![NTP](https://user-images.githubusercontent.com/74058939/141863559-797f49bf-bad1-4a1d-b606-12fb4e5a2f0f.png)
