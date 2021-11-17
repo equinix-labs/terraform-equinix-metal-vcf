@@ -3,7 +3,8 @@
 VMWare Cloud Foundation is a suite of products that provide an integrated stack of compute, storage and networking with centralized management and lifecycle controls.  VCF is divided into two major components, the management domain and workload domains.  The management domain is 4 ESX hosts with all the control plane virtual machines that will operate the infrastructure.  The workload domains are groups of ESX hosts that will run actual workloads like VDI, Tanzu or general-purpose virtual machines.  The VCF stack will allow you to easily add or remove hosts and build complex network solutions.  The VCF configuration system called CloudBuilder is an opinionated installer that will create the entire stack for you based on settings entered into a spreadsheet.  The VCF deployment can be a complex process but with this repo and instructions you should be able to deploy this whole stack in half a day.  VCF paired with Equinix Metal and the Equinix ecosystem will enable you to deploy and manage a private global infrastructure.  Scale out can now be an easy, low risk process giving you access to regions that are unfamiliar but critical to your business.
 
 ## What this project will do
-This project will deploy the core infrastructure for a VMWare VCF management domain on Equinix Metal.  This will automatically configure 4 ESXi nodes to match the CloudBuilder spreadsheet and deploy an instance to act as the edge router and DNS server for the project.  If you need to alter any of the settings just check the terraform.tfvars file.  You can add more "esx_names" and "esx_ips" to the ESX section to deploy more hosts at once or even add more hosts later for a workload domain.  Make sure you add the appropriate names and IPs to the DNS server before deploying a workload domain.
+This project will deploy the core infrastructure for a VMWare VCF management domain on Equinix Metal.  This will automatically configure 4 ESXi nodes to match the CloudBuilder default spreadsheet.   A Metal instance running KVM will be created to act as an edge host allowing you to quickly launch the routing and DNS VMs using the CLI. This particular layout is not a requirement as there are many ways to build edge and DNS servers. \
+If you need to alter any of the settings just check the terraform.tfvars file.  You can add more "esx_names" and "esx_ips" to the ESX section to deploy more hosts at once or even add more hosts later for a workload domain.  Make sure you add the appropriate names and IPs to the DNS server before deploying a workload domain. 
 
 ## You will need to complete the following tasks
 Deploy the core infrastrucure using the Terraform script in this repo \
@@ -26,14 +27,18 @@ You will need the following to use this project
 
 ![VMWare-VCF-Layout](https://user-images.githubusercontent.com/74058939/142038048-d46f564d-9e5e-473b-873b-12d7b867210f.png)
 
-This project will use a Metal instance running KVM for the edge host. This will allow you to quickly launch the routing and DNS VMs quickly using the CLI.  This particular layout is not a requirement and there are many ways to build ingress/egress at Equinix.  You could build a 100% VMware layout or connect back to existing infrastructure.
+
+---
 
 Before you deploy make sure you generate a password for the script.  From any Linux host with whois installed you can quickly generate the password with the following command.
 ```shell
 mkpasswd --method=SHA-512 --rounds=4096
 ```
 The default script has the password set as ChangeYourPassword **(PLEASE DON'T FORGET TO CHANGE THIS)** \
+Create a password with at least one digit, one symbol and more than 8 characters so CloudBuilder does not give a warning  \
 Paste the result of the operation to the esx_pw field in the terraform.tfvars file incuded in this repo.
+
+---
 
 Deploy the KVM edge instance and ESXi nodes.  The terraform.tfvars file is aligned with the default CloudBuilder spreadsheet but can be altered to meet your specific requirements if needed.
 ```shell
@@ -94,7 +99,9 @@ The DNS Domain Name and Search path are both sfo.rainpole.io \
 Finally the NTP server is 172.16.11.253
 Click next and finish
 
-## Run cloudbuilder and create your VCF stack!
+## Run cloudbuilder and create your VCF stack
 from the jump host or via VPN open a browser and go to https://172.16.11.10 \
-Login with admin and the password you assigned in the last step
+Login with admin and the password you assigned in the last step. \
+You will need to edit a spreadsheet in this step so make sure you have an office app that can open and save Excel files.
+
 
