@@ -3,7 +3,7 @@
 VMWare Cloud Foundation is a suite of products that provide an integrated stack of compute, storage and networking with centralized management and lifecycle controls.  VCF is divided into two major components, the management domain and workload domains.  The management domain is 4 ESX hosts with all the control plane virtual machines that will operate the infrastructure.  The workload domains are groups of ESX hosts that will run actual workloads like VDI, Tanzu or general-purpose virtual machines.  The VCF stack will allow you to easily add or remove hosts and build complex network solutions.  The VCF configuration system called CloudBuilder is an opinionated installer that will create the entire stack for you based on settings entered into a spreadsheet.  The VCF deployment can be a complex process but with this repo and instructions you should be able to deploy this whole stack in half a day.  VCF paired with Equinix Metal and the Equinix ecosystem will enable you to deploy and manage a private global infrastructure.  Scale out can now be an easy, low risk process giving you access to regions that are unfamiliar but critical to your business.
 
 ## What this project will do
-This project will deploy the core infrastructure for a VMWare VCF management domain on Equinix Metal.  This will automatically configure 4 ESXi nodes to match the CloudBuilder default spreadsheet.   A Metal instance running KVM will be created to act as an edge host allowing you to quickly launch the routing and DNS VMs using the CLI. This particular layout is not a requirement as there are many ways to build edge and DNS servers. \
+This project will deploy the core infrastructure for a VCF management domain on Equinix Metal.  This will automatically configure 4 ESXi nodes to match the CloudBuilder default spreadsheet.   A Metal instance running KVM will be created to act as an edge host allowing you to quickly launch the routing and DNS VMs using the CLI. This particular layout is not a requirement as there are many ways to build edge and DNS servers. \
 If you need to alter any of the settings just check the terraform.tfvars file.  You can add more "esx_names" and "esx_ips" to the ESX section to deploy more hosts at once or even add more hosts later for a workload domain.  Make sure you add the appropriate names and IPs to the DNS server before deploying a workload domain. 
 
 ## You will need to complete the following tasks
@@ -64,22 +64,8 @@ You will need to obtain the CloudBuilder ISO from the my.vmware portal and get t
 
 The fastest way to get started is to launch a temporary Windows jump host in your Metal project.  This will give you a quick way to download the large CloudBuilder ISO (18GB) and install it on the first ESXi host to begin the process.  You can also use the VPN and do this from your local computer and just wait for the 18GB to upload to the ESXi host if you do not want to run a jump host.  FYI You will not be able to use the local datastore since this is an OVA install so just be patient when doing this part if you do it remotely.
 
-**Tips for the Jump host** \
-If you have never added a VLAN to a Windows server it could be a little confusing so I will include the steps here to simplify the process.
-
-First in the Metal portal launch your Windows host on a c3.small instance \
-When the install is complete click the instance and go to the network tab in the Metal portal \
-Switch the network mode to **Hybrid Bonded** and pick VLAN 1611 \
-RDP into the Windows server \
-From server manager click local server and then NIC teaming \
-From the teaming interface find the bottom right window called Adapters and Interfaces \
-Click the "Team Interfaces" tab in the Adapters and Interfaces window and you will see the default bond \
-Click on tasks and then Add Interface (Sometimes you need to click away from the window and back in for the Add Interface option to appear) \
-Enter 1611 in the Specific VLAN box and click OK \
-You will now have a new adapter to configure called "bond_bond0 - VLAN 1611" \
-Edit this new adapter the same way you would any adapter and assign an IPv4 address with no gateway.  I use 172.16.11.9 and 255.255.255.0
-
-![windows-vlan](https://user-images.githubusercontent.com/74058939/142064791-7bd305f2-8034-4fe7-97fc-367e770041af.png)
+## Configure the Windows jump host using this doc
+https://github.com/bjenkins-metal/vcf-metal/blob/main/jumphost-tips.md
 
 ## Access the first host and install CloudBuilder
 
@@ -103,5 +89,20 @@ Click next and finish
 from the jump host or via VPN open a browser and go to https://172.16.11.10 \
 Login with admin and the password you assigned in the last step. \
 You will need to edit a spreadsheet in this step so make sure you have an office app that can open and save Excel files.
+
+Follow the prompts once you log in and get to the point where you download the spreadsheet \
+Open the spreadsheet and find the "Management Workloads" tab and paste your license keys. You do not need the SDDC Manager Appliance key \
+Now find the "Users and Groups" tab.  Enter the password you assigned to the ESXi hosts in the first row and then create passwords for the rest of the services.  If the ESXi password in the spreadsheet does not match the script password that you generated the install will fail. \
+Now save the worksheet and upload it to CloudBuilder and let the validation run.  It will not take long and you will be alerted to any issues that would prevent the install from running.  You will notice that the ESXi version will give a warning, that is totally normal and you can just acknowledge the alert and continue. \
+When you click Nect after a successful validation the stack will begin to build itself.  Be patient, this will take some time.  Once the installer is complete you will be able to log in to the various components of the stack.  \
+
+Here are the useful IPs and names \
+vCenter: 172.16.11.62 (sfo-m01-vc01) \
+NSX-T Manager: 172.16.11.65 (sfo-m01-nsx01) \
+SDDC Manager: 172.16.11.59 (sfo-vcf01)
+
+You should have a fully functional management domain.  Time to dig into the VCF docs! \
+https://docs.vmware.com/en/VMware-Cloud-Foundation/index.html
+
 
 
