@@ -104,5 +104,19 @@ SDDC Manager: 172.16.11.59 (sfo-vcf01)
 You should have a fully functional management domain.  Time to dig into the VCF docs! \
 https://docs.vmware.com/en/VMware-Cloud-Foundation/index.html
 
+# Troubleshooting
+There are a few things that are helpful to know when  using this project.  One of the most common blockers for CloudBuilder is the host drive setup.  If you get a cloudbuilder error on the vSAN deployment portion you may need to check the individual hosts for the drive layout.  CloudBuilder does not like to see 3 drive types and a few of our M3.large instances may have "bonus drives" in them attached to a HBA330-Mini.
+
+![vsan-fail](https://user-images.githubusercontent.com/74058939/142468028-310fba5a-e048-4d2d-a88a-4c6d9ac30d5c.png)
+
+If you find yourself in this situation don't despair, just disable the HBA330 and you can get through the deploy and then turn it back on.  Check the instances in the ESXi web UI and see if you have extra drives.  Here is an example of what you may see.  The top image is what you want, the bottom is what you may see.
+
+![toubleshoot-disk](https://user-images.githubusercontent.com/74058939/142466304-bbae8aa0-dea9-4590-80cb-76a1eb03d17a.png)
+
+USe the SOS console to access your Metal host and get into the BIOS.  You will reboot the instance and wait for the boot screen then hit F2 to get into the BIOS.  Go to the "system bios" section then "Integrated Devices".  Disable "Integrated RAID Controller" so the HBA330 will go away and let you finish the install.  You can turn it back on later if you like.
+
+![raid-disable](https://user-images.githubusercontent.com/74058939/142476199-9b238c6c-a813-4990-b96b-6ee4a8545926.png)
+
+
 
 
