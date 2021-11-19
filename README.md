@@ -110,7 +110,7 @@ Open the spreadsheet and find the "Management Workloads" tab and paste your lice
 Now find the "Users and Groups" tab.  Enter the password you assigned to the ESXi hosts in the first row and then create passwords for the rest of the services.  If the ESXi password in the spreadsheet does not match the script password that you generated the install will fail. \
 Now save the worksheet and upload it to CloudBuilder and let the validation run.  It will not take long and you will be alerted to any issues that would prevent the install from running.  \
 **You will notice that the ESXi version will give a warning, that is totally normal and you can just acknowledge the alert and continue.** \
-When you click Nect after a successful validation the stack will begin to build itself.  Be patient, this will take some time.  Once the installer is complete you will be able to log in to the various components of the stack.  \
+When you click next after a successful validation the stack will begin to deploy itself.  Be patient, this will take some time.  Once the installer is complete you will be able to log in to the various components of the VCF stack.  \
 
 Here are the useful IPs and names \
 vCenter: 172.16.11.62 (sfo-m01-vc01) \
