@@ -108,7 +108,8 @@ You will need to edit a spreadsheet in this step so make sure you have an office
 Follow the prompts once you log in and get to the point where you download the spreadsheet \
 Open the spreadsheet and find the "Management Workloads" tab and paste your license keys. You do not need the SDDC Manager Appliance key \
 Now find the "Users and Groups" tab.  Enter the password you assigned to the ESXi hosts in the first row and then create passwords for the rest of the services.  If the ESXi password in the spreadsheet does not match the script password that you generated the install will fail. \
-Now save the worksheet and upload it to CloudBuilder and let the validation run.  It will not take long and you will be alerted to any issues that would prevent the install from running.  You will notice that the ESXi version will give a warning, that is totally normal and you can just acknowledge the alert and continue. \
+Now save the worksheet and upload it to CloudBuilder and let the validation run.  It will not take long and you will be alerted to any issues that would prevent the install from running.  \
+**You will notice that the ESXi version will give a warning, that is totally normal and you can just acknowledge the alert and continue.** \
 When you click Nect after a successful validation the stack will begin to build itself.  Be patient, this will take some time.  Once the installer is complete you will be able to log in to the various components of the stack.  \
 
 Here are the useful IPs and names \
