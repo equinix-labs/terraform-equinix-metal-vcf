@@ -3,8 +3,13 @@
 VMWare Cloud Foundation is a suite of products that provide an integrated stack of compute, storage and networking with centralized management and lifecycle controls.  VCF is divided into two major components, the management domain and workload domains.  The management domain is 4 ESX hosts with all the control plane virtual machines that will operate the infrastructure.  The workload domains are groups of ESX hosts that will run actual workloads like VDI, Tanzu or general-purpose virtual machines.  The VCF stack will allow you to easily add or remove hosts and build complex network solutions.  The VCF configuration system called CloudBuilder is an opinionated installer that will create the entire stack for you based on settings entered into a spreadsheet.  The VCF deployment can be a complex process but with this repo and instructions you should be able to deploy this whole stack in half a day.  VCF paired with Equinix Metal and the Equinix ecosystem will enable you to deploy and manage a private global infrastructure.  Scale out can now be an easy, low risk process giving you access to regions that are unfamiliar but critical to your business.
 
 ## What this project will do
-This project will deploy the core infrastructure for a VCF management domain on Equinix Metal.  This will automatically configure 4 ESXi nodes to match the CloudBuilder default spreadsheet.   A Metal instance running KVM will be created to act as an edge host allowing you to quickly launch the routing and DNS VMs using the CLI. This particular layout is not a requirement as there are many ways to build edge and DNS servers. \
+The project will deploy the core infrastructure for a VCF management domain on Equinix Metal \
+This will automatically configure 4 ESXi nodes to match the CloudBuilder default spreadsheet \
+A Metal instance running KVM will be created to act as an edge host for the routing and DNS VMs
+
 If you need to alter any of the settings just check the terraform.tfvars file.  You can add more "esx_names" and "esx_ips" to the ESX section to deploy more hosts at once or even add more hosts later for a workload domain.  Make sure you add the appropriate names and IPs to the DNS server before deploying a workload domain. 
+![VCF-Overview](https://user-images.githubusercontent.com/74058939/142696792-3349d32a-3e33-44eb-a8c8-2491e1ea6e46.png)
+
 
 ## You will need to complete the following tasks
 Deploy the core infrastrucure using the Terraform script in this repo \
@@ -65,7 +70,7 @@ https://github.com/bjenkins-metal/vcf-metal/blob/main/deploy-dns.md
 
 You will need to obtain the CloudBuilder ISO from the my.vmware portal and get the licenses for ESXi, vSAN, vCenter and NSX-T to add to the spreadsheet.
 
-The fastest way to get started is to launch a temporary Windows jump host in your Metal project.  This will give you a quick way to download the large CloudBuilder ISO (18GB) and install it on the first ESXi host to begin the process.  You can also use the VPN and do this from your local computer and just wait for the 18GB to upload to the ESXi host if you do not want to run a jump host.  FYI You will not be able to use the local datastore since this is an OVA install so just be patient when doing this part if you do it remotely.
+The fastest way to get started is to launch a temporary Windows jump host in your Metal project.  This will give you a quick way to download the large CloudBuilder ISO (18GB) and install it on the first ESXi host to begin the process.  You can also use the VPN and do this from your local computer and just wait for the 18GB to upload during the VM install.  FYI You will not be able to use the local datastore since this is an OVA install so just be patient when doing this part if you do it remotely.
 
 ## Configure the Windows jump host using this doc
 https://github.com/bjenkins-metal/vcf-metal/blob/main/jumphost-tips.md
@@ -82,7 +87,7 @@ Click next all the way to Additional Settings and expand "Application"
 Fill in every box \
 Enter a password that will be assigned to the CloudBuilder instance admin and root user \
 The hostname can be cloudbuilder \
-Network 1 IP address is 172.16.11.10 and 254.255.255.0 for the subnet mask with 172.16.11.253 as the gateway \
+Network 1 IP address is 172.16.11.10 and 255.255.255.0 for the subnet mask with 172.16.11.253 as the gateway \
 The DNS server is 172.16.11.4 \
 The DNS Domain Name and Search path are both sfo.rainpole.io \
 Finally the NTP server is 172.16.11.253
@@ -110,7 +115,7 @@ Open the spreadsheet and find the "Management Workloads" tab and paste your lice
 Now find the "Users and Groups" tab.  Enter the password you assigned to the ESXi hosts in the first row and then create passwords for the rest of the services.  If the ESXi password in the spreadsheet does not match the script password that you generated the install will fail. \
 Now save the worksheet and upload it to CloudBuilder and let the validation run.  It will not take long and you will be alerted to any issues that would prevent the install from running.  \
 **You will notice that the ESXi version will give a warning, that is totally normal and you can just acknowledge the alert and continue.** \
-When you click next after a successful validation the stack will begin to deploy itself.  Be patient, this will take some time.  Once the installer is complete you will be able to log in to the various components of the VCF stack.  \
+When you click next after a successful validation the stack will begin to deploy itself.  Be patient, this will take some time.  Once the installer is complete you will be able to log in to the various components of the VCF stack.
 
 Here are the useful IPs and names \
 vCenter: 172.16.11.62 (sfo-m01-vc01) \
