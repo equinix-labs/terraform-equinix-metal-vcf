@@ -1,6 +1,10 @@
 # Deploy a DNS server with the default CloudBuilder configuration #
 
-in this example we will create a VM running Ubuntu 20.04 with a cloudinit image that will deploy BIND9 and install a configuration that will match the CloudBuilder spreadsheet.  Remember that VCF needs forward and reverse lookups to function correctly so if you add a workload domain follow the layout in the zone files to add the names and IPs.  The files are **/var/lib/bind/172.16.11.rev** and **/var/lib/bind/sfo.rainpole.io.hosts**.  Reload BIND to apply the settings.
+In this example we will create a VM running Ubuntu 20.04 with a cloudinit image that will deploy BIND9 and install a configuration that will match the CloudBuilder spreadsheet.  Remember that VCF needs forward and reverse lookups to function correctly so if you add a workload domain follow the layout in the zone files to add the names and IPs.  
+
+The files are **/var/lib/bind/172.16.11.rev** and **/var/lib/bind/sfo.rainpole.io.hosts**.  
+
+Reload BIND to apply the settings.
 
 ## Download and prepare the Ubuntu Cloud Image
 ```shell
