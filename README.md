@@ -50,6 +50,9 @@ When you want to remove the project simply run the following command.
 ```shell
 terraform destroy
 ```
+**If you see "Error: vlan assignment batch" at the end of the Terraform deploy \
+just run "terraform apply" one more time and it will complete the install**
+
 ## Complete the edge first by following this doc
 
 https://github.com/bjenkins-metal/vcf-metal/blob/main/deploy-edge.md
