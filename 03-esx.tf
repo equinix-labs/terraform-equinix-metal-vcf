@@ -31,10 +31,10 @@ echo 'esxcfg-advcfg -s ${var.esx_names[count.index].esxname}.${var.esx_domain} /
 echo 'echo "server ${var.esx_ntp}" >> /etc/ntp.conf' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'chkconfig ntpd on' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcfg-vswitch -p "Management Network" -v ${var.esx_mgmtvlan} vSwitch0' >> /vmfs/volumes/datastore1/configpost.sh;
-echo 'esxcli network ip interface ipv4 set -i vmk0 -I ${var.esx_ips[count.index].esxip} -N ${var.esx_subnet} -g ${var.esx_gateway} -t static' >> /vmfs/volumes/datastore1/configpost.sh;
-echo 'esxcfg-route ${var.esx_gateway}' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcfg-vmknic -d "Private Network"' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcfg-vswitch -D "Private Network" vSwitch0' >> /vmfs/volumes/datastore1/configpost.sh;
+echo 'esxcli network ip interface ipv4 set -i vmk0 -I ${var.esx_ips[count.index].esxip} -N ${var.esx_subnet} -g ${var.esx_gateway} -t static' >> /vmfs/volumes/datastore1/configpost.sh;
+echo 'esxcfg-route ${var.esx_gateway}' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'sed -i '/configpost.sh/d' /etc/rc.local.d/local.sh' >> /vmfs/volumes/datastore1/configpost.sh
 EOT
       postinstall_shell = "/bin/sh -C"
