@@ -22,8 +22,8 @@ VMWare Cloud Foundation is a suite of VMWare products including ESXi, vCenter, v
 
 ## You will need the following to use this project
 * An Equinix Metal account
- * If you need an Equinix Metal account please visit https://console.equinix.com
- * Find the Equinix Metal documentation at https://metal.equinix.com/developers/docs/
+  * If you need an Equinix Metal account please visit https://console.equinix.com
+  * Find the Equinix Metal documentation at https://metal.equinix.com/developers/docs/
 * Terraform https://www.terraform.io/ and this repo
 * A my.vmware account to obtain the CloudBuilder ISO and licenses
   * This project assumes you are deploying VCF 4.1 since it has the most opinionated install process and is great for learning how it all works
