@@ -140,7 +140,7 @@ You should have a fully functional management domain.  Time to dig into the VCF 
 https://docs.vmware.com/en/VMware-Cloud-Foundation/index.html
 
 # Bonus tip!
-**You can use this same repo to deploy vShpere as well!**
+**You can use this same repo to deploy vSphere as well!**
 * Follow the instructions and install the edge router
 * the DNS server is optional
 * Instead of starting CloudBuilder you can install vCenter to the first host and use QuickStart to deploy all the vSphere features automatically
