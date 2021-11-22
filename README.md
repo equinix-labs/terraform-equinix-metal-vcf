@@ -118,18 +118,18 @@ https://github.com/bjenkins-metal/vcf-metal/blob/main/m3.large-drives.md
 **NOTE: You will need to edit a spreadsheet in this step so make sure you have an office app that can open and save Excel files**
 
 * from the jump host or via VPN open a browser and go to https://172.16.11.10
-* Login with the username "admin" and the password you assigned in the last step.
+* Login with the username "admin" and the password you assigned in the last step
 * Follow the prompts once you log in and get to the point where you download the spreadsheet
 * Open the spreadsheet and find the "Management Workloads" tab and paste your license keys
   * You do not need the SDDC Manager Appliance key
 * Find the "Users and Groups" tab.  Enter the password you assigned to the ESXi hosts in the first row and then create passwords for the rest of the services.
   * **If the ESXi password in the spreadsheet does not match the password that you generated for the terraform script, the install will fail**
-* Save the spreadsheet and upload it to CloudBuilder then click next to let the validation run.  
-  * It will not take long and you will be alerted to any issues that would prevent the install from running.
-  * **You will notice that the ESXi version will give a warning, that is totally normal and you can just acknowledge the alert and continue.**
-* After a successful validation you will click next and the stack will begin to deploy itself.
-  * Be patient, this will take some time.
-  * After the installer is complete you will be able to log in to the various components of the VCF stack.
+* Save the spreadsheet and upload it to CloudBuilder then click next to let the validation complete
+  * The validation will not take long and you will be alerted to any issues that would prevent the install from working
+  * **You will notice that the ESXi version will give a warning, that is totally normal and you can just acknowledge the alert and continue**
+* After a successful validation you will click next and the stack will begin to deploy
+  * Be patient, this will take about 2 hours to complete
+  * After the installer is complete you will be able to log in to the various components of the VCF stack
 
 # Here are the useful IPs and names
 * SDDC Manager: 172.16.11.59 (sfo-vcf01)
@@ -139,7 +139,12 @@ https://github.com/bjenkins-metal/vcf-metal/blob/main/m3.large-drives.md
 You should have a fully functional management domain.  Time to dig into the VCF docs! \
 https://docs.vmware.com/en/VMware-Cloud-Foundation/index.html
 
-
+# Bonus tip!
+**You can use this same repo to deploy vShpere as well!**
+* Follow the instructions and install the edge router
+* the DNS server is optional
+* Instead of starting CloudBuilder you can install vCenter to the first host and use QuickStart to deploy all the vSphere features automatically
+* Follow the VLAN layout listed for vMotion and vSAN
 
 
 
