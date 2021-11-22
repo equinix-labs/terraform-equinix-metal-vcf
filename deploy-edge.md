@@ -76,17 +76,17 @@ Escape character is ^]
 MikroTik 6.49 (stable)
 MikroTik Login: 
 ```
-The username is **admin** and the router will prompt for a password.
+The username is **admin** with no password.  Starting with 6.49+ the router will prompt for a password after you login the first time.
 
 ### Configure the first interface and set your passwords for the VPN by using the following commands ###
 
-Make sure you change the lines below to fit your environment, this includes the IP, the gateway and the passwords.  This will enable L2TP VPN on the Mikrotik with a user called "user1" then apply a shared secret and user password.
+Make sure you change the lines below to fit your environment, this includes the IP, the gateway and the passwords.  This will enable L2TP VPN on the Mikrotik with a user called "user1".  The settings will apply a shared secret and user password, **please change them!!**
 ```shell
 ip address add interface=ether1 address=100.200.20.9/29
 ip route add gateway=100.200.20.8
 ip dns set servers=1.1.1.1
-/interface l2tp-server server set enabled=yes use-ipsec=yes ipsec-secret=YourPassword
-/ppp secret add name=user1 password=YourPassword local-address=172.16.11.230 remote-address=172.16.11.231
+/interface l2tp-server server set enabled=yes use-ipsec=yes ipsec-secret=**YourPassword**
+/ppp secret add name=user1 password=**YourPassword** local-address=172.16.11.230 remote-address=172.16.11.231
 ```
 
 ### This is the IP you found using the who command earlier ###
