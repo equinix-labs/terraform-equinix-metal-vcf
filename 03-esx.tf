@@ -21,7 +21,7 @@ resource "metal_device" "esx" {
       firstboot_shell = "/bin/sh -C"
       firstboot_shell_cmd = <<EOT
 sed -i '/^exit*/i /vmfs/volumes/datastore1/configpost.sh' /etc/rc.local.d/local.sh;
-sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
 touch /vmfs/volumes/datastore1/configpost.sh;
 chmod 755 /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcfg-vswitch -p "VM Network" -v ${var.esx_mgmtvlan} vSwitch0' >> /vmfs/volumes/datastore1/configpost.sh;
