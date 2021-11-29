@@ -1,8 +1,8 @@
-# VMWare Cloud Foundation on Equinix Metal
+# VMware Cloud Foundation on Equinix Metal
 
 https://user-images.githubusercontent.com/74058939/143310313-f8f943d8-69ba-4c2d-9808-75890196acdb.mp4
 
-VMWare Cloud Foundation is a suite of VMWare products including ESXi, vCenter, vSAN, NSX-T and SDDC that provide an integrated stack of compute, storage and networking with centralized management and lifecycle controls.  VCF is divided into two major components, the management domain and workload domains.  The management domain is 4 ESX hosts with the control plane virtual machines that will operate the infrastructure.  The workload domains are groups of ESX hosts that will run actual workloads like VDI, Tanzu or general-purpose virtual machines.  The VCF stack will allow you to easily add or remove hosts and build complex network solutions.  The VCF configuration system called CloudBuilder is an opinionated installer that will create the entire stack for you based on settings entered into a spreadsheet.  The VCF deployment can be a complex process but with this repo and instructions you should be able to deploy this whole stack in half a day.  VCF paired with Equinix Metal and the Equinix ecosystem will enable you to deploy and manage a private global infrastructure.  Scale out can now be an easy, low risk process giving you access to regions that are unfamiliar but critical to your business.
+VMware Cloud Foundation is a suite of VMware products including ESXi, vCenter, vSAN, NSX-T and SDDC that provide an integrated stack of compute, storage and networking with centralized management and lifecycle controls.  VCF is divided into two major components, the management domain and workload domains.  The management domain is 4 ESX hosts with the control plane virtual machines that will operate the infrastructure.  The workload domains are groups of ESX hosts that will run actual workloads like VDI, Tanzu or general-purpose virtual machines.  The VCF stack will allow you to easily add or remove hosts and build complex network solutions.  The VCF configuration system called CloudBuilder is an opinionated installer that will create the entire stack for you based on settings entered into a spreadsheet.  The VCF deployment can be a complex process but with this repo and instructions you should be able to deploy this whole stack in half a day.  VCF paired with Equinix Metal and the Equinix ecosystem will enable you to deploy and manage a private global infrastructure.  Scale out can now be an easy, low risk process giving you access to regions that are unfamiliar but critical to your business.
 
 ## What this project will do
 * The project will deploy the core infrastructure for a VCF management domain on Equinix Metal
@@ -30,7 +30,7 @@ VMWare Cloud Foundation is a suite of VMWare products including ESXi, vCenter, v
 * A my.vmware account to obtain the CloudBuilder ISO and licenses
   * This project assumes you are deploying VCF 4.1 since it has the most opinionated install process and is great for learning how it all works
 * **Some patience** 
-  * VCF is a complex and amazing bundle of all the best products VMWare has to offer
+  * VCF is a complex and amazing bundle of all the best products VMware has to offer
   * There will be plenty of opportunities to mis-type or miss a step so if you get an error just go back and look through the steps and check your work
   * You will have the option to "try again" at various times through the process
 
@@ -38,7 +38,7 @@ VMWare Cloud Foundation is a suite of VMWare products including ESXi, vCenter, v
 
 ## Overview
 
-![VMWare-VCF-Layout](https://user-images.githubusercontent.com/74058939/142038048-d46f564d-9e5e-473b-873b-12d7b867210f.png)
+![VMware-VCF-Layout](https://user-images.githubusercontent.com/74058939/142038048-d46f564d-9e5e-473b-873b-12d7b867210f.png)
 
 
 ---
