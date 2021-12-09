@@ -1,20 +1,23 @@
 # Manage the edge instance and launch the router
 
-In this example the management (MGMT) IP for the Instance is 100.100.100.10 \
-The elastic subnet forwarded to the VMs is 100.200.20.8/29 \
-the elastic subnet will be added as an alias to bridge1 \
-The first usable IP from the elastic block becomes the gateway for all VMs \
-The KVM server is administered on the MGMT IP and only allows for SSH
+* In this example the management (MGMT) IP for the Instance is 100.100.100.10
+* The elastic subnet forwarded to the VMs is 100.200.20.8/29
+* the elastic subnet will be added as an alias to bridge1
+* The first usable IP from the elastic block becomes the gateway for all VMs
+* The KVM server is administered on the MGMT IP and only allows for SSH
 
 ![kvm-edge-instance](https://user-images.githubusercontent.com/74058939/141861429-42be576d-07b2-4bca-8f21-3a1783a1167c.png)
 
+* The edge instance can run any virtual Router/Firewall NFV that you like.  Below are some options
+    * Cisco 
+    * Juniper
+    * Miktorik
+    * Fortinet
+    * Palo Alto
+    * VyOS 
 
+* This tutorial will use a virtual Mikrotik to help get you going quickly
 
-
-
-Now that the edge instance has launched you can run any NFV or VM that you like.  Below is a Mikrotik example to help get you going quickly but any KVM compatible image will work like the Cisco 1000v or Juniper vSRX if you have the image and license.
-
-#### Edge Router:  Use the CLI to deploy a Mikrotik RouterOS VM
 **The Mikrotik CHR will only run at 1Mbps per interface in unlicensed mode**.  It is very easy to get a 60 day trial that will unlock the full speed of the interfaces.  the permanent license is affordable and easy to get.  Visit https://mikrotik.com/ for more info.
 
 SSH into the edge instance console and find the public IP that you will assign to this cloud router.  If you look at the output below you will see that a subnet with a /29 network is listed below bridge1.  You will be able to use the next IP in line for this VM and the IP listed as the gateway for the VM.
@@ -34,10 +37,9 @@ ip a
 Download RouterOS RAW image from Mikrotik.  Unzip the image and move it to /var/lib/libvirt/images/
 
 ```shell
-apt install unzip
-wget https://download.mikrotik.com/routeros/6.49/chr-6.49.img.zip
-unzip chr-6.49.img.zip
-mv chr-6.49.img /var/lib/libvirt/images/
+wget https://download.mikrotik.com/routeros/7.1/chr-7.1.img.zip
+unzip chr-7.1.img.zip
+mv chr-7.1.img /var/lib/libvirt/images/
 ```
 
 Now that the disk image is in place you can launch the VM 
@@ -47,7 +49,7 @@ virt-install --name=CloudRouter \
 --import \
 --vcpus=2 \
 --memory=1024 \
---disk vol=default/chr-6.49.img,bus=sata \
+--disk vol=default/chr-7.1.img,bus=sata \
 --network=network:bridge1,model=virtio \
 --network=network:bridge2,model=virtio \
 --os-type=generic \
@@ -55,7 +57,6 @@ virt-install --name=CloudRouter \
 --noautoconsole
 
 virsh autostart CloudRouter
-
 ```
 
 
@@ -73,42 +74,13 @@ Now you can open the Mikrotik console and begin the configuration, To exit the c
 root@edge-gateway:~# virsh console CloudRouter
 Connected to domain CloudRouter
 Escape character is ^]
-MikroTik 6.49 (stable)
+MikroTik 7.1 (stable)
 MikroTik Login: 
 ```
-The username is **admin** with no password.  Starting with 6.49+ the router will prompt for a password after you login the first time.
+The username is **admin** with no password.  The router will prompt for a password after you login the first time.
 
-### Configure the first interface and set your passwords for the VPN by using the following commands ###
-
-Make sure you change the lines below to fit your environment, this includes the IP, the gateway and the passwords.  This will enable L2TP VPN on the Mikrotik with a user called "user1".  The settings will apply a shared secret and user password, **please change them!!**
-```shell
-ip address add interface=ether1 address=100.200.20.9/29
-ip route add gateway=100.200.20.8
-ip dns set servers=1.1.1.1
-/interface l2tp-server server set enabled=yes use-ipsec=yes ipsec-secret=**YourPassword**
-/ppp secret add name=user1 password=**YourPassword** local-address=172.16.11.230 remote-address=172.16.11.231
-```
-
-### This is the IP you found using the who command earlier ###
-```shell
-ip firewall address-list add list=safe address=100.100.10.207
-```
-
-### Now you will need to add the NTP package to the Mikrotik.  
-
-Download the following package suite and unzip it to a local folder.
-
-https://download.mikrotik.com/routeros/6.49/all_packages-x86-6.49.zip
-
-Using Winbox is the easiest way to do the next step.  https://mt.lv/winbox64
-
-Drag the ntp-6.49.npk to the files section in Winbox and **reboot the router twice**. The first reboot will install the package, the second reboot will enable it.
-
-
-![NTP](https://user-images.githubusercontent.com/74058939/141863559-797f49bf-bad1-4a1d-b606-12fb4e5a2f0f.png)
-
-### The router is ready for the final config
-Paste the following block to the router console and this will complete the router setup.  This config will match the default CloudBuilder spreadsheet.
+### The router is ready for the base config
+Paste the following block to the router console and this will create a config that will match the default CloudBuilder spreadsheet.
 ```shell
 /ip firewall filter
 add action=accept chain=input comment="accept established connection packets" connection-state=established
@@ -156,6 +128,15 @@ add address=203.0.113.0/24 comment=RFC6890 list=not_in_internet
 add address=100.64.0.0/10 comment=RFC6890 list=not_in_internet
 add address=240.0.0.0/4 comment=RFC6890 list=not_in_internet
 add address=192.88.99.0/24 comment="6to4 relay Anycast [RFC 3068]" list=not_in_internet
+/ipv6 firewall filter
+add action=accept chain=input comment="Allow established connections" connection-state=established disabled=no
+add action=accept chain=input comment="Allow related connections" connection-state=related disabled=no
+add action=accept chain=input comment="Allow limited ICMP" disabled=no limit=50/5s,5 protocol=icmpv6
+add action=drop chain=input comment="" disabled=no
+add action=accept chain=forward comment="Allow any to internet" disabled=no out-interface=ether1
+add action=accept chain=forward comment="Allow established connections" connection-state=established disabled=no
+add action=accept chain=forward comment="Allow related connections" connection-state=related disabled=no
+add action=drop chain=forward comment="" disabled=no
 /interface set ether2 mtu=9000
 /interface vlan add interface=ether2 vlan-id=1611 mtu=9000 name=1611-Management
 /interface vlan add interface=ether2 vlan-id=1612 mtu=9000 name=1612-vMotion
@@ -190,4 +171,20 @@ add address=192.88.99.0/24 comment="6to4 relay Anycast [RFC 3068]" list=not_in_i
 /routing bgp peer add name=EDGE2-2 instance=NSXtUplink2TORSIM remote-as=65003 remote-address=172.27.12.3 tcp-md5-key=VMw@re1! default-originate=always
 /system ntp client set enabled=yes mode=unicast primary-ntp=129.6.15.30 secondary-ntp=132.163.97.3
 /system ntp server set enabled=yes manycast=no broadcast=yes broadcast-addresses=172.16.11.255
+```
+
+### Now configure the first interface and set your passwords for the VPN by using the following commands ###
+
+Make sure you change the lines below to fit your environment, this includes the IP, the gateway and the passwords.  This will enable L2TP VPN on the Mikrotik with a user called "user1".  The settings will apply a shared secret and user password, **please change the passwords!!**
+```shell
+ip address add interface=ether1 address=100.200.20.9/29
+ip route add gateway=100.200.20.8
+ip dns set servers=1.1.1.1
+/interface l2tp-server server set enabled=yes use-ipsec=yes ipsec-secret=**YourPassword**
+/ppp secret add name=user1 password=**YourPassword** local-address=172.16.11.230 remote-address=172.16.11.231
+```
+
+### This is the IP you found using the who command earlier ###
+```shell
+ip firewall address-list add list=safe address=100.100.10.207
 ```
