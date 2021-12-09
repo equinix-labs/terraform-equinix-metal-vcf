@@ -3,12 +3,7 @@
 # Update and install packages
 apt update
 DEBIAN_FRONTEND=noninteractive apt upgrade -y
-apt -y install virt-manager
-apt -y install bridge-utils
-apt -y install ufw
-apt -y install moreutils
-apt -y install cloud-image-utils
-apt -y install unzip
+apt -y install virt-manager bridge-utils ufw moreutils cloud-image-utils unzip
 
 # Collect network info for the management interface
 ipaddr=$(ifdata -pa bond0)
