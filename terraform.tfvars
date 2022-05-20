@@ -1,5 +1,5 @@
-auth_token      = "h9FYNNnc3sbdcSr3PUyptriEyRQPqwhg"
-project_id      = "ec20ef5e-fd00-46fb-bd82-f7a81049cb4a"
+auth_token      = "your-API-token"
+project_id      = "your-project-ID"
 
 # Metro for this stack
 metro         = "da"
