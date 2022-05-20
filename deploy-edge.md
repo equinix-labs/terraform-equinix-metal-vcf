@@ -186,5 +186,5 @@ Make sure you change the lines below to fit your environment, this includes the 
 
 ### This is the IP you found using the who command earlier ###
 ```shell
-ip firewall address-list add list=safe address=100.100.10.207
+/ip firewall address-list add list=safe address=100.100.10.207
 ```
