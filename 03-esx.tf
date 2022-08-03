@@ -1,6 +1,5 @@
 # provision ESXi hosts
-
-resource "metal_device" "esx" {
+resource "equinix_metal_device" "esx" {
   count             = length(var.esx_names)
   hostname          = var.esx_names[count.index].esxname
   project_id        = var.project_id
@@ -43,16 +42,17 @@ EOT
   })
 }
 
-resource "metal_port" "eth0" {
+resource "equinix_metal_port" "eth0" {
   count = length(var.esx_names)
-  port_id = [for p in metal_device.esx[count.index].ports : p.id if p.name == "eth0"][0]
-  vlan_ids = metal_vlan.vlans.*.id
+  port_id = [for p in equinix_metal_device.esx[count.index].ports : p.id if p.name == "eth0"][0]
+  vlan_ids = equinix_metal_vlan.vlans.*.id
   bonded = false
 }
 
-resource "metal_port" "eth1" {
+resource "equinix_metal_port" "eth1" {
+  depends_on = [equinix_metal_port.eth0]
   count = length(var.esx_names)
-  port_id = [for p in metal_device.esx[count.index].ports : p.id if p.name == "eth1"][0]
-  vlan_ids = metal_vlan.vlans.*.id
+  port_id = [for p in equinix_metal_device.esx[count.index].ports : p.id if p.name == "eth1"][0]
+  vlan_ids = equinix_metal_vlan.vlans.*.id
   bonded = false
 }

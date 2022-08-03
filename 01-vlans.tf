@@ -1,9 +1,9 @@
-provider "metal" {
+provider "equinix" {
   auth_token = var.auth_token
 }
 
 # Provision VLANs
-resource "metal_vlan" "vlans" {
+resource "equinix_metal_vlan" "vlans" {
   count       = length(var.vlans)
   project_id  = var.project_id
   metro       = var.metro

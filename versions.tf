@@ -1,8 +1,8 @@
 terraform {
   required_providers {
-    metal = {
-      source  = "equinix/metal"
-      version = ">= 3.2.0"
+    equinix = {
+      source  = "equinix/equinix"
+      version = ">= 1.8.0"
     }
   }
 }
