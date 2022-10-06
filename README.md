@@ -46,7 +46,7 @@ VMware Cloud Foundation is a suite of VMware products including ESXi, vCenter, v
 
 * Before you deploy make sure you generate a password for the script.  From any Linux host with whois installed you can quickly generate the password with the following command.
 ```shell
-mkpasswd --method=SHA-512 --rounds=4096
+mkpasswd --method=SHA-512
 ```
 * The default script has the password set as ChangeYourPassword **(PLEASE DON'T FORGET TO CHANGE THIS)**
 * Create a password with at least one digit, one symbol and more than 8 characters so CloudBuilder does not give a warning
