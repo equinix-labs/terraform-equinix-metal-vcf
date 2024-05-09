@@ -1,5 +1,8 @@
 # provision ESXi hosts
 resource "equinix_metal_device" "esx" {
+  timeouts {
+    create = "60m"
+  }
   hostname          = var.esxi_name
   project_id        = var.project_id
   metro             = var.metro
