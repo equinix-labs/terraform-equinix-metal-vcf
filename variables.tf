@@ -15,8 +15,8 @@ variable "metal_vrf_asn" {
 }
 variable "vcf_vrf_networks" {
     type = map(object({
-        vlan_name = string
         vlan_id = string
+        vlan_name = string
         subnet = string
     }))
 }

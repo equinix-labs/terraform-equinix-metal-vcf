@@ -48,6 +48,7 @@ EOT
 }
 
 resource "equinix_metal_port" "eth0" {
+  depends_on = [equinix_metal_device.esx]
   port_id = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth0"][0]
   vlan_ids = var.assigned_vlans
   bonded = false
