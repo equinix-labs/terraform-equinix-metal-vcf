@@ -1,0 +1,79 @@
+auth_token      = ""
+project_id      =  ""
+
+# Metro for this deployment
+metro           = "da"
+
+# Metal VRF ASN
+metal_vrf_asn   = "65100"
+
+# VLAN provisioning with VRF Subnets
+vcf_vrf_networks = {
+    "1611" = {
+      vlan_id    = "1611"
+      vlan_name  = "Management_Network"
+      subnet     = "172.16.11.0/24"
+    },
+    "1612" = {
+      vlan_id    = "1612"
+      vlan_name  = "vMotion Network"
+      subnet     = "172.16.12.0/24"
+    },
+    "1613" = {
+      vlan_id    = "1613"
+      vlan_name  = "vSAN Network"
+      subnet     = "172.16.13.0/24"
+    },
+    "1614" = {
+      vlan_id    = "1614"
+      vlan_name  = "NSXt_Host_Overlay"
+      subnet     = "172.16.14.0/24"
+    },
+    "2711" = {
+      vlan_id    = "2711"
+      vlan_name  = "NSXt_Edge_Uplink1"
+      subnet     = "172.27.11.0/24"
+    },
+    "2712" = {
+      vlan_id    = "2712"
+      vlan_name  = "NSXt_Edge_Uplink2"
+      subnet     = "172.27.12.0/24"
+    },
+    "2713" = {
+      vlan_id    = "2713"
+      vlan_name  = "NSXt_Edge_overlay"
+      subnet     = "172.27.13.0/24"
+    }
+}
+
+## ESXi individual device details
+esxi_devices = {
+  "sfo01-m01-esx01" = {
+    name         = "sfo01-m01-esx01"
+    mgmt_ip      = "172.16.11.101"
+  },
+  "sfo01-m01-esx02" = {
+    name         = "sfo01-m01-esx02"
+    mgmt_ip      = "172.16.11.102"
+  },
+  "sfo01-m01-esx03" = {
+    name         = "sfo01-m01-esx03"
+    mgmt_ip      = "172.16.11.103"
+  },
+  "sfo01-m01-esx04" = {
+    name         = "sfo01-m01-esx04"
+    mgmt_ip      = "172.16.11.104"
+  }
+}
+
+## ESXi common device details
+esxi_subnet      = "255.255.255.0"
+esxi_gateway     = "172.16.11.1"
+esxi_dns         = "172.16.1.1"
+esxi_domain      = "sfo.rainpole.io"
+esxi_mgmtvlan    = "1611"
+esxi_ntp         = "172.16.1.1"
+esxi_pw          = ""
+esxi_size        = "m3.large.x86"
+esxi_version     = "vmware_esxi_8_0_vcf"
+billing_cycle    = "hourly"
