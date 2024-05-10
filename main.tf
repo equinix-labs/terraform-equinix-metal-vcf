@@ -30,7 +30,7 @@ module "vcf_metal_devices" {
   source = "./modules/vcf_metal_device"
   project_id = var.project_id
   device_plan = var.esxi_size
-  assigned_vlans = [for r in var.vcf_vrf_networks : "${r.vlan_id}"]
+  assigned_vlans = [for r in module.metal_vlan_gateways: "${r.vlan_uuid}"]
   for_each = var.esxi_devices
   metro = var.metro
   esxi_dns = var.esxi_dns

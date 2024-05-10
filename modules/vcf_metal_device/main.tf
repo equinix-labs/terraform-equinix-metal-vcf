@@ -51,6 +51,11 @@ EOT
 }
 
 resource "equinix_metal_port" "eth0" {
+  timeouts {
+    create = "5m"
+    update = "5m"
+    delete = "5m"
+  }
   depends_on = [equinix_metal_device.esx]
   port_id = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth0"][0]
   vlan_ids = var.assigned_vlans
@@ -58,6 +63,11 @@ resource "equinix_metal_port" "eth0" {
 }
 
 resource "equinix_metal_port" "eth1" {
+  timeouts {
+    create = "5m"
+    update = "5m"
+    delete = "5m"
+  }
   depends_on = [equinix_metal_port.eth0]
   port_id = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth1"][0]
   vlan_ids = var.assigned_vlans
