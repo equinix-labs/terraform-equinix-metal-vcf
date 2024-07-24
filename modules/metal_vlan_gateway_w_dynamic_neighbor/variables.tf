@@ -19,3 +19,9 @@ variable "subnet" {
 variable "vrf_id" {
     type = string
 }
+variable "vrf_dynamic_neighbor_range" {
+    type = string
+}
+variable "vrf_dynamic_neighbor_asn" {
+    type = string 
+}

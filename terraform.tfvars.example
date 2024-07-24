@@ -1,14 +1,38 @@
+# Metal Auth
 auth_token      = ""
-project_id      =  ""
+project_id      = ""
+
+#Fabric/NE Auth
+client_id     = ""
+client_secret = ""
 
 # Metro for this deployment
 metro           = "da"
 
+# Network Edge Device UUIDs and notification email for Metal VRF Interconnections
+primary_ne_device_uuid = ""
+secondary_ne_device_uuid = ""
+ne_device_port = 3
+vrf_interconnection_speed = 50
+vrf_interconnection_notification_email = ""
+
 # Metal VRF ASN
 metal_vrf_asn   = "65100"
 
+# Metal VRF Peering details for Interconnection Uplinks
+vrf_peer_subnet = "172.31.255.0/29"
+vrf_peer_asn = "65534"
+vrf_peer_subnet-pri = "172.31.255.0/30"
+vrf_bgp_customer_peer_ip-pri = "172.31.255.2"
+vrf_bgp_metal_peer_ip-pri = "172.31.255.1"
+vrf_bgp_md5-pri = ""
+vrf_peer_subnet-sec = "172.31.255.4/30"
+vrf_bgp_customer_peer_ip-sec = "172.31.255.6"
+vrf_bgp_metal_peer_ip-sec = "172.31.255.5"
+vrf_bgp_md5-sec = ""
+
 # VLAN provisioning with VRF Subnets
-vcf_vrf_networks = {
+vcf_vrf_mgmt_overlay_networks = {
     "1611" = {
       vlan_id    = "1611"
       vlan_name  = "Management_Network"
@@ -29,22 +53,30 @@ vcf_vrf_networks = {
       vlan_name  = "NSXt_Host_Overlay"
       subnet     = "172.16.14.0/24"
     },
-    "2711" = {
-      vlan_id    = "2711"
-      vlan_name  = "NSXt_Edge_Uplink1"
-      subnet     = "172.27.11.0/24"
-    },
-    "2712" = {
-      vlan_id    = "2712"
-      vlan_name  = "NSXt_Edge_Uplink2"
-      subnet     = "172.27.12.0/24"
-    },
     "2713" = {
       vlan_id    = "2713"
       vlan_name  = "NSXt_Edge_overlay"
       subnet     = "172.27.13.0/24"
     }
 }
+
+## NSXt Edge Uplink details
+vcf_vrf_nsxt_uplinks = {
+    "2711" = {
+      vlan_id    = "2711"
+      vlan_name  = "NSXt_Edge_Uplink1"
+      subnet     = "172.27.11.0/24"
+      dyn_nei_range = "172.27.11.2/31"
+    },
+    "2712" = {
+      vlan_id    = "2712"
+      vlan_name  = "NSXt_Edge_Uplink2"
+      subnet     = "172.27.12.0/24"
+      dyn_nei_range = "172.27.12.2/31"
+    }
+}
+
+nsxt_edge_asn = "65101"
 
 ## ESXi individual device details
 esxi_devices = {
