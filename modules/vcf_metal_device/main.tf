@@ -38,7 +38,7 @@ echo 'esxcli network ip interface remove --portgroup-name "Private Network"' >> 
 echo 'esxcli network vswitch standard portgroup remove --portgroup-name "Private Network"' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcli network ip interface remove --portgroup-name "BMC_Network"' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcli network vswitch standard remove --vswitch-name "vSwitchBMC"' >> /vmfs/volumes/datastore1/configpost.sh;
-echo 'esxcfg-advcfg -s 0 /Net/BMCNetworkEnable"' >> /vmfs/volumes/datastore1/configpost.sh;
+echo 'esxcfg-advcfg -s 0 /Net/BMCNetworkEnable' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcli network ip interface ipv4 set -i vmk0 -I ${var.esxi_ip} -N ${var.esxi_subnet} -g ${var.esxi_gateway} -t static' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcfg-route ${var.esxi_gateway}' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'cd /etc/vmware/ssl' >> /vmfs/volumes/datastore1/configpost.sh;
