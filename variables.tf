@@ -1,10 +1,10 @@
-variable "auth_token" {
+variable "metal_auth_token" {
     type = string
 }
-variable "client_id" {
+variable "fabric_client_id" {
     type = string
 }
-variable "client_secret" {
+variable "fabric_client_secret" {
     type = string
 }
 variable "primary_ne_device_uuid" {
@@ -62,7 +62,7 @@ variable "vrf_bgp_md5-sec" {
   type = string
   description = "Shared Key for BGP MD5 Authentication"
 }
-variable "project_id" {
+variable "metal_project_id" {
     type = string
 }
 variable "metro" {
@@ -117,6 +117,9 @@ variable "esxi_dns" {
     type = string
 }
 variable "esxi_domain" {
+    type = string
+}
+variable "vm-mgmt_vlan" {
     type = string
 }
 variable "esxi_mgmtvlan" {

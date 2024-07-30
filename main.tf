@@ -8,15 +8,15 @@ terraform {
 }
 
 provider "equinix" {
-  client_id     = var.client_id
-  client_secret = var.client_secret
-  auth_token    = var.auth_token
+  client_id     = var.fabric_client_id
+  client_secret = var.fabric_client_secret
+  auth_token    = var.metal_auth_token
 }
 
 module "metal_vrf" {
   source = "./modules/metal_vrf"
-  auth_token = var.auth_token
-  project_id = var.project_id
+  auth_token = var.metal_auth_token
+  project_id = var.metal_project_id
   metro = var.metro
   primary_ne_device_uuid = var.primary_ne_device_uuid
   secondary_ne_device_uuid = var.secondary_ne_device_uuid
@@ -39,8 +39,8 @@ module "metal_vrf" {
 
 module "metal_vlan_gateways" {
   source = "./modules/metal_vlan_gateway"
-  auth_token = var.auth_token
-  project_id = var.project_id
+  auth_token = var.metal_auth_token
+  project_id = var.metal_project_id
   metro = var.metro
   vrf_id = module.metal_vrf.vrf_id
   for_each = var.vcf_vrf_mgmt_overlay_networks
@@ -51,8 +51,8 @@ module "metal_vlan_gateways" {
 
 module "metal_vlan_gateways_w_dynamic_neighbor" {
   source = "./modules/metal_vlan_gateway_w_dynamic_neighbor"
-  auth_token = var.auth_token
-  project_id = var.project_id
+  auth_token = var.metal_auth_token
+  project_id = var.metal_project_id
   metro = var.metro
   vrf_id = module.metal_vrf.vrf_id
   for_each = var.vcf_vrf_nsxt_uplinks
@@ -65,7 +65,7 @@ module "metal_vlan_gateways_w_dynamic_neighbor" {
 
 module "vcf_metal_devices" {
   source = "./modules/vcf_metal_device"
-  project_id = var.project_id
+  project_id = var.metal_project_id
   device_plan = var.esxi_size
   assigned_vlans = [for r in module.metal_vlan_gateways: "${r.vlan_uuid}"]
   for_each = var.esxi_devices
@@ -75,6 +75,7 @@ module "vcf_metal_devices" {
   esxi_gateway = var.esxi_gateway
   esxi_ip = each.value.mgmt_ip
   esxi_mgmtvlan = var.esxi_mgmtvlan
+  vm-mgmt_vlan = var.vm-mgmt_vlan
   esxi_name = each.key
   esxi_ntp = var.esxi_ntp
   esxi_pw = var.esxi_pw

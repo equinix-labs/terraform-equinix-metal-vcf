@@ -35,6 +35,9 @@ variable "esxi_dns" {
 variable "esxi_domain" {
     type = string
 }
+variable "vm-mgmt_vlan" {
+    type = string
+}
 variable "esxi_mgmtvlan" {
     type = string
 }
