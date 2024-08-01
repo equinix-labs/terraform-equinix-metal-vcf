@@ -13,6 +13,4 @@ You'll be prompted to enter the desired password sting you wish to hash, then pr
 
 ![Alt text](assets/9-mkpasswd_example.png?raw=true "mkpasswd Example")
 
-The output will be the string you need to use in the rootpwcrypt entry near the end of the esxi-customdata-example.json file
-
-![Alt text](assets/10-mkpasswd_in_json.png?raw=true "mkpasswd Example in rootpwcrypt")
+The output will be the string you need to use in the esxi_pw variable near the end of the terraform.tfvars.example file
