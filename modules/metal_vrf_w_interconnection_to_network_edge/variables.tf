@@ -13,7 +13,10 @@ variable "primary_ne_device_uuid" {
 variable "secondary_ne_device_uuid" {
     type = string
 }
-variable "ne_device_port" {
+variable "primary_ne_device_port" {
+    type = number
+}
+variable "secondary_ne_device_port" {
     type = number
 }
 variable "interconnection_speed" {

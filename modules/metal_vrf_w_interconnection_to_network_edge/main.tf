@@ -44,7 +44,7 @@ resource "equinix_fabric_connection" "vcf_vrf_connection-pri" {
       }
       interface {
         type = "NETWORK"
-        id = var.ne_device_port
+        id = var.primary_ne_device_port
       }
     }
   }
@@ -79,7 +79,7 @@ resource "equinix_fabric_connection" "vcf_vrf_connection-sec" {
       }
       interface {
         type = "NETWORK"
-        id = var.ne_device_port
+        id = var.secondary_ne_device_port
       }
     }
   }
