@@ -122,7 +122,7 @@ esxi_dns         = "172.16.1.1"           # DNS Server to be configured in ESXi
 esxi_domain      = "sfo.rainpole.io"      # Domain Name to be configured in ESXi FQDN along with name above
 esxi_mgmtvlan    = "1611"                 # VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0
 esxi_ntp         = "172.16.1.1"           # NTP Server to be configured in ESXi
-esxi_pw          = ""                     # Pre-hashed root password to be set for ESXi instances
+esxi_pw          = ""                     # Pre-hashed root password to be set for ESXi instances https://github.com/davidlukemt/tfm-eqix-metal-vcf?tab=readme-ov-file#custom-root-password
 esxi_size        = "m3.large.x86"         # Slug for target hardware plan type. The only officially supported server plan for ESXi/VCF is the 'n3.xlarge.opt-m4s2' https://deploy.equinix.com/product/servers/n3-xlarge-opt-m4s2/
 esxi_version     = "vmware_esxi_8_0_vcf"  # Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md
 billing_cycle    = "hourly"               # The billing cycle of the device ('hourly', 'daily', 'monthly', 'yearly') when in doubt, use 'hourly'

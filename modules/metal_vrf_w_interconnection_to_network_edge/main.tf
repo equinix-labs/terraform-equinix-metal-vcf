@@ -1,11 +1,17 @@
+provider "equinix" {
+  client_id     = var.fabric_client_id
+  client_secret = var.fabric_client_secret
+  auth_token    = var.metal_auth_token
+}
+
 # Provision Metal VRF for VCF Management Domain and VCF Management/Underlay Routing
 resource "equinix_metal_vrf" "vcf_vrf" {
   description = "VRF with ASN 65100 and a pool of address space that includes a subnet for your BGP and subnets for each of your Metal Gateways"
   name        = "vcf-vrf"
-  metro       = var.metro
-  project_id  = var.project_id
-  local_asn   = var.metal_asn
-  ip_ranges   = var.ip_ranges
+  metro       = var.metal_metro
+  project_id  = var.metal_project_id
+  local_asn   = var.metal_vrf_asn
+  ip_ranges   = var.metal_vrf_ip_ranges
 }
 
 
@@ -13,9 +19,9 @@ resource "equinix_metal_vrf" "vcf_vrf" {
 resource "equinix_metal_connection" "vcf_vrf_connection-metal" {
   type = "shared"
   name = "vcf_vrf_connection"
-  metro = var.metro
+  metro = var.metal_metro
   redundancy = "redundant"
-  project_id = var.project_id
+  project_id = var.metal_project_id
   service_token_type = "z_side"
   vrfs = [equinix_metal_vrf.vcf_vrf.id, equinix_metal_vrf.vcf_vrf.id]
 }
@@ -30,9 +36,9 @@ resource "equinix_fabric_connection" "vcf_vrf_connection-pri" {
   type = "EVPL_VC"
   notifications {
     type   = "ALL"
-    emails = [var.interconnection_notification_email]
+    emails = [var.fabric_interconnection_notification_email]
   }
-  bandwidth = var.interconnection_speed
+  bandwidth = var.metal_vrf_interconnection_speed
   order {
   }
   a_side {
@@ -65,9 +71,9 @@ resource "equinix_fabric_connection" "vcf_vrf_connection-sec" {
   type = "EVPL_VC"
   notifications {
     type   = "ALL"
-    emails = [var.interconnection_notification_email]
+    emails = [var.fabric_interconnection_notification_email]
   }
-  bandwidth = var.interconnection_speed
+  bandwidth = var.metal_vrf_interconnection_speed
   order {
   }
   a_side {
@@ -103,7 +109,7 @@ EOM
     interpreter = ["bash", "-c"]
     environment = {
       VRF_ID = equinix_metal_vrf.vcf_vrf.id
-      AUTH_TOKEN = var.auth_token
+      AUTH_TOKEN = var.metal_auth_token
     }
   }
   depends_on = [equinix_metal_vrf.vcf_vrf]
@@ -113,11 +119,11 @@ EOM
 
 resource "null_resource" "vcf_vrf_bgp-pri" {
   triggers = {
-    peer_asn = var.peer_asn
-    subnet = var.peer_subnet-pri
-    metal_ip = var.metal_bgp_peer-pri
-    customer_ip = var.cust_bgp_peer-pri
-    md5 = var.shared_md5-pri
+    peer_asn = var.metal_vrf_peer_asn
+    subnet = var.metal_vrf_peer_subnet-pri
+    metal_ip = var.metal_vrf_metal_bgp_peer-pri
+    customer_ip = var.metal_vrf_cust_bgp_peer-pri
+    md5 = var.metal_vrf_shared_md5-pri
   }
   provisioner "local-exec" {
     command = <<EOM
@@ -126,12 +132,12 @@ EOM
     interpreter = ["bash", "-c"]
     environment = {
       VC_ID = equinix_metal_connection.vcf_vrf_connection-metal.ports[0].virtual_circuit_ids[0]
-      AUTH_TOKEN = var.auth_token
-      PEER_ASN = var.peer_asn
-      SUBNET = var.peer_subnet-pri
-      METAL_IP = var.metal_bgp_peer-pri
-      CUSTOMER_IP = var.cust_bgp_peer-pri
-      MD5 = var.shared_md5-sec
+      AUTH_TOKEN = var.metal_auth_token
+      PEER_ASN = var.metal_vrf_peer_asn
+      SUBNET = var.metal_vrf_peer_subnet-pri
+      METAL_IP = var.metal_vrf_metal_bgp_peer-pri
+      CUSTOMER_IP = var.metal_vrf_cust_bgp_peer-pri
+      MD5 = var.metal_vrf_shared_md5-pri
     }
   }
   depends_on = [equinix_fabric_connection.vcf_vrf_connection-pri,equinix_metal_vrf.vcf_vrf]
@@ -141,11 +147,11 @@ EOM
 
 resource "null_resource" "vcf_vrf_bgp-sec" {
   triggers = {
-    peer_asn = var.peer_asn
-    subnet = var.peer_subnet-sec
-    metal_ip = var.metal_bgp_peer-sec
-    customer_ip = var.cust_bgp_peer-sec
-    md5 = var.shared_md5-sec
+    peer_asn = var.metal_vrf_peer_asn
+    subnet = var.metal_vrf_peer_subnet-sec
+    metal_ip = var.metal_vrf_metal_bgp_peer-sec
+    customer_ip = var.metal_vrf_cust_bgp_peer-sec
+    md5 = var.metal_vrf_shared_md5-sec
   }
   provisioner "local-exec" {
     command = <<EOM
@@ -154,12 +160,12 @@ EOM
     interpreter = ["bash", "-c"]
     environment = {
       VC_ID = equinix_metal_connection.vcf_vrf_connection-metal.ports[1].virtual_circuit_ids[0]
-      AUTH_TOKEN = var.auth_token
-      PEER_ASN = var.peer_asn
-      SUBNET = var.peer_subnet-sec
-      METAL_IP = var.metal_bgp_peer-sec
-      CUSTOMER_IP = var.cust_bgp_peer-sec
-      MD5 = var.shared_md5-sec
+      AUTH_TOKEN = var.metal_auth_token
+      PEER_ASN = var.metal_vrf_peer_asn
+      SUBNET = var.metal_vrf_peer_subnet-sec
+      METAL_IP = var.metal_vrf_metal_bgp_peer-sec
+      CUSTOMER_IP = var.metal_vrf_cust_bgp_peer-sec
+      MD5 = var.metal_vrf_shared_md5-sec
     }
   }
   depends_on = [equinix_fabric_connection.vcf_vrf_connection-sec,equinix_metal_vrf.vcf_vrf]

@@ -15,27 +15,29 @@ provider "equinix" {
 
 module "metal_vrf" {
   source = "./modules/metal_vrf_w_interconnection_to_network_edge"
-  auth_token = var.metal_auth_token
-  project_id = var.metal_project_id
-  metro = var.metro
+  fabric_client_id = var.fabric_client_id
+  fabric_client_secret = var.fabric_client_secret
+  metal_auth_token = var.metal_auth_token
+  metal_project_id = var.metal_project_id
+  metal_metro = var.metro
   primary_ne_device_uuid = var.primary_ne_device_uuid
   secondary_ne_device_uuid = var.secondary_ne_device_uuid
   primary_ne_device_port = var.primary_ne_device_port
   secondary_ne_device_port = var.secondary_ne_device_port
-  interconnection_speed = var.vrf_interconnection_speed
-  interconnection_notification_email = var.vrf_interconnection_notification_email
-  peer_subnet = var.vrf_peer_subnet
-  metal_asn = var.metal_vrf_asn
-  peer_asn = var.vrf_peer_asn
-  ip_ranges = concat([var.vrf_peer_subnet],[for r in var.vcf_vrf_networks : "${r.subnet}"])
-  peer_subnet-pri = var.vrf_peer_subnet-pri
-  peer_subnet-sec = var.vrf_peer_subnet-sec
-  metal_bgp_peer-pri = var.vrf_bgp_metal_peer_ip-pri
-  metal_bgp_peer-sec = var.vrf_bgp_metal_peer_ip-sec
-  cust_bgp_peer-pri = var.vrf_bgp_customer_peer_ip-pri
-  cust_bgp_peer-sec = var.vrf_bgp_customer_peer_ip-sec
-  shared_md5-pri = var.vrf_bgp_md5-pri
-  shared_md5-sec = var.vrf_bgp_md5-sec
+  metal_vrf_interconnection_speed = var.vrf_interconnection_speed
+  fabric_interconnection_notification_email = var.vrf_interconnection_notification_email
+  metal_vrf_peer_subnet = var.vrf_peer_subnet
+  metal_vrf_asn = var.metal_vrf_asn
+  metal_vrf_peer_asn = var.vrf_peer_asn
+  metal_vrf_ip_ranges = concat([var.vrf_peer_subnet],[for r in var.vcf_vrf_networks : "${r.subnet}"])
+  metal_vrf_peer_subnet-pri = var.vrf_peer_subnet-pri
+  metal_vrf_peer_subnet-sec = var.vrf_peer_subnet-sec
+  metal_vrf_metal_bgp_peer-pri = var.vrf_bgp_metal_peer_ip-pri
+  metal_vrf_metal_bgp_peer-sec = var.vrf_bgp_metal_peer_ip-sec
+  metal_vrf_cust_bgp_peer-pri = var.vrf_bgp_customer_peer_ip-pri
+  metal_vrf_cust_bgp_peer-sec = var.vrf_bgp_customer_peer_ip-sec
+  metal_vrf_shared_md5-pri = var.vrf_bgp_md5-pri
+  metal_vrf_shared_md5-sec = var.vrf_bgp_md5-sec
 }
 
 module "metal_vrf_gateways_w_dynamic_neighbor" {
@@ -53,22 +55,23 @@ module "metal_vrf_gateways_w_dynamic_neighbor" {
   vrfgw_dynamic_neighbor_asn = each.value.dyn_nei_asn
 }
 
-module "vcf_metal_devices" {
-  source = "./modules/vcf_metal_device"
-  project_id = var.metal_project_id
-  device_plan = var.esxi_size
-  assigned_vlans = [for r in module.metal_vrf_gateways_w_dynamic_neighbor: "${r.vlan_uuid}"]
-  for_each = var.esxi_devices
-  metro = var.metro
-  esxi_dns = var.esxi_dns
-  esxi_domain = var.esxi_domain
-  esxi_gateway = var.esxi_gateway
-  esxi_ip = each.value.mgmt_ip
-  esxi_mgmtvlan = var.esxi_mgmtvlan
-  vm-mgmt_vlan = var.vm-mgmt_vlan
-  esxi_name = each.key
-  esxi_ntp = var.esxi_ntp
-  esxi_pw = var.esxi_pw
-  esxi_subnet = var.esxi_subnet
-  esxi_version = var.esxi_version
-}
+#module "vcf_metal_devices" {
+#  source = "./modules/vcf_metal_device"
+#  metal_auth_token = var.metal_auth_token
+#  metal_project_id = var.metal_project_id
+#  metal_device_plan = var.esxi_size
+#  esxi_assigned_vlans = [for r in module.metal_vrf_gateways_w_dynamic_neighbor: "${r.vlan_uuid}"]
+#  for_each = var.esxi_devices
+#  metal_metro = var.metro
+#  esxi_dns_server = var.esxi_dns_server
+#  esxi_domain = var.esxi_domain
+#  esxi_management_gateway = var.esxi_management_gateway
+#  esxi_management_ip = each.value.mgmt_ip
+#  esxi-mgmt_vlan = var.esxi-mgmt_vlan
+#  vm-mgmt_vlan = var.vm-mgmt_vlan
+#  esxi_hostname = each.key
+#  esxi_ntp_server = var.esxi_ntp_server
+#  esxi_password = var.esxi_password
+#  esxi_management_subnet = var.esxi_management_subnet
+#  esxi_version_slug = var.esxi_version_slug
+#}
