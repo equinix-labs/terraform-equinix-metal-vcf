@@ -5,7 +5,7 @@ output "device_name" {
 
 output "vmk0_ip" {
     description = "IP Address set on vmk0"
-    value = var.esxi_ip  
+    value = var.esxi_management_ip  
 }
 
 output "device_id" {

@@ -55,23 +55,23 @@ module "metal_vrf_gateways_w_dynamic_neighbor" {
   vrfgw_dynamic_neighbor_asn = each.value.dyn_nei_asn
 }
 
-#module "vcf_metal_devices" {
-#  source = "./modules/vcf_metal_device"
-#  metal_auth_token = var.metal_auth_token
-#  metal_project_id = var.metal_project_id
-#  metal_device_plan = var.esxi_size
-#  esxi_assigned_vlans = [for r in module.metal_vrf_gateways_w_dynamic_neighbor: "${r.vlan_uuid}"]
-#  for_each = var.esxi_devices
-#  metal_metro = var.metro
-#  esxi_dns_server = var.esxi_dns_server
-#  esxi_domain = var.esxi_domain
-#  esxi_management_gateway = var.esxi_management_gateway
-#  esxi_management_ip = each.value.mgmt_ip
-#  esxi-mgmt_vlan = var.esxi-mgmt_vlan
-#  vm-mgmt_vlan = var.vm-mgmt_vlan
-#  esxi_hostname = each.key
-#  esxi_ntp_server = var.esxi_ntp_server
-#  esxi_password = var.esxi_password
-#  esxi_management_subnet = var.esxi_management_subnet
-#  esxi_version_slug = var.esxi_version_slug
-#}
+module "vcf_metal_devices" {
+  source = "./modules/vcf_metal_device"
+  metal_auth_token = var.metal_auth_token
+  metal_project_id = var.metal_project_id
+  metal_device_plan = var.esxi_size
+  esxi_assigned_vlans = [for r in module.metal_vrf_gateways_w_dynamic_neighbor: "${r.vlan_uuid}"]
+  for_each = var.esxi_devices
+  metal_metro = var.metro
+  esxi_dns_server = var.esxi_dns_server
+  esxi_domain = var.esxi_domain
+  esxi_management_gateway = var.esxi_management_gateway
+  esxi_management_ip = each.value.mgmt_ip
+  esxi-mgmt_vlan = var.esxi-mgmt_vlan
+  vm-mgmt_vlan = var.vm-mgmt_vlan
+  esxi_hostname = each.key
+  esxi_ntp_server = var.esxi_ntp_server
+  esxi_password = var.esxi_password
+  esxi_management_subnet = var.esxi_management_subnet
+  esxi_version_slug = var.esxi_version_slug
+}
