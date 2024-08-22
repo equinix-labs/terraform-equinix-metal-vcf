@@ -1,4 +1,4 @@
-# tfm-eqix-metal-vcf
+# terraform-equinix-metal-vcf
 Module based Terraform project for deploying VMware VCF resources on Equinix Metal
 
 ## Target Architecture
