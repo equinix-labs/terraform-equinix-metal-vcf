@@ -1,4 +1,5 @@
 # terraform-equinix-metal-vcf
+
 Module based Terraform project for deploying VMware VCF resources on Equinix Metal
 
 ## Target Architecture
@@ -18,23 +19,23 @@ Target Metal Architecture featuring Metal VRF for Underlay routing
 #### Physical Hardware and ESXi Host
 
 * Hardware and firmware (including HBA and BIOS) is configured for vSAN.
-    * > **Note:** The Equinix Support team can assist with ensuring that BIOS configuration is brought into compliance with vSAN recommendations should it be discovered that this is not already the case.
+  * > **Note:** The Equinix Support team can assist with ensuring that BIOS configuration is brought into compliance with vSAN recommendations should it be discovered that this is not already the case.
 
 * Physical hardware health status is 'healthy' without any errors.
 
-    * > **Note:** The Equinix Support team can assist with ensuring hardware is brought into a healthy state should it be discovered otherwise.
+  * > **Note:** The Equinix Support team can assist with ensuring hardware is brought into a healthy state should it be discovered otherwise.
 
+* All hosts are in synchronization with a central time server (NTP).
 
-* All hosts are in synchronization with a central time server (NTP). 
-
-    * > **Note:** While this module does configure the user provided NTP server details, the provided NTP server IP must be reachable by the Metal Instances through VRF Interconnection.
+  * > **Note:** While this module does configure the user provided NTP server details, the provided NTP server IP must be reachable by the Metal Instances through VRF Interconnection.
 
 #### Supporting Infrastructure
 
 * DNS server for name resolution. Management IP of hosts is registered and queryable as both a forward (hostname-to-IP), and reverse (IP-to-Hostname) entry.
-    * > **Note:** While this module does configure the user provided DNS server details, the provided DNS server IP must be reachable by the Metal Instances through VRF Interconnection.
+  * > **Note:** While this module does configure the user provided DNS server details, the provided DNS server IP must be reachable by the Metal Instances through VRF Interconnection.
 
 ---
+
 ### This module <ins>does</ins> provide for the following VCF Infrastructure requirements as required by Cloud Builder
 
 #### Physical Network
@@ -67,17 +68,17 @@ Target Metal Architecture featuring Metal VRF for Underlay routing
 
 * All hosts are configured with a DNS server for name resolution.
 
-
-
 ## Custom root password
 
 ### Generating custom root password
+
 To generate a password hash of your desired ESXi root password run the 'mkpasswd' command on a Linux system with the 'whois' package installed as follows
 
 ```shell
 mkpasswd --method=SHA-512
 ```
-You'll be prompted to enter the desired password sting you wish to hash, then press enter. 
+
+You'll be prompted to enter the desired password sting you wish to hash, then press enter.
 
 ![Alt text](assets/9-mkpasswd_example.png?raw=true "mkpasswd Example")
 

@@ -3,24 +3,24 @@ resource "equinix_metal_device" "esx" {
   timeouts {
     create = "60m"
   }
-  hostname          = var.esxi_hostname
-  project_id        = var.metal_project_id
-  metro             = var.metal_metro
-  plan              = var.metal_device_plan
-  operating_system  = var.esxi_version_slug
-  billing_cycle     = var.metal_billing_cycle
+  hostname         = var.esxi_hostname
+  project_id       = var.metal_project_id
+  metro            = var.metal_metro
+  plan             = var.metal_device_plan
+  operating_system = var.esxi_version_slug
+  billing_cycle    = var.metal_billing_cycle
   custom_data = jsonencode({
     sshd = {
       enabled = true
-      pwauth = true
+      pwauth  = true
     }
     rootpwcrypt = var.esxi_password
     esxishell = {
-       enabled = true
+      enabled = true
     }
     kickstart = {
-      firstboot_shell = "/bin/sh -C"
-      firstboot_shell_cmd = <<EOT
+      firstboot_shell       = "/bin/sh -C"
+      firstboot_shell_cmd   = <<EOT
 sed -i '/^exit*/i /vmfs/volumes/datastore1/configpost.sh' /etc/rc.local.d/local.sh;
 touch /vmfs/volumes/datastore1/configpost.sh;
 chmod 755 /vmfs/volumes/datastore1/configpost.sh;
@@ -47,7 +47,7 @@ echo "sed -i 's/passwordauthentication no/PasswordAuthentication yes/gI' /etc/ss
 echo '/etc/init.d/SSH restart' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'sed -i '/configpost.sh/d' /etc/rc.local.d/local.sh' >> /vmfs/volumes/datastore1/configpost.sh
 EOT
-      postinstall_shell = "/bin/sh -C"
+      postinstall_shell     = "/bin/sh -C"
       postinstall_shell_cmd = ""
     }
   })
@@ -61,9 +61,9 @@ resource "equinix_metal_port" "eth0" {
     delete = "5m"
   }
   depends_on = [equinix_metal_device.esx]
-  port_id = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth0"][0]
-  vlan_ids = var.esxi_assigned_vlans
-  bonded = false
+  port_id    = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth0"][0]
+  vlan_ids   = var.esxi_assigned_vlans
+  bonded     = false
 }
 
 ## Configure VLANs on server eth1
@@ -74,9 +74,9 @@ resource "equinix_metal_port" "eth1" {
     delete = "5m"
   }
   depends_on = [equinix_metal_port.eth0]
-  port_id = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth1"][0]
-  vlan_ids = var.esxi_assigned_vlans
-  bonded = false
+  port_id    = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth1"][0]
+  vlan_ids   = var.esxi_assigned_vlans
+  bonded     = false
 }
 
 ## Configure VLANs on server eth2
@@ -87,9 +87,9 @@ resource "equinix_metal_port" "eth2" {
     delete = "5m"
   }
   depends_on = [equinix_metal_device.esx]
-  port_id = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth2"][0]
-  vlan_ids = var.esxi_assigned_vlans
-  bonded = false
+  port_id    = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth2"][0]
+  vlan_ids   = var.esxi_assigned_vlans
+  bonded     = false
 }
 
 ## Configure VLANs on server eth3
@@ -100,7 +100,7 @@ resource "equinix_metal_port" "eth3" {
     delete = "5m"
   }
   depends_on = [equinix_metal_port.eth0]
-  port_id = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth3"][0]
-  vlan_ids = var.esxi_assigned_vlans
-  bonded = false
+  port_id    = [for p in equinix_metal_device.esx.ports : p.id if p.name == "eth3"][0]
+  vlan_ids   = var.esxi_assigned_vlans
+  bonded     = false
 }
