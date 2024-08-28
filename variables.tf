@@ -1,5 +1,6 @@
 variable "metal_auth_token" {
   type        = string
+  sensitive   = true
   description = "API Token for Equinix Metal API interaction https://deploy.equinix.com/developers/docs/metal/identity-access-management/api-keys/"
 }
 variable "metal_project_id" {
