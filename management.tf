@@ -1,0 +1,39 @@
+# Creates a Windows Management host
+# Users are expected to RDP to this host in order to access the various VCF cluster web interfaces.
+
+resource "random_password" "management" {
+  length = 16
+}
+
+resource "equinix_metal_device" "management" {
+  project_id = var.metal_project_id
+  hostname   = "management"
+
+  operating_system    = "windows_2022"
+  plan                = var.management_plan
+  metro               = var.metro
+  project_ssh_key_ids = [module.ssh.equinix_metal_ssh_key_id]
+
+  user_data = templatefile("${path.module}/templates/management-userdata.tmpl", {
+    bastion_vlan_id   = var.vcf_vrf_networks["bastion"].vlan_id,
+    bastion_address   = cidrhost(var.vcf_vrf_networks["bastion"].subnet, 2),
+    address           = cidrhost(var.vcf_vrf_networks["bastion"].subnet, 3),
+    prefix            = split("/", var.vcf_vrf_networks["bastion"].subnet)[1],
+    gateway_address   = cidrhost(var.vcf_vrf_networks["bastion"].subnet, 1),
+    admin_password    = random_password.management.result
+    route_destination = var.esxi_network_space
+    domain            = var.esxi_domain
+  })
+}
+resource "equinix_metal_port" "management_bond0" {
+  depends_on      = [equinix_metal_device.management]
+  port_id         = [for p in equinix_metal_device.management.ports : p.id if p.name == "bond0"][0]
+  layer2          = false
+  bonded          = true
+  vlan_ids        = [data.equinix_metal_vlan.bastion.vlan_id]
+  reset_on_delete = true
+}
+resource "equinix_metal_bgp_session" "management" {
+  device_id      = equinix_metal_device.management.id
+  address_family = "ipv4"
+}

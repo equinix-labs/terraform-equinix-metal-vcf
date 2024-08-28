@@ -145,3 +145,18 @@ variable "billing_cycle" {
   type        = string
   description = "The billing cycle of the device ('hourly', 'daily', 'monthly', 'yearly') when in doubt, use 'hourly'"
 }
+
+variable "management_plan" {
+  type        = string
+  default     = "m3.small.x86"
+  description = "Which plan to use for the windows management host."
+}
+variable "bastion_plan" {
+  type        = string
+  default     = "m3.small.x86"
+  description = "Which plan to use for the ubuntu based bastion host."
+}
+variable "esxi_network_space" {
+  type        = string
+  description = "Overall Network space for the VCF project"
+}

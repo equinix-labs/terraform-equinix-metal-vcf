@@ -37,8 +37,8 @@ write_files:
 - path: /etc/network/interfaces
   append: true
   content: |
-    auto bond0.${vm_mgmt_vlan_id}
-    iface bond0.${vm_mgmt_vlan_id} inet static
+    auto bond0.${bastion_vlan_id}
+    iface bond0.${bastion_vlan_id} inet static
         pre-up sleep 5
         address ${address}
         netmask ${netmask}
@@ -47,17 +47,17 @@ write_files:
   append: true
   content: |
     bind-interfaces
-    interface=bond0.${vm_mgmt_vlan_id}
-    host-record=sfo01-m01-esx01.sfo.rainpole.io,172.16.11.101
-    host-record=sfo01-m01-esx02.sfo.rainpole.io,172.16.11.102
-    host-record=sfo01-m01-esx03.sfo.rainpole.io,172.16.11.103
-    host-record=sfo01-m01-esx04.sfo.rainpole.io,172.16.11.104
-    host-record=sfo-m01-vc01.sfo.rainpole.io,172.16.10.62
-    host-record=sfo-m01-nsx01.sfo.rainpole.io,172.16.10.65
-    host-record=sfo-m01-nsx01a.sfo.rainpole.io,172.16.10.66
-    host-record=sfo-m01-nsx01b.sfo.rainpole.io,172.16.10.67
-    host-record=sfo-m01-nsx01c.sfo.rainpole.io,172.16.10.68
-    host-record=sfo-vcf01.sfo.rainpole.io,172.16.10.59
+    interface=bond0.${bastion_vlan_id}
+    host-record=sfo01-m01-esx01.${domain},172.16.11.101
+    host-record=sfo01-m01-esx02.${domain},172.16.11.102
+    host-record=sfo01-m01-esx03.${domain},172.16.11.103
+    host-record=sfo01-m01-esx04.${domain},172.16.11.104
+    host-record=sfo-m01-vc01.${domain},172.16.10.62
+    host-record=sfo-m01-nsx01.${domain},172.16.10.65
+    host-record=sfo-m01-nsx01a.${domain},172.16.10.66
+    host-record=sfo-m01-nsx01b.${domain},172.16.10.67
+    host-record=sfo-m01-nsx01c.${domain},172.16.10.68
+    host-record=sfo-vcf01.${domain},172.16.10.59
 - path: /etc/chrony/conf.d/vcf.conf
   append: true
   content: |
@@ -113,7 +113,7 @@ runcmd:
   nameserver 127.0.0.1
   nameserver 1.1.1.1
   nameserver 8.8.8.8
-  search sfo.rainpole.io
+  search ${domain}
   EOF
 - systemctl restart networking
 - systemctl restart dnsmasq

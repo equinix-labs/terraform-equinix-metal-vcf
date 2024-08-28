@@ -47,7 +47,7 @@ module "metal_vrf_gateways_w_dynamic_neighbor" {
   vrfgw_metro                   = var.metro
   vrf_id                        = module.metal_vrf.vrf_id
   for_each                      = var.vcf_vrf_networks
-  vrfgw_vxlan_id                = each.key
+  vrfgw_vxlan_id                = each.value.vlan_id
   vrfgw_vlan_name               = each.value.vlan_name
   vrfgw_subnet                  = each.value.subnet
   vrfgw_enable_dynamic_neighbor = each.value.enable_dyn_nei
@@ -68,7 +68,7 @@ module "vcf_metal_devices" {
   esxi_management_gateway = var.esxi_management_gateway
   esxi_management_ip      = each.value.mgmt_ip
   esxi-mgmt_vlan          = var.esxi-mgmt_vlan
-  vm-mgmt_vlan            = var.vm-mgmt_vlan
+  vm-mgmt_vlan            = var.vcf_vrf_networks["vm-mgmt"].vlan_id
   esxi_hostname           = each.key
   esxi_ntp_server         = var.esxi_ntp_server
   esxi_password           = var.esxi_password
