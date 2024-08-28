@@ -97,10 +97,6 @@ variable "vcf_vrf_networks" {
   }))
   description = "Map of Objects representing configuration specifics for various network segments required for VCF Management and Underlay Networking"
 }
-variable "vm-mgmt_vlan" {
-  type        = string
-  description = "VLAN ID of VM Management VLAN for VCF Infrastrucutre VMs (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > C7)"
-}
 variable "esxi_devices" {
   type = map(object({
     name    = string # Short form hostname of system (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I6:L6)
