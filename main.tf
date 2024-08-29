@@ -74,4 +74,5 @@ module "vcf_metal_devices" {
   esxi_password           = var.esxi_password
   esxi_management_subnet  = var.esxi_management_subnet
   esxi_version_slug       = var.esxi_version_slug
+  esxi_reservation_id     = each.value.reservation_id
 }

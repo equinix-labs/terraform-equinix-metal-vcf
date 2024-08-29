@@ -103,6 +103,7 @@ vcf_vrf_networks = {
 ## "sfo01-m01-esx01" = {
 ##     name         = "sfo01-m01-esx01"   # Short form hostname of system
 ##     mgmt_ip      = "172.16.11.101"     # Management Network IP address for VMK0
+##    reservation_id = "next-available" # Hardware reservation IDs to use for the VCF nodes. Each item can be a reservation UUID or `next-available`.
 esxi_devices = {
   "sfo01-m01-esx01" = {
     name         = "sfo01-m01-esx01"

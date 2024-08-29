@@ -100,8 +100,9 @@ variable "vcf_vrf_networks" {
 }
 variable "esxi_devices" {
   type = map(object({
-    name    = string # Short form hostname of system (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I6:L6)
-    mgmt_ip = string # Management Network IP address for VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I7:L7)
+    name           = string # Short form hostname of system (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I6:L6)
+    mgmt_ip        = string # Management Network IP address for VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I7:L7)
+    reservation_id = string # Hardware reservation IDs to use for the VCF nodes. Each item can be a reservation UUID or `next-available`.
   }))
   description = "Map containing individual ESXi device details for each Metal Instance"
 }
