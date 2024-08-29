@@ -3,10 +3,12 @@ resource "equinix_metal_device" "esx" {
   timeouts {
     create = "60m"
   }
-  hostname         = var.esxi_hostname
-  project_id       = var.metal_project_id
-  metro            = var.metal_metro
-  plan             = var.metal_device_plan
+  hostname                = var.esxi_hostname
+  project_id              = var.metal_project_id
+  metro                   = var.metal_metro
+  plan                    = var.metal_device_plan
+  hardware_reservation_id = var.esxi_reservation_id
+
   operating_system = var.esxi_version_slug
   billing_cycle    = var.metal_billing_cycle
   custom_data = jsonencode({

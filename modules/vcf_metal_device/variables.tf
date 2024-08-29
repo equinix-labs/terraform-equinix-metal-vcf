@@ -67,3 +67,8 @@ variable "esxi_assigned_vlans" {
   type        = set(string)
   description = "A set of strings containing Metal VLAN UUIDs that are to be assigned/attached to the eth0/eth1 interfaces of the ESXi Metal instance"
 }
+
+variable "esxi_reservation_id" {
+  type        = string
+  description = "Hardware reservation IDs to use for the VCF nodes. Each item can be a reservation UUID or `next-available`."
+}

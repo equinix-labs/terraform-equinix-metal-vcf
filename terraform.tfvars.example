@@ -43,59 +43,67 @@ vrf_bgp_md5-sec               = ""                # MD5 Shared Password for BGP 
 ##      dyn_nei_range   = "172.27.12.2/31"      # CIDR Range of IPs that the Metal VRF should expect BGP Peering from
 ##      dyn_nei_asn     = "65101"               # ASN that the Metal VRF should expect BGP Peering from
 vcf_vrf_networks = {
-    "1610" = {
-      vlan_id    = "1610"
-      vlan_name  = "VM-Management_Network"
-      subnet     = "172.16.10.0/24"
-    },
-    "1611" = {
-      vlan_id    = "1611"
-      vlan_name  = "Management_Network"
-      subnet     = "172.16.11.0/24"
-    },
-    "1612" = {
-      vlan_id    = "1612"
-      vlan_name  = "vMotion_Network"
-      subnet     = "172.16.12.0/24"
-    },
-    "1613" = {
-      vlan_id    = "1613"
-      vlan_name  = "vSAN_Network"
-      subnet     = "172.16.13.0/24"
-    },
-    "1614" = {
-      vlan_id    = "1614"
-      vlan_name  = "NSXt_Host_Overlay"
-      subnet     = "172.16.14.0/24"
-    },
-    "2713" = {
-      vlan_id    = "2713"
-      vlan_name  = "NSXt_Edge_overlay"
-      subnet     = "172.27.13.0/24"
-    },
-    "2711" = {
-      vlan_id         = "2711"
-      vlan_name       = "NSXt_Edge_Uplink1"
-      subnet          = "172.27.11.0/24"
-      enable_dyn_nei  = true
-      dyn_nei_range   = "172.27.11.2/31"
-      dyn_nei_asn     = "65101"
-    },
-    "2712" = {
-      vlan_id         = "2712"
-      vlan_name       = "NSXt_Edge_Uplink2"
-      subnet          = "172.27.12.0/24"
-      enable_dyn_nei  = true
-      dyn_nei_range   = "172.27.12.2/31"
-      dyn_nei_asn     = "65101"
-    }
+  "bastion" = {
+    vlan_id        = "1609"
+    vlan_name      = "Bastion_Network"
+    subnet         = "172.16.9.0/24"
+    enable_dyn_nei = true
+    dyn_nei_range  = "172.16.9.2/31"
+    dyn_nei_asn    = "65101"
+  },
+  "vm-mgmt" = {
+    vlan_id   = "1610"
+    vlan_name = "VM-Management_Network"
+    subnet    = "172.16.10.0/24"
+  },
+  "mgmt" = {
+    vlan_id   = "1611"
+    vlan_name = "Management_Network"
+    subnet    = "172.16.11.0/24"
+  },
+  "vMotion" = {
+    vlan_id   = "1612"
+    vlan_name = "vMotion_Network"
+    subnet    = "172.16.12.0/24"
+  },
+  "vSAN" = {
+    vlan_id   = "1613"
+    vlan_name = "vSAN_Network"
+    subnet    = "172.16.13.0/24"
+  },
+  "NSXt" = {
+    vlan_id   = "1614"
+    vlan_name = "NSXt_Host_Overlay"
+    subnet    = "172.16.14.0/24"
+  },
+  "NSXt_Edge" = {
+    vlan_id   = "2713"
+    vlan_name = "NSXt_Edge_overlay"
+    subnet    = "172.27.13.0/24"
+  },
+  "NSXt_Uplink1" = {
+    vlan_id        = "2711"
+    vlan_name      = "NSXt_Edge_Uplink1"
+    subnet         = "172.27.11.0/24"
+    enable_dyn_nei = true
+    dyn_nei_range  = "172.27.11.2/31"
+    dyn_nei_asn    = "65101"
+  },
+  "NSXt_Uplink2" = {
+    vlan_id        = "2712"
+    vlan_name      = "NSXt_Edge_Uplink2"
+    subnet         = "172.27.12.0/24"
+    enable_dyn_nei = true
+    dyn_nei_range  = "172.27.12.2/31"
+    dyn_nei_asn    = "65101"
+  }
 }
-vm-mgmt_vlan     = "1610"                 # VLAN ID of VM Management VLAN for VCF Infrastructure VMs (SDDC Manager, vCenter, NSX-t Manager cluster, etc) from vcf-de
 
 ## ESXi individual device details
 ## "sfo01-m01-esx01" = {
 ##     name         = "sfo01-m01-esx01"   # Short form hostname of system
 ##     mgmt_ip      = "172.16.11.101"     # Management Network IP address for VMK0
+##    reservation_id = "next-available" # Hardware reservation IDs to use for the VCF nodes. Each item can be a reservation UUID or `next-available`.
 esxi_devices = {
   "sfo01-m01-esx01" = {
     name         = "sfo01-m01-esx01"
@@ -116,6 +124,7 @@ esxi_devices = {
 }
 
 ## ESXi device common details
+esxi_network_space = "172.16.0.0/16"
 esxi_management_subnet    = "255.255.255.0"        # Management Network Subnet Mask for VMK0
 esxi_management_gateway   = "172.16.11.1"          # Management Network Gateway for default TCP/IP Stack
 esxi_dns_server           = "172.16.1.1"           # DNS Server to be configured in ESXi
@@ -126,3 +135,7 @@ esxi_password             = ""                     # Pre-hashed root password to
 esxi_plan                 = "n3.xlarge.x86-m4s2"   # Slug for target hardware plan type. The only officially supported server plan for ESXi/VCF is the 'n3.xlarge.opt-m4s2' https://deploy.equinix.com/product/servers/n3-xlarge-opt-m4s2/
 esxi_version_slug         = "vmware_vcf_5_1"       # Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md
 billing_cycle             = "hourly"               # The billing cycle of the device ('hourly', 'daily', 'monthly', 'yearly') when in doubt, use 'hourly'
+
+## Management Host Details
+management_plan = "m3.small.x86"
+bastion_plan = "m3.small.x86"

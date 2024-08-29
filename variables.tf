@@ -1,5 +1,6 @@
 variable "metal_auth_token" {
   type        = string
+  sensitive   = true
   description = "API Token for Equinix Metal API interaction https://deploy.equinix.com/developers/docs/metal/identity-access-management/api-keys/"
 }
 variable "metal_project_id" {
@@ -97,14 +98,11 @@ variable "vcf_vrf_networks" {
   }))
   description = "Map of Objects representing configuration specifics for various network segments required for VCF Management and Underlay Networking"
 }
-variable "vm-mgmt_vlan" {
-  type        = string
-  description = "VLAN ID of VM Management VLAN for VCF Infrastrucutre VMs (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > C7)"
-}
 variable "esxi_devices" {
   type = map(object({
-    name    = string # Short form hostname of system (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I6:L6)
-    mgmt_ip = string # Management Network IP address for VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I7:L7)
+    name           = string # Short form hostname of system (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I6:L6)
+    mgmt_ip        = string # Management Network IP address for VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I7:L7)
+    reservation_id = string # Hardware reservation IDs to use for the VCF nodes. Each item can be a reservation UUID or `next-available`.
   }))
   description = "Map containing individual ESXi device details for each Metal Instance"
 }
@@ -147,4 +145,19 @@ variable "esxi_version_slug" {
 variable "billing_cycle" {
   type        = string
   description = "The billing cycle of the device ('hourly', 'daily', 'monthly', 'yearly') when in doubt, use 'hourly'"
+}
+
+variable "management_plan" {
+  type        = string
+  default     = "m3.small.x86"
+  description = "Which plan to use for the windows management host."
+}
+variable "bastion_plan" {
+  type        = string
+  default     = "m3.small.x86"
+  description = "Which plan to use for the ubuntu based bastion host."
+}
+variable "esxi_network_space" {
+  type        = string
+  description = "Overall Network space for the VCF project"
 }
