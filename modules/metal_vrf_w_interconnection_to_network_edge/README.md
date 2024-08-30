@@ -1,3 +1,7 @@
+# Equinix Metal VRF with Interconnection to Network Edge
+
+This module creates the VRF and Interconnection to Network Edge on Equinix Metal.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -34,13 +38,13 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_fabric_client_id"></a> [fabric\_client\_id](#input\_fabric\_client\_id) | Client ID for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview | `string` | n/a | yes |
-| <a name="input_fabric_client_secret"></a> [fabric\_client\_secret](#input\_fabric\_client\_secret) | Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview | `string` | n/a | yes |
+| <a name="input_fabric_client_id"></a> [fabric\_client\_id](#input\_fabric\_client\_id) | Client ID for Equinix Fabric API interaction <https://developer.equinix.com/docs?page=/dev-docs/fabric/overview> | `string` | n/a | yes |
+| <a name="input_fabric_client_secret"></a> [fabric\_client\_secret](#input\_fabric\_client\_secret) | Client Secret for Equinix Fabric API interaction <https://developer.equinix.com/docs?page=/dev-docs/fabric/overview> | `string` | n/a | yes |
 | <a name="input_fabric_interconnection_notification_email"></a> [fabric\_interconnection\_notification\_email](#input\_fabric\_interconnection\_notification\_email) | Email address for interconnection notifications (must be valid email address format) | `string` | n/a | yes |
-| <a name="input_metal_auth_token"></a> [metal\_auth\_token](#input\_metal\_auth\_token) | API Token for Equinix Metal API interaction https://deploy.equinix.com/developers/docs/metal/identity-access-management/api-keys/ | `string` | n/a | yes |
-| <a name="input_metal_metro"></a> [metal\_metro](#input\_metal\_metro) | Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference | `string` | n/a | yes |
-| <a name="input_metal_project_id"></a> [metal\_project\_id](#input\_metal\_project\_id) | Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles | `string` | n/a | yes |
-| <a name="input_metal_vrf_asn"></a> [metal\_vrf\_asn](#input\_metal\_vrf\_asn) | ASN to be used for Metal VRF https://deploy.equinix.com/developers/docs/metal/networking/vrf/ | `string` | n/a | yes |
+| <a name="input_metal_auth_token"></a> [metal\_auth\_token](#input\_metal\_auth\_token) | API Token for Equinix Metal API interaction <https://deploy.equinix.com/developers/docs/metal/identity-access-management/api-keys/> | `string` | n/a | yes |
+| <a name="input_metal_metro"></a> [metal\_metro](#input\_metal\_metro) | Equinix Metal Metro where Metal resources are going to be deployed <https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference> | `string` | n/a | yes |
+| <a name="input_metal_project_id"></a> [metal\_project\_id](#input\_metal\_project\_id) | Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings <https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles> | `string` | n/a | yes |
+| <a name="input_metal_vrf_asn"></a> [metal\_vrf\_asn](#input\_metal\_vrf\_asn) | ASN to be used for Metal VRF <https://deploy.equinix.com/developers/docs/metal/networking/vrf/> | `string` | n/a | yes |
 | <a name="input_metal_vrf_cust_bgp_peer_pri"></a> [metal\_vrf\_cust\_bgp\_peer\_pri](#input\_metal\_vrf\_cust\_bgp\_peer\_pri) | IP of BGP Neighbor on Primary Interconnection that Metal VRF should expect to peer with | `string` | n/a | yes |
 | <a name="input_metal_vrf_cust_bgp_peer_sec"></a> [metal\_vrf\_cust\_bgp\_peer\_sec](#input\_metal\_vrf\_cust\_bgp\_peer\_sec) | IP of BGP Neighbor on Secondary Interconnection that Metal VRF should expect to peer with | `string` | n/a | yes |
 | <a name="input_metal_vrf_interconnection_speed"></a> [metal\_vrf\_interconnection\_speed](#input\_metal\_vrf\_interconnection\_speed) | Metal VRF interconnection speed across Fabric | `number` | n/a | yes |
