@@ -1,7 +1,3 @@
-variable "metal_auth_token" {
-  type        = string
-  description = "API Token for Equinix Metal API interaction https://deploy.equinix.com/developers/docs/metal/identity-access-management/api-keys/"
-}
 variable "metal_project_id" {
   type        = string
   description = "Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles"
@@ -51,11 +47,11 @@ variable "esxi_domain" {
   type        = string
   description = "Domain Name to be configured in ESXi FQDN along with shortname above"
 }
-variable "vm-mgmt_vlan" {
+variable "vm_mgmt_vlan" {
   type        = string
   description = "VLAN ID of VM Management VLAN for the default VM Network portgroup"
 }
-variable "esxi-mgmt_vlan" {
+variable "esxi_mgmt_vlan" {
   type        = string
   description = "VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0"
 }

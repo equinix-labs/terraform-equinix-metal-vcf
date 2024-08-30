@@ -33,8 +33,8 @@ echo 'esxcli system hostname set -H=${var.esxi_hostname}' >> /vmfs/volumes/datas
 echo 'esxcli system hostname set -f=${var.esxi_hostname}.${var.esxi_domain}' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcli system ntp set -s=${var.esxi_ntp_server} >> /etc/ntp.conf' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcli system ntp set -e=yes' >> /vmfs/volumes/datastore1/configpost.sh;
-echo 'esxcli network vswitch standard portgroup set --portgroup-name="Management Network" --vlan-id=${var.esxi-mgmt_vlan}' >> /vmfs/volumes/datastore1/configpost.sh;
-echo 'esxcli network vswitch standard portgroup set --portgroup-name="VM Network" --vlan-id=${var.vm-mgmt_vlan}' >> /vmfs/volumes/datastore1/configpost.sh;
+echo 'esxcli network vswitch standard portgroup set --portgroup-name="Management Network" --vlan-id=${var.esxi_mgmt_vlan}' >> /vmfs/volumes/datastore1/configpost.sh;
+echo 'esxcli network vswitch standard portgroup set --portgroup-name="VM Network" --vlan-id=${var.vm_mgmt_vlan}' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcli network ip interface remove --portgroup-name "Private Network"' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcli network vswitch standard portgroup remove --vswitch-name="vSwitch0" --portgroup-name="Private Network"' >> /vmfs/volumes/datastore1/configpost.sh;
 echo 'esxcli network ip interface remove --portgroup-name "BMC_Network"' >> /vmfs/volumes/datastore1/configpost.sh;

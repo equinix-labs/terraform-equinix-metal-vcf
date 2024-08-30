@@ -55,35 +55,35 @@ variable "vrf_peer_asn" {
   type        = string
   description = "ASN that will establish BGP Peering with the Metal VRF across the interconnections"
 }
-variable "vrf_peer_subnet-pri" {
+variable "vrf_peer_subnet_pri" {
   type        = string
   description = "Subnet used for point to point Metal VRF BGP Neighbor connection across the Primary interconnection"
 }
-variable "vrf_bgp_customer_peer_ip-pri" {
+variable "vrf_bgp_customer_peer_ip_pri" {
   type        = string
   description = "IP of BGP Neighbor on Primary Interconnection that Metal VRF should expect to peer with"
 }
-variable "vrf_bgp_metal_peer_ip-pri" {
+variable "vrf_bgp_metal_peer_ip_pri" {
   type        = string
   description = "IP of Metal VRF on Primary Interconnection for peering with BGP Neighbor"
 }
-variable "vrf_bgp_md5-pri" {
+variable "vrf_bgp_md5_pri" {
   type        = string
   description = "MD5 Shared Password for BGP session authentication"
 }
-variable "vrf_peer_subnet-sec" {
+variable "vrf_peer_subnet_sec" {
   type        = string
   description = "Subnet used for point to point Metal VRF BGP Neighbor connection across the Secondary interconnection"
 }
-variable "vrf_bgp_customer_peer_ip-sec" {
+variable "vrf_bgp_customer_peer_ip_sec" {
   type        = string
   description = "IP of BGP Neighbor on Secondary Interconnection that Metal VRF should expect to peer with"
 }
-variable "vrf_bgp_metal_peer_ip-sec" {
+variable "vrf_bgp_metal_peer_ip_sec" {
   type        = string
   description = "IP of Metal VRF on Secondary Interconnection for peering with BGP Neighbor"
 }
-variable "vrf_bgp_md5-sec" {
+variable "vrf_bgp_md5_sec" {
   type        = string
   description = "MD5 Shared Password for BGP session authentication"
 }
@@ -91,7 +91,7 @@ variable "vcf_vrf_networks" {
   type = map(object({
     vlan_id        = string                # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > C7:C10) 802.1q VLAN number
     vlan_name      = string                # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > D7:D10) Preferred Description of Metal VLAN
-    subnet         = string                # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > E7:E10) CIDR Subnet to be used within this Metal VLAN 
+    subnet         = string                # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > E7:E10) CIDR Subnet to be used within this Metal VLAN
     enable_dyn_nei = optional(bool, false) # Whether or not to configure BGP Dynamic Neighbor functionality on the gateway, only use for NSX-t Edge uplink VLANs if NSX-t will peer with Metal VRF
     dyn_nei_range  = optional(string, "")  # CIDR Range of IPs that the Metal VRF should expect BGP Peering from
     dyn_nei_asn    = optional(string, "")  # ASN that the Metal VRF should expect BGP Peering from
@@ -122,7 +122,7 @@ variable "esxi_domain" {
   type        = string
   description = "Domain Name to be configured in ESXi FQDN along with name in Map above (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > J6:K6)"
 }
-variable "esxi-mgmt_vlan" {
+variable "esxi_mgmt_vlan" {
   type        = string
   description = "VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > C8)"
 }
@@ -141,10 +141,6 @@ variable "esxi_size" {
 variable "esxi_version_slug" {
   type        = string
   description = "Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md"
-}
-variable "billing_cycle" {
-  type        = string
-  description = "The billing cycle of the device ('hourly', 'daily', 'monthly', 'yearly') when in doubt, use 'hourly'"
 }
 
 variable "management_plan" {
