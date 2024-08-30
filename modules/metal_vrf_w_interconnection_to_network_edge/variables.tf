@@ -54,39 +54,35 @@ variable "metal_vrf_peer_asn" {
   type        = string
   description = "ASN that will establish BGP Peering with the Metal VRF across the interconnections"
 }
-variable "metal_vrf_peer_subnet" {
-  type        = string
-  description = "Subnet used for both Metal VRF interconnections (/29 or larger)"
-}
-variable "metal_vrf_peer_subnet-pri" {
+variable "metal_vrf_peer_subnet_pri" {
   type        = string
   description = "Subnet used for point to point Metal VRF BGP Neighbor connection across the Primary interconnection"
 }
-variable "metal_vrf_cust_bgp_peer-pri" {
+variable "metal_vrf_cust_bgp_peer_pri" {
   type        = string
   description = "IP of BGP Neighbor on Primary Interconnection that Metal VRF should expect to peer with"
 }
-variable "metal_vrf_metal_bgp_peer-pri" {
+variable "metal_vrf_metal_bgp_peer_pri" {
   type        = string
   description = "IP of Metal VRF on Primary Interconnection for peering with BGP Neighbor"
 }
-variable "metal_vrf_shared_md5-pri" {
+variable "metal_vrf_shared_md5_pri" {
   type        = string
   description = "MD5 Shared Password for BGP session authentication"
 }
-variable "metal_vrf_peer_subnet-sec" {
+variable "metal_vrf_peer_subnet_sec" {
   type        = string
   description = "Subnet used for point to point Metal VRF BGP Neighbor connection across the Secondary interconnection"
 }
-variable "metal_vrf_cust_bgp_peer-sec" {
+variable "metal_vrf_cust_bgp_peer_sec" {
   type        = string
   description = "IP of BGP Neighbor on Secondary Interconnection that Metal VRF should expect to peer with"
 }
-variable "metal_vrf_metal_bgp_peer-sec" {
+variable "metal_vrf_metal_bgp_peer_sec" {
   type        = string
   description = "IP of Metal VRF on Secondary Interconnection for peering with BGP Neighbor"
 }
-variable "metal_vrf_shared_md5-sec" {
+variable "metal_vrf_shared_md5_sec" {
   type        = string
   description = "MD5 Shared Password for BGP session authentication"
 }

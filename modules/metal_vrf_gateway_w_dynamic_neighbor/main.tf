@@ -25,7 +25,7 @@ resource "equinix_metal_gateway" "vrf_gateway" {
 }
 
 ## If Dynamic Neighbor Subnet and ASN are specified, configure BGP Dynamic Neighbors on Metal Gateway
-resource "null_resource" "vrf-bgp_dynamic_neighbor" {
+resource "null_resource" "vrf_bgp_dynamic_neighbor" {
   count = var.vrfgw_enable_dynamic_neighbor ? 1 : 0
   triggers = {
     gateway_uuid   = equinix_metal_gateway.vrf_gateway.id
