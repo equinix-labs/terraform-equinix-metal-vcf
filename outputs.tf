@@ -15,7 +15,7 @@ output "management_public_ip" {
 output "management_password" {
   description = "Randomly generated password used for the Admin accounts on the management host."
   sensitive   = true
-  value       = "Management Host Admin password: ${random_password.management.result}\n"
+  value       = random_password.management.result
 }
 
 output "next_steps" {
