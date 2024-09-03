@@ -53,14 +53,14 @@ This Terraform module deploys a VMware Cloud Foundation (VCF) environment on Equ
 | <a name="input_esxi_network_space"></a> [esxi\_network\_space](#input\_esxi\_network\_space) | Overall Network space for the VCF project | `string` | n/a | yes |
 | <a name="input_esxi_ntp_server"></a> [esxi\_ntp\_server](#input\_esxi\_ntp\_server) | NTP Server to be configured in ESXi (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > F8:G8) | `string` | n/a | yes |
 | <a name="input_esxi_password"></a> [esxi\_password](#input\_esxi\_password) | mkpasswd Pre-hashed root password to be set for ESXi instances (Hash the password from vcf-ems-deployment-parameter.xlsx > Credentials Sheet > C8 using 'mkpasswd --method=SHA-512' from Linux whois package) | `string` | n/a | yes |
-| <a name="input_esxi_size"></a> [esxi\_size](#input\_esxi\_size) | Slug for target hardware plan type. The only officially supported server plan for ESXi/VCF is the 'n3.xlarge.opt-m4s2' <https://deploy.equinix.com/product/servers/n3-xlarge-opt-m4s2/> | `string` | n/a | yes |
-| <a name="input_esxi_version_slug"></a> [esxi\_version\_slug](#input\_esxi\_version\_slug) | Slug for ESXi OS version to be deployed on Metal Instances <https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md> | `string` | n/a | yes |
-| <a name="input_fabric_client_id"></a> [fabric\_client\_id](#input\_fabric\_client\_id) | Client ID for Equinix Fabric API interaction <https://developer.equinix.com/docs?page=/dev-docs/fabric/overview> | `string` | n/a | yes |
-| <a name="input_fabric_client_secret"></a> [fabric\_client\_secret](#input\_fabric\_client\_secret) | Client Secret for Equinix Fabric API interaction <https://developer.equinix.com/docs?page=/dev-docs/fabric/overview> | `string` | n/a | yes |
-| <a name="input_metal_auth_token"></a> [metal\_auth\_token](#input\_metal\_auth\_token) | API Token for Equinix Metal API interaction <https://deploy.equinix.com/developers/docs/metal/identity-access-management/api-keys/> | `string` | n/a | yes |
-| <a name="input_metal_project_id"></a> [metal\_project\_id](#input\_metal\_project\_id) | Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings <https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles> | `string` | n/a | yes |
-| <a name="input_metal_vrf_asn"></a> [metal\_vrf\_asn](#input\_metal\_vrf\_asn) | ASN to be used for Metal VRF <https://deploy.equinix.com/developers/docs/metal/networking/vrf/> | `string` | n/a | yes |
-| <a name="input_metro"></a> [metro](#input\_metro) | Equinix Metal Metro where Metal resources are going to be deployed <https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference> | `string` | n/a | yes |
+| <a name="input_esxi_size"></a> [esxi\_size](#input\_esxi\_size) | Slug for target hardware plan type. The only officially supported server plan for ESXi/VCF is the 'n3.xlarge.opt-m4s2' https://deploy.equinix.com/product/servers/n3-xlarge-opt-m4s2/ | `string` | n/a | yes |
+| <a name="input_esxi_version_slug"></a> [esxi\_version\_slug](#input\_esxi\_version\_slug) | Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md | `string` | n/a | yes |
+| <a name="input_fabric_client_id"></a> [fabric\_client\_id](#input\_fabric\_client\_id) | Client ID for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview | `string` | n/a | yes |
+| <a name="input_fabric_client_secret"></a> [fabric\_client\_secret](#input\_fabric\_client\_secret) | Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview | `string` | n/a | yes |
+| <a name="input_metal_auth_token"></a> [metal\_auth\_token](#input\_metal\_auth\_token) | API Token for Equinix Metal API interaction https://deploy.equinix.com/developers/docs/metal/identity-access-management/api-keys/ | `string` | n/a | yes |
+| <a name="input_metal_project_id"></a> [metal\_project\_id](#input\_metal\_project\_id) | Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles | `string` | n/a | yes |
+| <a name="input_metal_vrf_asn"></a> [metal\_vrf\_asn](#input\_metal\_vrf\_asn) | ASN to be used for Metal VRF https://deploy.equinix.com/developers/docs/metal/networking/vrf/ | `string` | n/a | yes |
+| <a name="input_metro"></a> [metro](#input\_metro) | Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference | `string` | n/a | yes |
 | <a name="input_primary_ne_device_port"></a> [primary\_ne\_device\_port](#input\_primary\_ne\_device\_port) | Port Number on Primary Network Edge Device for interconnection to Metal VRF | `number` | n/a | yes |
 | <a name="input_primary_ne_device_uuid"></a> [primary\_ne\_device\_uuid](#input\_primary\_ne\_device\_uuid) | UUID of Primary Network Edge Device for interconenction to Metal VRF | `string` | n/a | yes |
 | <a name="input_secondary_ne_device_port"></a> [secondary\_ne\_device\_port](#input\_secondary\_ne\_device\_port) | Port Number on Secondary Network Edge Device for interconnection to Metal VRF | `number` | n/a | yes |
@@ -85,9 +85,9 @@ This Terraform module deploys a VMware Cloud Foundation (VCF) environment on Equ
 
 | Name | Description |
 |------|-------------|
-| <a name="output_bastion_public_ip"></a> [bastion\_public\_ip](#output\_bastion\_public\_ip) | The public IP address of the bastion host |
+| <a name="output_bastion_public_ip"></a> [bastion\_public\_ip](#output\_bastion\_public\_ip) | The public IP address of the bastion host. |
 | <a name="output_management_password"></a> [management\_password](#output\_management\_password) | Randomly generated password used for the Admin accounts on the management host. |
-| <a name="output_management_public_ip"></a> [management\_public\_ip](#output\_management\_public\_ip) | The public IP address of the windows management host |
-| <a name="output_ssh_forward_command"></a> [ssh\_forward\_command](#output\_ssh\_forward\_command) | SSH port forward command to use to connect to the VCF GUIs |
-| <a name="output_ssh_private_key"></a> [ssh\_private\_key](#output\_ssh\_private\_key) | The private key for the SSH keypair |
+| <a name="output_management_public_ip"></a> [management\_public\_ip](#output\_management\_public\_ip) | The public IP address of the windows management host. |
+| <a name="output_next_steps"></a> [next\_steps](#output\_next\_steps) | Instructions for accessing the management host. |
+| <a name="output_ssh_private_key"></a> [ssh\_private\_key](#output\_ssh\_private\_key) | SSH Private key to use to connect to bastion and management hosts over SSH. |
 <!-- END_TF_DOCS -->
