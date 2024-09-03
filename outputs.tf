@@ -22,3 +22,8 @@ output "next_steps" {
   description = "Instructions for accessing the management host."
   value       = "Run `terraform output -raw management_password` to see the management host's admin password and then RDP to the Management host as SYSTEM\\Admin with that password."
 }
+
+output "esx01_address" {
+  description = "The public IP address of the first ESXi host."
+  value       = "https://${var.esxi_devices["esx01"].name}${var.esxi_domain}"
+}

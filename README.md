@@ -383,9 +383,10 @@ The output will be the string you need to use in the esxi_password variable near
   * Password: provided in the terraform output `terraform output -raw management_password`.
 * Download the Cloudbuilder OVA from VMware
 * Log in to one of the ESXi hosts
-  * <https://sfo01-m01-esx01.sfo.rainpole.io>
+  * Run `tofu output -raw esx01_address` and go to the address in a browser
+  * Our example uses: <https://sfo01-m01-esx01.sfo.rainpole.io>
 * Deploy Cloudbuilder OVA on ESXi
-* Login to cloudbuilder at <https://172.16.9.3> with admin/<the password you chose>
+* Login to cloudbuilder at the address you installed it at using the username/password you chose during the OVA deployment.
 * Upload the vcf-ems-deployment-parameter spreadsheet to cloudbuilder when it asks for it.
 * Fix issues cloudbuilder finds.
 * Push deploy button and wait an hour or two as VCF deploys.
