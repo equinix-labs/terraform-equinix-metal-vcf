@@ -70,8 +70,8 @@ module "example" {
   vrf_bgp_metal_peer_ip-sec     = "172.31.255.5"    # IP of Metal VRF on Primary Interconnect for peering with BGP Neighbor
   vrf_bgp_md5-sec               = ""                # MD5 Shared Password for BGP Session authentication
 
-  ## VLAN and Metal Gateway provisioning with VRF Subnets and 
-  ## Optional Dynamic Neighbor Ranges for BGP Peering with the 
+  ## VLAN and Metal Gateway provisioning with VRF Subnets and
+  ## Optional Dynamic Neighbor Ranges for BGP Peering with the
   ## Metal VRF from inside the Metal Project
   ## 2712" = {
   ##      vlan_id         = "2712"                # 802.1q VLAN number
@@ -305,26 +305,26 @@ Apache License, Version 2.0. See [LICENSE](LICENSE).
 #### Physical Hardware and ESXi Host
 
 * Hardware and firmware (including HBA and BIOS) is configured for vSAN.
-  * > **Note:** The Equinix Support team can assist with ensuring that BIOS configuration is brought into compliance with vSAN recommendations should it be discovered that this is not already the case.
+  * **Note:** The Equinix Support team can assist with ensuring that BIOS configuration is brought into compliance with vSAN recommendations should it be discovered that this is not already the case.
 
 * Physical hardware health status is 'healthy' without any errors.
 
-  * > **Note:** The Equinix Support team can assist with ensuring hardware is brought into a healthy state should it be discovered otherwise.
+  * **Note:** The Equinix Support team can assist with ensuring hardware is brought into a healthy state should it be discovered otherwise.
 
 * ~~All hosts are in synchronization with a central time server (NTP).~~
 
-  * > ~~**Note:** While this module does configure the user provided NTP server details, the provided NTP server IP must be reachable by the Metal Instances through VRF Interconnection.~~
+  * ~~**Note:** While this module does configure the user provided NTP server details, the provided NTP server IP must be reachable by the Metal Instances through VRF Interconnection.~~
 
 #### Supporting Infrastructure
 
 * DNS server for name resolution. Management IP of hosts is registered and queryable as both a forward (hostname-to-IP), and reverse (IP-to-Hostname) entry.
-  * > **Note:** While this module does configure the user provided DNS server details, the provided DNS server IP must be reachable by the Metal Instances through VRF Interconnection.
+  * **Note:** While this module does configure the user provided DNS server details, the provided DNS server IP must be reachable by the Metal Instances through VRF Interconnection.
 
 ---
 
 ### This module _does_ provide for the following VCF Infrastructure requirements as required by Cloud Builder
 
-#### Physical Network
+#### Network
 
 * Top of Rack switches are configured. Each host and NIC in the management domain must have the same network configuration. No ethernet link aggregation technology (LAG/VPC/LACP) is being used.
 
@@ -336,7 +336,7 @@ Apache License, Version 2.0. See [LICENSE](LICENSE).
 
 * Management IP is VLAN backed and configured on the host. vMotion & vSAN IP ranges are configured during the bring-up process.
 
-#### Physical Hardware and ESXi Host
+#### Hardware and ESXi Hosts
 
 * All servers are vSAN compliant and certified on the VMware Hardware Compatibility Guide, including but not limited to BIOS, HBA, SSD, HDD, etc.
 
@@ -350,7 +350,7 @@ Apache License, Version 2.0. See [LICENSE](LICENSE).
 
 * Each ESXi host is running a non-expired license - initial evaluation license is accepted. The bring-up process will configure the permanent license provided.
 
-#### Supporting Infrastructure
+#### Other Infrastructure
 
 * All hosts are configured with a DNS server for name resolution.
 
