@@ -11,8 +11,6 @@
 
 This project is supported by the user community. Equinix does not provide support for this project.
 
-Install Terraform using the [tfenv](https://github.com/tfutils/tfenv) utility.
-
 This project may be forked, cloned, or downloaded and modified as needed as the base in your integrations and deployments.
 
 This project may also be used as a [Terraform module](https://learn.hashicorp.com/collections/terraform/modules).
