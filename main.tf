@@ -1,7 +1,7 @@
 module "metal_vrf" {
   source                                    = "./modules/metal_vrf_w_interconnection_to_network_edge"
-  fabric_client_id                          = var.fabric_client_id
-  fabric_client_secret                      = var.fabric_client_secret
+  equinix_client_id                         = var.equinix_client_id
+  equinix_client_secret                     = var.equinix_client_secret
   metal_auth_token                          = var.metal_auth_token
   metal_project_id                          = var.metal_project_id
   metal_metro                               = var.metro
