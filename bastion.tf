@@ -26,14 +26,8 @@ resource "equinix_metal_port" "bastion_bond0" {
   port_id         = [for p in equinix_metal_device.bastion.ports : p.id if p.name == "bond0"][0]
   layer2          = false
   bonded          = true
-  vlan_ids        = [data.equinix_metal_vlan.bastion.vlan_id]
+  vlan_ids        = [module.metal_vrf_gateways_w_dynamic_neighbor["bastion"].vlan_uuid]
   reset_on_delete = true
-}
-
-data "equinix_metal_vlan" "bastion" {
-  project_id = var.metal_project_id
-  vxlan      = var.vcf_vrf_networks["bastion"].vlan_id
-  metro      = var.metro
 }
 
 module "ssh" {

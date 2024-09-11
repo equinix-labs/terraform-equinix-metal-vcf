@@ -30,7 +30,7 @@ resource "equinix_metal_port" "management_bond0" {
   port_id         = [for p in equinix_metal_device.management.ports : p.id if p.name == "bond0"][0]
   layer2          = false
   bonded          = true
-  vlan_ids        = [data.equinix_metal_vlan.bastion.vlan_id]
+  vlan_ids        = [module.metal_vrf_gateways_w_dynamic_neighbor["bastion"].vlan_uuid]
   reset_on_delete = true
 }
 resource "equinix_metal_bgp_session" "management" {
