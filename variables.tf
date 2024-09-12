@@ -7,11 +7,11 @@ variable "metal_project_id" {
   type        = string
   description = "Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles"
 }
-variable "fabric_client_id" {
+variable "equinix_client_id" {
   type        = string
   description = "Client ID for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview"
 }
-variable "fabric_client_secret" {
+variable "equinix_client_secret" {
   type        = string
   description = "Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview"
 }
