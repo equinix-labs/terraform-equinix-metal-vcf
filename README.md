@@ -1,4 +1,4 @@
-# terraform-equinix-template
+# terraform-equinix-metal-vcf
 
 [![run-pre-commit-hooks](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/pre-commit.yaml/badge.svg)](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/pre-commit.yaml)
 [![generate-terraform-docs](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/documentation.yaml/badge.svg)](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/documentation.yaml)
