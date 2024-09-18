@@ -134,7 +134,7 @@ variable "esxi_password" {
   type        = string
   description = "mkpasswd Pre-hashed root password to be set for ESXi instances (Hash the password from vcf-ems-deployment-parameter.xlsx > Credentials Sheet > C8 using 'mkpasswd --method=SHA-512' from Linux whois package)"
 }
-variable "esxi_size" {
+variable "esxi_plan" {
   type        = string
   description = "Slug for target hardware plan type. The only officially supported server plan for ESXi/VCF is the 'n3.xlarge.opt-m4s2' https://deploy.equinix.com/product/servers/n3-xlarge-opt-m4s2/"
 }

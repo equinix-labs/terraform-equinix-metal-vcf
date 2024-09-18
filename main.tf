@@ -42,7 +42,7 @@ module "metal_vrf_gateways_w_dynamic_neighbor" {
 module "vcf_metal_devices" {
   source                  = "./modules/vcf_metal_device"
   metal_project_id        = var.metal_project_id
-  metal_device_plan       = var.esxi_size
+  metal_device_plan       = var.esxi_plan
   esxi_assigned_vlans     = [for r in module.metal_vrf_gateways_w_dynamic_neighbor : r.vlan_uuid]
   for_each                = var.esxi_devices
   metal_metro             = var.metro
