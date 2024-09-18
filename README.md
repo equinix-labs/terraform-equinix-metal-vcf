@@ -38,7 +38,6 @@ This Terraform module deploys a VMware Cloud Foundation (VCF) environment on Equ
 | [equinix_metal_port.bastion_bond0](https://registry.terraform.io/providers/equinix/equinix/latest/docs/resources/metal_port) | resource |
 | [equinix_metal_port.management_bond0](https://registry.terraform.io/providers/equinix/equinix/latest/docs/resources/metal_port) | resource |
 | [random_password.management](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
-| [equinix_metal_vlan.bastion](https://registry.terraform.io/providers/equinix/equinix/latest/docs/data-sources/metal_vlan) | data source |
 
 ## Inputs
 
