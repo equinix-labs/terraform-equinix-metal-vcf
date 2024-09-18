@@ -50,5 +50,5 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_vlan_uuid"></a> [vlan\_uuid](#output\_vlan\_uuid) | ID of the Metal VRF |
+| <a name="output_vlan_uuid"></a> [vlan\_uuid](#output\_vlan\_uuid) | VLAN ID of the Metal Gateway created for use with Metal VRF |
 <!-- END_TF_DOCS -->
