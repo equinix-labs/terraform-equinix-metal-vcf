@@ -3,7 +3,7 @@
 [![run-pre-commit-hooks](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/pre-commit.yaml/badge.svg)](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/pre-commit.yaml)
 [![generate-terraform-docs](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/documentation.yaml/badge.svg)](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/documentation.yaml)
 
-`terraform-equinix-metal-vcf` is a minimal Terraform module that utilizes [Terraform providers for Equinix](https://registry.terraform.io/namespaces/equinix) to provision digital infrastructure and demonstrate higher level integrations.
+`terraform-equinix-metal-vcf` is a minimal Terraform module that utilizes the [Terraform provider for Equinix](https://registry.terraform.io/namespaces/equinix) to provision digital infrastructure and demonstrate higher level integrations.
 
 <img src="assets/8-VCF_on_Metal_ft_Metal_VRF.png" width="608" height="552" alt="Target Metal Architecture featuring Metal VRF for Underlay routing">
 
@@ -15,189 +15,107 @@ This project may be forked, cloned, or downloaded and modified as needed as the 
 
 This project may also be used as a [Terraform module](https://learn.hashicorp.com/collections/terraform/modules).
 
-To use this module in a new project, create a file such as:
+To use this module in a new project, create a file such as: [examples/vcf_management_domain/main.tf](./examples/vcf_management_domain/main.tf).
 
-```hcl
-# main.tf
-terraform {
-  required_providers {
-    equinix = {
-      source = "equinix/equinix"
-    }
-}
+## Pre-Requisites
 
-module "example" {
-  source = "github.com/equinix-labs/terraform-equinix-metal-vcf"
-  # Published modules can be sourced as:
-  # source = "equinix-labs/terraform-equinix-metal-vcf/equinix"
-  # See https://www.terraform.io/docs/registry/modules/publish.html for details.
+### You are responsible for the following
 
-  # version = "0.1.0"
+#### Physical Network
 
-  ## Metal Auth
-  metal_auth_token      = ""  # API Token for Equinix Metal API interaction https://deploy.equinix.com/developers/docs/metal/identity-access-management/api-keys/
-  metal_project_id      = ""  # Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles
+* DHCP with an appropriate scope size (one IP per physical NIC per host) is configured for the ESXi Host Overlay (TEP) network. Providing static IP pool is also supported but some Day-N operations like stretching a cluster will not be allowed if static IPs are used.
 
-  ## Fabric/NE Auth
-  equinix_client_id     = ""   # Client ID for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview
-  equinix_client_secret = ""   # Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview
+#### Physical Hardware and ESXi Host
 
-  # Metro for this deployment
-  metro                 = ""  # Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference
+* Hardware and firmware (including HBA and BIOS) is configured for vSAN.
+  * **Note:** The Equinix Support team can assist with ensuring that BIOS configuration is brought into compliance with vSAN recommendations should it be discovered that this is not already the case.
 
-  # Network Edge Device UUIDs and notification email for Metal VRF Interconnections
-  primary_ne_device_uuid                  = ""   # UUID of Primary Network Edge Device for interconnection to Metal VRF
-  secondary_ne_device_uuid                = ""   # UUID of Secondary Network Edge Device for interconnection to Metal VRF
-  primary_ne_device_port                  = 3    # Port Number on Primary Network Edge Device for interconnection to Metal VRF
-  secondary_ne_device_port                = 3    # Port Number on Secondary Network Edge Device for interconnection to Metal VRF
-  vrf_interconnection_speed               = 200  # Metal VRF interconnection speed
-  vrf_interconnection_notification_email  = ""   # Email address for interconnection notifications
+* Physical hardware health status is 'healthy' without any errors.
 
-  # Metal VRF ASN
-  metal_vrf_asn   = "65100"
+  * **Note:** The Equinix Support team can assist with ensuring hardware is brought into a healthy state should it be discovered otherwise.
 
-  ## Metal VRF Peering details for Interconnection Uplinks
-  vrf_peer_subnet               = "172.31.255.0/29" # Subnet used for both Metal VRF interconnections (/29 or larger)
-  vrf_peer_asn                  = "65534"           # ASN that will establish BGP Peering with the Metal VRF across the interconnections
-  vrf_peer_subnet-pri           = "172.31.255.0/30" # Subnet used for point to point connection across the Primary interconnection
-  vrf_bgp_customer_peer_ip-pri  = "172.31.255.2"    # IP of BGP Neighbor on Primary Interconnection that Metal VRF should expect to peer with
-  vrf_bgp_metal_peer_ip-pri     = "172.31.255.1"    # IP of Metal VRF on Primary Interconnect for peering with BGP Neighbor
-  vrf_bgp_md5-pri               = ""                # MD5 Shared Password for BGP Session authentication
-  vrf_peer_subnet-sec           = "172.31.255.4/30" # Subnet used for point to point connection across the Primary interconnection
-  vrf_bgp_customer_peer_ip-sec  = "172.31.255.6"    # IP of BGP Neighbor on Primary Interconnection that Metal VRF should expect to peer with
-  vrf_bgp_metal_peer_ip-sec     = "172.31.255.5"    # IP of Metal VRF on Primary Interconnect for peering with BGP Neighbor
-  vrf_bgp_md5-sec               = ""                # MD5 Shared Password for BGP Session authentication
+* ~~All hosts are in synchronization with a central time server (NTP).~~
 
-  ## VLAN and Metal Gateway provisioning with VRF Subnets and
-  ## Optional Dynamic Neighbor Ranges for BGP Peering with the
-  ## Metal VRF from inside the Metal Project
-  ## 2712" = {
-  ##      vlan_id         = "2712"                # 802.1q VLAN number
-  ##      vlan_name       = "NSXt_Edge_Uplink2"   # Preferred Description of Metal VLAN
-  ##      subnet          = "172.27.12.0/24"      # Subnet to be used within this Metal VLAN
-  ##      enable_dyn_nei  = true                  # Whether or not to configure BGP Dynamic Neighbor functionality on the gateway
-  ##      dyn_nei_range   = "172.27.12.2/31"      # CIDR Range of IPs that the Metal VRF should expect BGP Peering from
-  ##      dyn_nei_asn     = "65101"               # ASN that the Metal VRF should expect BGP Peering from
-  vcf_vrf_networks = {
-    "bastion" = {
-      vlan_id        = "1609"
-      vlan_name      = "Bastion_Network"
-      subnet         = "172.16.9.0/24"
-      enable_dyn_nei = true
-      dyn_nei_range  = "172.16.9.2/31"
-      dyn_nei_asn    = "65101"
-    },
-    "vm-mgmt" = {
-      vlan_id   = "1610"
-      vlan_name = "VM-Management_Network"
-      subnet    = "172.16.10.0/24"
-    },
-    "mgmt" = {
-      vlan_id   = "1611"
-      vlan_name = "Management_Network"
-      subnet    = "172.16.11.0/24"
-    },
-    "vMotion" = {
-      vlan_id   = "1612"
-      vlan_name = "vMotion_Network"
-      subnet    = "172.16.12.0/24"
-    },
-    "vSAN" = {
-      vlan_id   = "1613"
-      vlan_name = "vSAN_Network"
-      subnet    = "172.16.13.0/24"
-    },
-    "NSXt" = {
-      vlan_id   = "1614"
-      vlan_name = "NSXt_Host_Overlay"
-      subnet    = "172.16.14.0/24"
-    },
-    "NSXt_Edge" = {
-      vlan_id   = "2713"
-      vlan_name = "NSXt_Edge_overlay"
-      subnet    = "172.27.13.0/24"
-    },
-    "NSXt_Uplink1" = {
-      vlan_id        = "2711"
-      vlan_name      = "NSXt_Edge_Uplink1"
-      subnet         = "172.27.11.0/24"
-      enable_dyn_nei = true
-      dyn_nei_range  = "172.27.11.2/31"
-      dyn_nei_asn    = "65101"
-    },
-    "NSXt_Uplink2" = {
-      vlan_id        = "2712"
-      vlan_name      = "NSXt_Edge_Uplink2"
-      subnet         = "172.27.12.0/24"
-      enable_dyn_nei = true
-      dyn_nei_range  = "172.27.12.2/31"
-      dyn_nei_asn    = "65101"
-    }
-  }
+  * ~~**Note:** While this module does configure the user provided NTP server details, the provided NTP server IP must be reachable by the Metal Instances through VRF Interconnection.~~
 
-  ## ESXi individual device details
-  ## "sfo01-m01-esx01" = {
-  ##     name         = "sfo01-m01-esx01"   # Short form hostname of system
-  ##     mgmt_ip      = "172.16.11.101"     # Management Network IP address for VMK0
-  ##    reservation_id = "next-available" # Hardware reservation IDs to use for the VCF nodes. Each item can be a reservation UUID or `next-available`.
-  esxi_devices = {
-    "sfo01-m01-esx01" = {
-      name         = "sfo01-m01-esx01"
-      mgmt_ip      = "172.16.11.101"
-    },
-    "sfo01-m01-esx02" = {
-      name         = "sfo01-m01-esx02"
-      mgmt_ip      = "172.16.11.102"
-    },
-    "sfo01-m01-esx03" = {
-      name         = "sfo01-m01-esx03"
-      mgmt_ip      = "172.16.11.103"
-    },
-    "sfo01-m01-esx04" = {
-      name         = "sfo01-m01-esx04"
-      mgmt_ip      = "172.16.11.104"
-    }
-  }
+#### Supporting Infrastructure
 
-  ## ESXi device common details
-  esxi_network_space = "172.16.0.0/16"
-  esxi_management_subnet    = "255.255.255.0"        # Management Network Subnet Mask for VMK0
-  esxi_management_gateway   = "172.16.11.1"          # Management Network Gateway for default TCP/IP Stack
-  esxi_dns_server           = "172.16.1.1"           # DNS Server to be configured in ESXi
-  esxi_domain               = "sfo.rainpole.io"      # Domain Name to be configured in ESXi FQDN along with name above
-  esxi-mgmt_vlan            = "1611"                 # VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0
-  esxi_ntp_server           = "172.16.1.1"           # NTP Server to be configured in ESXi
-  esxi_password             = ""                     # Pre-hashed root password to be set for ESXi instances https://github.com/equinix-labs/terraform-equinix-metal-vcf?tab=readme-ov-file#custom-root-password
-  esxi_plan                 = "n3.xlarge.x86-m4s2"   # Slug for target hardware plan type. The only officially supported server plan for ESXi/VCF is the 'n3.xlarge.opt-m4s2' https://deploy.equinix.com/product/servers/n3-xlarge-opt-m4s2/
-  esxi_version_slug         = "vmware_vcf_5_1"       # Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md
-  billing_cycle             = "hourly"               # The billing cycle of the device ('hourly', 'daily', 'monthly', 'yearly') when in doubt, use 'hourly'
+* DNS server for name resolution. Management IP of hosts is registered and queryable as both a forward (hostname-to-IP), and reverse (IP-to-Hostname) entry.
+  * **Note:** While this module does configure the user provided DNS server details, the provided DNS server IP must be reachable by the Metal Instances through VRF Interconnection.
 
-  ## Management Host Details
-  management_plan = "m3.small.x86"
-  bastion_plan = "m3.small.x86"
+---
 
-}
+### This module _does_ provide for the following VCF Infrastructure requirements as required by Cloud Builder
+
+#### Network
+
+* Top of Rack switches are configured. Each host and NIC in the management domain must have the same network configuration. No ethernet link aggregation technology (LAG/VPC/LACP) is being used.
+
+* IP ranges, subnet mask, and a reliable L3 (default) gateway for each VLAN are provided.
+
+* Jumbo Frames (MTU 9000) are recommended on all VLANs. At a minimum, MTU of 1600 is required on the NSX Host Overlay VLAN and must be enabled end to end through your environment.
+
+* VLANs for management, vMotion, vSAN and NSX Host Overlay networks are created and tagged to all host ports. Each VLAN is 802.1q tagged.
+
+* Management IP is VLAN backed and configured on the host. vMotion & vSAN IP ranges are configured during the bring-up process.
+
+#### Hardware and ESXi Hosts
+
+* All servers are vSAN compliant and certified on the VMware Hardware Compatibility Guide, including but not limited to BIOS, HBA, SSD, HDD, etc.
+
+* Identical hardware (CPU, Memory, NICs, SSD/HDD, etc.) within the management cluster is highly recommended. Refer to vSAN documentation for minimal configuration.
+
+* One physical NIC is configured and connected to the vSphere Standard switch. The second physical NIC is not configured.
+
+* ESXi is freshly installed on each host. The ESXi version matches the build listed in the Cloud Foundation Bill of Materials.
+
+* All hosts are configured with a central time server (NTP). NTP service policy set to 'Start and stop with host'.
+
+* Each ESXi host is running a non-expired license - initial evaluation license is accepted. The bring-up process will configure the permanent license provided.
+
+#### Other Infrastructure
+
+* All hosts are configured with a DNS server for name resolution.
+
+## Custom root password
+
+### Generating custom root password
+
+To generate a password hash of your desired ESXi root password run the 'mkpasswd' command on a Linux system with the 'whois' package installed as follows
+<!-- TODO: there is no good way to generate this password on Windows or Mac. -->
+
+```shell
+mkpasswd --method=SHA-512
 ```
 
-Install [pre-commit](https://pre-commit.com/#install) with its prerequesites: [python](https://docs.python.org/3/using/index.html) and [pip](https://pip.pypa.io/en/stable/installation/).
+You'll be prompted to enter the desired password sting you wish to hash, then press enter.
 
-Configure pre-commit: `pre-commit install`.
+![Alt text](assets/9-mkpasswd_example.png "mkpasswd Example")
 
-Install required packages: [tflint](https://github.com/terraform-linters/tflint), [tfsec](https://aquasecurity.github.io/tfsec/v1.0.11/getting-started/installation/), [shfmt](https://github.com/mvdan/sh), [shellcheck](https://github.com/koalaman/shellcheck), and [markdownlint](https://github.com/markdownlint/markdownlint).
+The output will be the string you need to use in the `esxi_password` variable near the end of the `terraform.tfvars.example` file
 
-Run `terraform init -upgrade` and `terraform apply`.
+## Terraform Deployment Workflow
 
-## Module Documentation
+### Preparation
 
-The main README.md, the modules README.md and the examples README.md are populated by [terraform-docs worflow job](.github/workflows/documentation.yaml). The following sections are appended between the terraform-docs delimeters: Requiremenents, Providers, Modules, Resources, Inputs, and Outputs.
+* Download the vcf-ems-deployment-parameter_X.X.X spreadsheet for the VCF version you're deploying from VMware and fill it out for your environment. For more about the "Cloud Builder Deployment Parameter Guide" spreadsheet file and its configuration, see [About the Deployment Parameter Workbook on docs.vmware.com](https://docs.vmware.com/en/VMware-Cloud-Foundation/5.2/vcf-deploy/GUID-08E5E911-7B4B-4E1C-AE9B-68C90124D1B9.html) (requires a login and entitlements).
+* Copy the terraform.tfvars.example file to terraform.tfvars and fill it with the same values you used in the vcf-ems-deployment-parameter_X.X.X spreadsheet.
 
-## Module Release and Changelog Generation
+### Deployment
 
-The module git release and [changelog](CHANGELOG.md) are generated by the [release workflow job](.github/workflows/release.yaml). The release worflow follows the [conventional commits convention](https://www.conventionalcommits.org/). To submit a commit, please follow the [commit message format guidelines](https://www.conventionalcommits.org/en/v1.0.0/#specification). This job is set to run manually by default.
-
-Example commit message: `fix: disabled log generation for system services`
-
-For more examples, please see [conventional commit message examples](https://www.conventionalcommits.org/en/v1.0.0/#examples).
+* Deploy this Terraform module by running `terraform init -upgrade` and `terraform apply`.
+* RDP to the management host
+  * Username: `SYSTEM\Admin`
+  * Password: provided in the terraform output `terraform output -raw management_password`.
+* Download the Cloudbuilder OVA from VMware
+* Log in to one of the ESXi hosts
+  * Run `terraform output -raw esx01_address` and go to the address in a browser
+  * Our example uses: <https://sfo01-m01-esx01.sfo.rainpole.io>
+* Deploy Cloudbuilder OVA on ESXi
+* Login to cloudbuilder at the address you installed it at using the username/password you chose during the OVA deployment.
+* Upload the vcf-ems-deployment-parameter spreadsheet to cloudbuilder when it asks for it.
+* Fix issues cloudbuilder finds.
+* Push deploy button and wait an hour or two as VCF deploys.
 
 ## Examples
 
@@ -292,101 +210,3 @@ If you would like to contribute to this module, see [CONTRIBUTING](CONTRIBUTING.
 
 Apache License, Version 2.0. See [LICENSE](LICENSE).
 
-## Pre-Requisites
-
-### You are responsible for the following
-
-#### Physical Network
-
-* DHCP with an appropriate scope size (one IP per physical NIC per host) is configured for the ESXi Host Overlay (TEP) network. Providing static IP pool is also supported but some Day-N operations like stretching a cluster will not be allowed if static IPs are used.
-
-#### Physical Hardware and ESXi Host
-
-* Hardware and firmware (including HBA and BIOS) is configured for vSAN.
-  * **Note:** The Equinix Support team can assist with ensuring that BIOS configuration is brought into compliance with vSAN recommendations should it be discovered that this is not already the case.
-
-* Physical hardware health status is 'healthy' without any errors.
-
-  * **Note:** The Equinix Support team can assist with ensuring hardware is brought into a healthy state should it be discovered otherwise.
-
-* ~~All hosts are in synchronization with a central time server (NTP).~~
-
-  * ~~**Note:** While this module does configure the user provided NTP server details, the provided NTP server IP must be reachable by the Metal Instances through VRF Interconnection.~~
-
-#### Supporting Infrastructure
-
-* DNS server for name resolution. Management IP of hosts is registered and queryable as both a forward (hostname-to-IP), and reverse (IP-to-Hostname) entry.
-  * **Note:** While this module does configure the user provided DNS server details, the provided DNS server IP must be reachable by the Metal Instances through VRF Interconnection.
-
----
-
-### This module _does_ provide for the following VCF Infrastructure requirements as required by Cloud Builder
-
-#### Network
-
-* Top of Rack switches are configured. Each host and NIC in the management domain must have the same network configuration. No ethernet link aggregation technology (LAG/VPC/LACP) is being used.
-
-* IP ranges, subnet mask, and a reliable L3 (default) gateway for each VLAN are provided.
-
-* Jumbo Frames (MTU 9000) are recommended on all VLANs. At a minimum, MTU of 1600 is required on the NSX Host Overlay VLAN and must be enabled end to end through your environment.
-
-* VLANs for management, vMotion, vSAN and NSX Host Overlay networks are created and tagged to all host ports. Each VLAN is 802.1q tagged.
-
-* Management IP is VLAN backed and configured on the host. vMotion & vSAN IP ranges are configured during the bring-up process.
-
-#### Hardware and ESXi Hosts
-
-* All servers are vSAN compliant and certified on the VMware Hardware Compatibility Guide, including but not limited to BIOS, HBA, SSD, HDD, etc.
-
-* Identical hardware (CPU, Memory, NICs, SSD/HDD, etc.) within the management cluster is highly recommended. Refer to vSAN documentation for minimal configuration.
-
-* One physical NIC is configured and connected to the vSphere Standard switch. The second physical NIC is not configured.
-
-* ESXi is freshly installed on each host. The ESXi version matches the build listed in the Cloud Foundation Bill of Materials.
-
-* All hosts are configured with a central time server (NTP). NTP service policy set to 'Start and stop with host'.
-
-* Each ESXi host is running a non-expired license - initial evaluation license is accepted. The bring-up process will configure the permanent license provided.
-
-#### Other Infrastructure
-
-* All hosts are configured with a DNS server for name resolution.
-
-## Custom root password
-
-### Generating custom root password
-
-To generate a password hash of your desired ESXi root password run the 'mkpasswd' command on a Linux system with the 'whois' package installed as follows
-
-```shell
-mkpasswd --method=SHA-512
-```
-
-You'll be prompted to enter the desired password sting you wish to hash, then press enter.
-
-![Alt text](assets/9-mkpasswd_example.png "mkpasswd Example")
-
-The output will be the string you need to use in the esxi_password variable near the end of the terraform.tfvars.example file
-
-## Terraform Deployment Workflow
-
-### Preparation
-
-* Download the vcf-ems-deployment-parameter_X.X.X spreadsheet for the VCF version you're deploying from VMware and fill it out for your environment.
-* Copy the terraform.tfvars.example file to terraform.tfvars and fill it with the same values you used in the vcf-ems-deployment-parameter_X.X.X spreadsheet.
-
-### Deployment
-
-* Deploy this Terraform module
-* RDP to the management host
-  * Username: `SYSTEM\Admin`
-  * Password: provided in the terraform output `terraform output -raw management_password`.
-* Download the Cloudbuilder OVA from VMware
-* Log in to one of the ESXi hosts
-  * Run `tofu output -raw esx01_address` and go to the address in a browser
-  * Our example uses: <https://sfo01-m01-esx01.sfo.rainpole.io>
-* Deploy Cloudbuilder OVA on ESXi
-* Login to cloudbuilder at the address you installed it at using the username/password you chose during the OVA deployment.
-* Upload the vcf-ems-deployment-parameter spreadsheet to cloudbuilder when it asks for it.
-* Fix issues cloudbuilder finds.
-* Push deploy button and wait an hour or two as VCF deploys.
