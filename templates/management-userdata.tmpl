@@ -19,7 +19,7 @@ Add-NetLbfoTeamNic -Team bond_bond0 -VlanID ${bastion_vlan_id} -Confirm:$false
 New-NetIPAddress -InterfaceAlias 'bond_bond0 - VLAN ${bastion_vlan_id}' -IPAddress ${address} -PrefixLength ${prefix}
 Set-DnsClientGlobalSetting -SuffixSearchList '${domain}'
 Set-DnsClientServerAddress -InterfaceAlias 'bond_bond0 - VLAN ${bastion_vlan_id}' -ServerAddresses ${bastion_address}
-Set-DnsClientServerAddress -InterfaceAlias 'bond0' -ResetServerAddresses
+#Set-DnsClientServerAddress -InterfaceAlias 'bond0' -ResetServerAddresses
 Set-DnsClientServerAddress -InterfaceAlias 'bond0' -ServerAddresses ${bastion_address}
 New-NetRoute -DestinationPrefix ${route_destination} -InterfaceAlias 'bond_bond0 - VLAN ${bastion_vlan_id}' -NextHop ${gateway_address}
 

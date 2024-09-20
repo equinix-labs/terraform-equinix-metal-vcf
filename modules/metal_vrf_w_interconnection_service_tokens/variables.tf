@@ -18,30 +18,6 @@ variable "equinix_client_secret" {
   type        = string
   description = "Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview"
 }
-variable "primary_ne_device_uuid" {
-  type        = string
-  description = "UUID of Primary Network Edge Device for interconenction to Metal VRF"
-}
-variable "secondary_ne_device_uuid" {
-  type        = string
-  description = "UUID of Secondary Network Edge Device for interconenction to Metal VRF"
-}
-variable "primary_ne_device_port" {
-  type        = number
-  description = "Port Number on Primary Network Edge Device for interconnection to Metal VRF"
-}
-variable "secondary_ne_device_port" {
-  type        = number
-  description = "Port Number on Secondary Network Edge Device for interconnection to Metal VRF"
-}
-variable "metal_vrf_interconnection_speed" {
-  type        = number
-  description = "Metal VRF interconnection speed across Fabric"
-}
-variable "fabric_interconnection_notification_email" {
-  type        = string
-  description = "Email address for interconnection notifications (must be valid email address format)"
-}
 variable "metal_vrf_asn" {
   type        = string
   description = "ASN to be used for Metal VRF https://deploy.equinix.com/developers/docs/metal/networking/vrf/"

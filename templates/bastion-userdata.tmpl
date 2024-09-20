@@ -78,7 +78,6 @@ write_files:
     protocol static {
       route 169.254.255.1/32 via ${gateway_address};
       route 169.254.255.2/32 via ${gateway_address};
-      route 0.0.0.0/0 via ${address};
     }
     filter metal_bgp {
       if net = 0.0.0.0/0 then accept;

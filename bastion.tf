@@ -34,8 +34,3 @@ module "ssh" {
   source     = "./modules/ssh/"
   project_id = var.metal_project_id
 }
-
-#resource "equinix_metal_bgp_session" "bastion_bgp" {
-#  device_id      = equinix_metal_device.bastion.id
-#  address_family = "ipv4"
-#}
