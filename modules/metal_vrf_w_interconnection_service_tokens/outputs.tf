@@ -4,5 +4,5 @@ output "vrf_id" {
 }
 output "vrf_interconnection_service_tokens" {
   description = "Service Tokens from VRF Interconnect Request"
-  value = equinix_metal_connection.vcf_vrf_connection_metal.service_tokens
+  value       = equinix_metal_connection.vcf_vrf_connection_metal.service_tokens
 }
