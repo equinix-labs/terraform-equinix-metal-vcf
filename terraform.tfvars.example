@@ -4,7 +4,7 @@ metal_project_id      = ""  # Equinix Metal Project UUID, can be found in the Ge
 
 ## Fabric/NE Auth
 equinix_client_id     = ""  # Client ID for Equinix Fabric API interaction https://docs.equinix.com/en-us/Content/KnowledgeCenter/Fabric/Overview.htm
-equinix_client_secret = ""  # Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview
+equinix_client_secret = ""  # Client Secret for Equinix Fabric API interaction https://docs.equinix.com/en-us/Content/KnowledgeCenter/Fabric/Overview.htm
 
 # Metro for this deployment
 metro                 = ""  # Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference
