@@ -3,19 +3,11 @@ metal_auth_token      = ""  # API Token for Equinix Metal API interaction https:
 metal_project_id      = ""  # Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles
 
 ## Fabric/NE Auth
-equinix_client_id     = ""   # Client ID for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview
-equinix_client_secret = ""   # Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview
+equinix_client_id     = ""  # Client ID for Equinix Fabric API interaction https://docs.equinix.com/en-us/Content/KnowledgeCenter/Fabric/Overview.htm
+equinix_client_secret = ""  # Client Secret for Equinix Fabric API interaction https://docs.equinix.com/en-us/Content/KnowledgeCenter/Fabric/Overview.htm
 
 # Metro for this deployment
 metro                 = ""  # Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference
-
-# Network Edge Device UUIDs and notification email for Metal VRF Interconnections
-primary_ne_device_uuid                  = ""   # UUID of Primary Network Edge Device for interconnection to Metal VRF
-secondary_ne_device_uuid                = ""   # UUID of Secondary Network Edge Device for interconnection to Metal VRF
-primary_ne_device_port                  = 3    # Port Number on Primary Network Edge Device for interconnection to Metal VRF
-secondary_ne_device_port                = 3    # Port Number on Secondary Network Edge Device for interconnection to Metal VRF
-vrf_interconnection_speed               = 200  # Metal VRF interconnection speed
-vrf_interconnection_notification_email  = ""   # Email address for interconnection notifications
 
 # Metal VRF ASN
 metal_vrf_asn   = "65100"
@@ -103,7 +95,7 @@ vcf_vrf_networks = {
 ## "sfo01-m01-esx01" = {
 ##     name         = "sfo01-m01-esx01"   # Short form hostname of system
 ##     mgmt_ip      = "172.16.11.101"     # Management Network IP address for VMK0
-##    reservation_id = "next-available" # Hardware reservation IDs to use for the VCF nodes. Each item can be a reservation UUID or `next-available`.
+##    reservation_id = "next-available"   # Hardware reservation IDs to use for the VCF nodes. Each item can be a reservation UUID or `next-available`.
 esxi_devices = {
   "sfo01-m01-esx01" = {
     name         = "sfo01-m01-esx01"
@@ -127,10 +119,10 @@ esxi_devices = {
 esxi_network_space = "172.16.0.0/16"
 esxi_management_subnet    = "255.255.255.0"        # Management Network Subnet Mask for VMK0
 esxi_management_gateway   = "172.16.11.1"          # Management Network Gateway for default TCP/IP Stack
-esxi_dns_server           = "172.16.1.1"           # DNS Server to be configured in ESXi
+esxi_dns_server           = "172.16.9.2"           # DNS Server to be configured in ESXi
 esxi_domain               = "sfo.rainpole.io"      # Domain Name to be configured in ESXi FQDN along with name above
 esxi_mgmt_vlan            = "1611"                 # VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0
-esxi_ntp_server           = "172.16.1.1"           # NTP Server to be configured in ESXi
+esxi_ntp_server           = "pool.ntp.org"         # NTP Server to be configured in ESXi
 esxi_password             = ""                     # Pre-hashed root password to be set for ESXi instances https://github.com/equinix-labs/terraform-equinix-metal-vcf?tab=readme-ov-file#custom-root-password
 esxi_plan                 = "n3.xlarge.x86-m4s2"   # Slug for target hardware plan type. The only officially supported server plan for ESXi/VCF is the 'n3.xlarge.opt-m4s2' https://deploy.equinix.com/product/servers/n3-xlarge-opt-m4s2/
 esxi_version_slug         = "vmware_vcf_5_1"       # Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md

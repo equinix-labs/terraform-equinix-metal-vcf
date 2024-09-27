@@ -14,8 +14,7 @@ resource "equinix_metal_vrf" "vcf_vrf" {
   ip_ranges   = var.metal_vrf_ip_ranges
 }
 
-
-
+# Create Redundant Interconnection Service Tokens for later consumption from Fabric Portal
 resource "equinix_metal_connection" "vcf_vrf_connection_metal" {
   type               = "shared"
   name               = "vcf_vrf_connection"
@@ -26,78 +25,7 @@ resource "equinix_metal_connection" "vcf_vrf_connection_metal" {
   vrfs               = [equinix_metal_vrf.vcf_vrf.id, equinix_metal_vrf.vcf_vrf.id]
 }
 
-
-
-resource "equinix_fabric_connection" "vcf_vrf_connection_pri" {
-  lifecycle {
-    ignore_changes = [redundancy]
-  }
-  name = "vcf_vrf_connection_pri"
-  type = "EVPL_VC"
-  notifications {
-    type   = "ALL"
-    emails = [var.fabric_interconnection_notification_email]
-  }
-  bandwidth = var.metal_vrf_interconnection_speed
-  order {
-  }
-  a_side {
-    access_point {
-      type = "VD"
-      virtual_device {
-        type = "EDGE"
-        uuid = var.primary_ne_device_uuid
-      }
-      interface {
-        type = "NETWORK"
-        id   = var.primary_ne_device_port
-      }
-    }
-  }
-  z_side {
-    service_token {
-      uuid = equinix_metal_connection.vcf_vrf_connection_metal.service_tokens[0].id
-    }
-  }
-}
-
-
-
-resource "equinix_fabric_connection" "vcf_vrf_connection_sec" {
-  lifecycle {
-    ignore_changes = [redundancy]
-  }
-  name = "vcf_vrf_connection_sec"
-  type = "EVPL_VC"
-  notifications {
-    type   = "ALL"
-    emails = [var.fabric_interconnection_notification_email]
-  }
-  bandwidth = var.metal_vrf_interconnection_speed
-  order {
-  }
-  a_side {
-    access_point {
-      type = "VD"
-      virtual_device {
-        type = "EDGE"
-        uuid = var.secondary_ne_device_uuid
-      }
-      interface {
-        type = "NETWORK"
-        id   = var.secondary_ne_device_port
-      }
-    }
-  }
-  z_side {
-    service_token {
-      uuid = equinix_metal_connection.vcf_vrf_connection_metal.service_tokens[1].id
-    }
-  }
-}
-
-
-
+# Enable BGP Dynamic Neighbor function of Metal VRF for BGP Peering from within the Metal Project VLANs
 resource "null_resource" "vcf_vrf_bgp_dynamic_neighbor" {
   triggers = {
     vrf_id = equinix_metal_vrf.vcf_vrf.id
@@ -115,8 +43,7 @@ EOM
   depends_on = [equinix_metal_vrf.vcf_vrf]
 }
 
-
-
+# Configure BGP Peering Details for Metal VRF Primary Interconnection
 resource "null_resource" "vcf_vrf_bgp_pri" {
   triggers = {
     peer_asn    = var.metal_vrf_peer_asn
@@ -140,11 +67,10 @@ EOM
       MD5         = var.metal_vrf_shared_md5_pri
     }
   }
-  depends_on = [equinix_fabric_connection.vcf_vrf_connection_pri, equinix_metal_vrf.vcf_vrf]
+  depends_on = [equinix_metal_vrf.vcf_vrf]
 }
 
-
-
+# Configure BGP Peering Details for Metal VRF Primary Interconnection
 resource "null_resource" "vcf_vrf_bgp_sec" {
   triggers = {
     peer_asn    = var.metal_vrf_peer_asn
@@ -168,5 +94,5 @@ EOM
       MD5         = var.metal_vrf_shared_md5_sec
     }
   }
-  depends_on = [equinix_fabric_connection.vcf_vrf_connection_sec, equinix_metal_vrf.vcf_vrf]
+  depends_on = [equinix_metal_vrf.vcf_vrf]
 }

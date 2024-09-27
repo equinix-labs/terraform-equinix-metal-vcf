@@ -1,29 +1,26 @@
+# Deploy Metal VRF, Enable BGP Dynamic Neighbor function of VRF, Create Fabric Interconnection Service Tokens
+# and configure BGP Peering Details on VRF Interconnections
 module "metal_vrf" {
-  source                                    = "./modules/metal_vrf_w_interconnection_to_network_edge"
-  equinix_client_id                         = var.equinix_client_id
-  equinix_client_secret                     = var.equinix_client_secret
-  metal_auth_token                          = var.metal_auth_token
-  metal_project_id                          = var.metal_project_id
-  metal_metro                               = var.metro
-  primary_ne_device_uuid                    = var.primary_ne_device_uuid
-  secondary_ne_device_uuid                  = var.secondary_ne_device_uuid
-  primary_ne_device_port                    = var.primary_ne_device_port
-  secondary_ne_device_port                  = var.secondary_ne_device_port
-  metal_vrf_interconnection_speed           = var.vrf_interconnection_speed
-  fabric_interconnection_notification_email = var.vrf_interconnection_notification_email
-  metal_vrf_asn                             = var.metal_vrf_asn
-  metal_vrf_peer_asn                        = var.vrf_peer_asn
-  metal_vrf_ip_ranges                       = concat([var.vrf_peer_subnet], [for r in var.vcf_vrf_networks : r.subnet])
-  metal_vrf_peer_subnet_pri                 = var.vrf_peer_subnet_pri
-  metal_vrf_peer_subnet_sec                 = var.vrf_peer_subnet_sec
-  metal_vrf_metal_bgp_peer_pri              = var.vrf_bgp_metal_peer_ip_pri
-  metal_vrf_metal_bgp_peer_sec              = var.vrf_bgp_metal_peer_ip_sec
-  metal_vrf_cust_bgp_peer_pri               = var.vrf_bgp_customer_peer_ip_pri
-  metal_vrf_cust_bgp_peer_sec               = var.vrf_bgp_customer_peer_ip_sec
-  metal_vrf_shared_md5_pri                  = var.vrf_bgp_md5_pri
-  metal_vrf_shared_md5_sec                  = var.vrf_bgp_md5_sec
+  source                       = "./modules/metal_vrf_w_interconnection_service_tokens"
+  equinix_client_id            = var.equinix_client_id
+  equinix_client_secret        = var.equinix_client_secret
+  metal_auth_token             = var.metal_auth_token
+  metal_project_id             = var.metal_project_id
+  metal_metro                  = var.metro
+  metal_vrf_asn                = var.metal_vrf_asn
+  metal_vrf_peer_asn           = var.vrf_peer_asn
+  metal_vrf_ip_ranges          = concat([var.vrf_peer_subnet], [for r in var.vcf_vrf_networks : r.subnet])
+  metal_vrf_peer_subnet_pri    = var.vrf_peer_subnet_pri
+  metal_vrf_peer_subnet_sec    = var.vrf_peer_subnet_sec
+  metal_vrf_metal_bgp_peer_pri = var.vrf_bgp_metal_peer_ip_pri
+  metal_vrf_metal_bgp_peer_sec = var.vrf_bgp_metal_peer_ip_sec
+  metal_vrf_cust_bgp_peer_pri  = var.vrf_bgp_customer_peer_ip_pri
+  metal_vrf_cust_bgp_peer_sec  = var.vrf_bgp_customer_peer_ip_sec
+  metal_vrf_shared_md5_pri     = var.vrf_bgp_md5_pri
+  metal_vrf_shared_md5_sec     = var.vrf_bgp_md5_sec
 }
 
+# Deploy Metal VLANs and associated VRF Gateways with optional BGP Dynamic Neighbor details
 module "metal_vrf_gateways_w_dynamic_neighbor" {
   source                        = "./modules/metal_vrf_gateway_w_dynamic_neighbor"
   metal_auth_token              = var.metal_auth_token
@@ -39,6 +36,7 @@ module "metal_vrf_gateways_w_dynamic_neighbor" {
   vrfgw_dynamic_neighbor_asn    = each.value.dyn_nei_asn
 }
 
+# Deploy ESXi Metal Instances with basic config required for Cloudbuilder
 module "vcf_metal_devices" {
   source                  = "./modules/vcf_metal_device"
   metal_project_id        = var.metal_project_id

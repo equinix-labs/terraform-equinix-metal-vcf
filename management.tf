@@ -33,7 +33,3 @@ resource "equinix_metal_port" "management_bond0" {
   vlan_ids        = [module.metal_vrf_gateways_w_dynamic_neighbor["bastion"].vlan_uuid]
   reset_on_delete = true
 }
-resource "equinix_metal_bgp_session" "management" {
-  device_id      = equinix_metal_device.management.id
-  address_family = "ipv4"
-}

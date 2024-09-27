@@ -19,30 +19,6 @@ variable "metro" {
   type        = string
   description = "Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference"
 }
-variable "primary_ne_device_uuid" {
-  type        = string
-  description = "UUID of Primary Network Edge Device for interconenction to Metal VRF"
-}
-variable "secondary_ne_device_uuid" {
-  type        = string
-  description = "UUID of Secondary Network Edge Device for interconenction to Metal VRF"
-}
-variable "primary_ne_device_port" {
-  type        = number
-  description = "Port Number on Primary Network Edge Device for interconnection to Metal VRF"
-}
-variable "secondary_ne_device_port" {
-  type        = number
-  description = "Port Number on Secondary Network Edge Device for interconnection to Metal VRF"
-}
-variable "vrf_interconnection_speed" {
-  type        = number
-  description = "Metal VRF interconnection speed"
-}
-variable "vrf_interconnection_notification_email" {
-  type        = string
-  description = "Email address for interconnection notifications (must be valid email address format)"
-}
 variable "metal_vrf_asn" {
   type        = string
   description = "ASN to be used for Metal VRF https://deploy.equinix.com/developers/docs/metal/networking/vrf/"
@@ -142,7 +118,6 @@ variable "esxi_version_slug" {
   type        = string
   description = "Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md"
 }
-
 variable "management_plan" {
   type        = string
   default     = "m3.small.x86"
