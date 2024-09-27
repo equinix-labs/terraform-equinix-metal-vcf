@@ -10,14 +10,6 @@ variable "metal_metro" {
   type        = string
   description = "Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference"
 }
-variable "equinix_client_id" {
-  type        = string
-  description = "Client ID for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview"
-}
-variable "equinix_client_secret" {
-  type        = string
-  description = "Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview"
-}
 variable "metal_vrf_asn" {
   type        = string
   description = "ASN to be used for Metal VRF https://deploy.equinix.com/developers/docs/metal/networking/vrf/"

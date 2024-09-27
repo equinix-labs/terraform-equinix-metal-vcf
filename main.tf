@@ -2,8 +2,6 @@
 # and configure BGP Peering Details on VRF Interconnections
 module "metal_vrf" {
   source                       = "./modules/metal_vrf_w_interconnection_service_tokens"
-  equinix_client_id            = var.equinix_client_id
-  equinix_client_secret        = var.equinix_client_secret
   metal_auth_token             = var.metal_auth_token
   metal_project_id             = var.metal_project_id
   metal_metro                  = var.metro

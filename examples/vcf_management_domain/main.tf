@@ -20,19 +20,6 @@ variable "metal_project_id" {
   type        = string
 }
 
-variable "equinix_client_id" {
-  description = "Client ID for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview"
-  type        = string
-  default     = ""
-}
-
-variable "equinix_client_secret" {
-  description = "Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview"
-  sensitive   = true
-  type        = string
-  default     = ""
-}
-
 variable "equinix_metal_metro" {
   description = "Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference"
   type        = string
@@ -60,10 +47,6 @@ module "example" {
   ## Metal Auth
   metal_auth_token = var.metal_auth_token # API Token for Equinix Metal API interaction https://deploy.equinix.com/developers/docs/metal/identity-access-management/api-keys/
   metal_project_id = var.metal_project_id # Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles
-
-  ## Fabric/NE Auth
-  equinix_client_id     = var.equinix_client_id     # Client ID for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview
-  equinix_client_secret = var.equinix_client_secret # Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview
 
   # Metro for this deployment
   metro = var.equinix_metal_metro # Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference
