@@ -104,18 +104,21 @@ The output will be the string you need to use in the `esxi_password` variable ne
 ### Deployment
 
 * Deploy this Terraform module by running `terraform init -upgrade` and `terraform apply`.
-* RDP to the management host
-  * Username: `SYSTEM\Admin`
-  * Password: provided in the terraform output `terraform output -raw management_password`.
-* Download the Cloudbuilder OVA from VMware
-* Log in to one of the ESXi hosts
-  * Run `terraform output -raw esx01_address` and go to the address in a browser
-  * Our example uses: <https://sfo01-m01-esx01.sfo.rainpole.io>
-* Deploy Cloudbuilder OVA on ESXi
-* Login to cloudbuilder at the address you installed it at using the username/password you chose during the OVA deployment.
-* Upload the vcf-ems-deployment-parameter spreadsheet to cloudbuilder when it asks for it.
-* Fix issues cloudbuilder finds.
-* Push deploy button and wait an hour or two as VCF deploys.
+* The following steps should be run on the management host.
+  * RDP to the management host, you can get its IP with `terraform output -raw management_public_ip`.
+    * Username: `SYSTEM\Admin`
+    * Password: provided in the terraform output `terraform output -raw management_password`.
+  * Download the Cloudbuilder OVA from VMware
+  * Log in to one of the ESXi hosts
+    * Run `terraform output -raw esx01_address` and go to the address in a browser.
+    * Our example uses: <https://sfo01-m01-esx01.sfo.rainpole.io>
+    * Username: `root`
+    * Password: the custom root password you used to generate the hash earlier.
+  * Deploy Cloudbuilder OVA on ESXi
+  * Login to cloudbuilder at the address you installed it at using the username/password you chose during the OVA deployment.
+  * Upload the vcf-ems-deployment-parameter spreadsheet to cloudbuilder when it asks for it.
+  * Fix issues cloudbuilder finds.
+  * Push deploy button and wait an hour or two as VCF deploys.
 
 ## Examples
 
