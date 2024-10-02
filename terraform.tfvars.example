@@ -117,7 +117,6 @@ esxi_management_subnet    = "255.255.255.0"        # Management Network Subnet M
 esxi_management_gateway   = "172.16.11.1"          # Management Network Gateway for default TCP/IP Stack
 esxi_domain               = "sfo.rainpole.io"      # Domain Name to be configured in ESXi FQDN along with name above
 esxi_mgmt_vlan            = "1611"                 # VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0
-esxi_ntp_server           = "pool.ntp.org"         # NTP Server to be configured in ESXi
 esxi_password             = ""                     # Pre-hashed root password to be set for ESXi instances https://github.com/equinix-labs/terraform-equinix-metal-vcf?tab=readme-ov-file#custom-root-password
 esxi_plan                 = "n3.xlarge.opt-m4s2.x86"   # Slug for target hardware plan type. The only officially supported server plan for ESXi/VCF is the 'n3.xlarge.opt-m4s2' https://deploy.equinix.com/product/servers/n3-xlarge-opt-m4s2/
 esxi_version_slug         = "vmware_vcf_5_1"       # Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md

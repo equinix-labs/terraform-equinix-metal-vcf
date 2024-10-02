@@ -49,7 +49,7 @@ module "vcf_metal_devices" {
   esxi_mgmt_vlan          = var.esxi_mgmt_vlan
   vm_mgmt_vlan            = var.vcf_vrf_networks["vm-mgmt"].vlan_id
   esxi_hostname           = each.value.name
-  esxi_ntp_server         = var.esxi_ntp_server
+  esxi_ntp_server         = cidrhost(var.vcf_vrf_networks["bastion"].subnet, 2)
   esxi_password           = var.esxi_password
   esxi_management_subnet  = var.esxi_management_subnet
   esxi_version_slug       = var.esxi_version_slug

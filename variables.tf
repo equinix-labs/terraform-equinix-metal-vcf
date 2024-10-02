@@ -90,10 +90,6 @@ variable "esxi_mgmt_vlan" {
   type        = string
   description = "VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > C8)"
 }
-variable "esxi_ntp_server" {
-  type        = string
-  description = "NTP Server to be configured in ESXi (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > F8:G8)"
-}
 variable "esxi_password" {
   type        = string
   sensitive   = true
