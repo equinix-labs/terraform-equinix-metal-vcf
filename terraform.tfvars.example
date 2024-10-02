@@ -115,7 +115,6 @@ esxi_devices = {
 esxi_network_space = "172.16.0.0/16"
 esxi_management_subnet    = "255.255.255.0"        # Management Network Subnet Mask for VMK0
 esxi_management_gateway   = "172.16.11.1"          # Management Network Gateway for default TCP/IP Stack
-esxi_dns_server           = "172.16.9.2"           # DNS Server to be configured in ESXi
 esxi_domain               = "sfo.rainpole.io"      # Domain Name to be configured in ESXi FQDN along with name above
 esxi_mgmt_vlan            = "1611"                 # VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0
 esxi_ntp_server           = "pool.ntp.org"         # NTP Server to be configured in ESXi

@@ -82,10 +82,6 @@ variable "esxi_management_gateway" {
   type        = string
   description = "Management Network Gateway for ESXi default TCP/IP Stack (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > F8)"
 }
-variable "esxi_dns_server" {
-  type        = string
-  description = "DNS Server to be configured in ESXi (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > F6:G6)"
-}
 variable "esxi_domain" {
   type        = string
   description = "Domain Name to be configured in ESXi FQDN along with name in Map above (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > J6:K6)"

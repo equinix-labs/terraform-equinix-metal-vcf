@@ -42,7 +42,7 @@ module "vcf_metal_devices" {
   esxi_assigned_vlans     = [for r in module.metal_vrf_gateways_w_dynamic_neighbor : r.vlan_uuid]
   for_each                = var.esxi_devices
   metal_metro             = var.metro
-  esxi_dns_server         = var.esxi_dns_server
+  esxi_dns_server         = cidrhost(var.vcf_vrf_networks["bastion"].subnet, 2)
   esxi_domain             = var.esxi_domain
   esxi_management_gateway = var.esxi_management_gateway
   esxi_management_ip      = each.value.mgmt_ip
