@@ -25,5 +25,5 @@ output "next_steps" {
 
 output "esx01_address" {
   description = "The public IP address of the first ESXi host."
-  value       = "https://${var.esxi_devices["esx01"].name}${var.esxi_domain}"
+  value       = "https://${var.esxi_devices["esx01"].name}.${var.esxi_domain}"
 }
