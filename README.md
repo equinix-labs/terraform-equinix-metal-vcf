@@ -104,21 +104,28 @@ The output will be the string you need to use in the `esxi_password` variable ne
 ### Deployment
 
 * Deploy this Terraform module by running `terraform init -upgrade` and `terraform apply`.
+* Note the following values that you'll need later:
+  * The public IP address of the bastion host: `terraform output -raw bastion_public_ip`
+  * The private IP address of the bastion host: `terraform output -raw bastion_private_ip`
+  * The public IP address of the management host: `terraform output -raw management_public_ip`
+  * The password for the management host: `terraform output -raw management_password`
+  * The DNS address of the ESX01 host: `terraform output -raw esx01_address`
 * The following steps should be run on the management host.
-  * RDP to the management host, you can get its IP with `terraform output -raw management_public_ip`.
+  * RDP to the public IP of management host you noted earlier.
     * Username: `SYSTEM\Admin`
-    * Password: provided in the terraform output `terraform output -raw management_password`.
+    * Password: Use the password you noted earlier.
   * Download the Cloudbuilder OVA from VMware
   * Log in to one of the ESXi hosts
-    * Run `terraform output -raw esx01_address` and go to the address in a browser.
-    * Our example uses: <https://sfo01-m01-esx01.sfo.rainpole.io>
+    * Use the DNS address of the ESX01 host you noted earlier. (Our example uses: <https://sfo01-m01-esx01.sfo.rainpole.io>)
     * Username: `root`
     * Password: the custom root password you used to generate the hash earlier.
-  * Deploy Cloudbuilder OVA on ESXi
+  * Deploy Cloudbuilder OVA on ESXi, we recommend following VMware's documentation for this. <https://docs.vmware.com/en/VMware-Cloud-Foundation/5.1/vcf-deploy/GUID-78EEF782-CF21-4228-97E0-37B8D2165B81.html>
+    * You will need to use the bastion host private IP as the DNS and NTP server during the OVA deployment.
+    * Use the private IP address of the bastion host you noted earlier.
   * Login to cloudbuilder at the address you installed it at using the username/password you chose during the OVA deployment.
   * Upload the vcf-ems-deployment-parameter spreadsheet to cloudbuilder when it asks for it.
   * Fix issues cloudbuilder finds.
-  * Push deploy button and wait an hour or two as VCF deploys.
+  * Push deploy button and wait while VCF deploys.
 
 ## Examples
 

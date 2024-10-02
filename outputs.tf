@@ -8,6 +8,10 @@ output "bastion_public_ip" {
   description = "The public IP address of the bastion host."
   value       = equinix_metal_device.bastion.access_public_ipv4
 }
+output "bastion_private_ip" {
+  description = "The private IP address of the bastion host."
+  value       = "This is the IP to use for the DNS and NTP server during the cloudbuilder OVA deployment: ${cidrhost(var.vcf_vrf_networks["bastion"].subnet, 2)}"
+}
 output "management_public_ip" {
   description = "The public IP address of the windows management host."
   value       = equinix_metal_device.management.access_public_ipv4
