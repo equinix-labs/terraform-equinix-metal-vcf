@@ -91,7 +91,7 @@ variable "esxi_password" {
   sensitive   = true
   description = "mkpasswd Pre-hashed root password to be set for ESXi instances (Hash the password from vcf-ems-deployment-parameter.xlsx > Credentials Sheet > C8 using 'mkpasswd --method=SHA-512' from Linux whois package)"
   validation {
-    condition     = length(var.esxi_password) > 98 && substr(var.esxi_password, 0, 3) == "$6$"
+    condition     = length(var.esxi_password) >= 98 && substr(var.esxi_password, 0, 3) == "$6$"
     error_message = "The esxi_password value must be a valid SHA 512 password hash, starting with \"$6$\". Use 'mkpasswd --method=SHA-512' from the whois package to generate a valid hash."
   }
 }
