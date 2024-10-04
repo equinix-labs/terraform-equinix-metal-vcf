@@ -120,8 +120,7 @@ The output will be the string you need to use in the `esxi_password` variable ne
     * Username: `root`
     * Password: the custom root password you used to generate the hash earlier.
   * Deploy Cloudbuilder OVA on ESXi, we recommend following VMware's documentation for this. <https://docs.vmware.com/en/VMware-Cloud-Foundation/5.1/vcf-deploy/GUID-78EEF782-CF21-4228-97E0-37B8D2165B81.html>
-    * You will need to use the bastion host private IP as the DNS and NTP server during the OVA deployment.
-    * Use the private IP address of the bastion host you noted earlier.
+    * You will need to use the bastion host private IP you noted earlier as the DNS and NTP server during the OVA deployment.
   * Login to cloudbuilder at the address you installed it at using the username/password you chose during the OVA deployment.
   * Upload the vcf-ems-deployment-parameter spreadsheet to cloudbuilder when it asks for it.
   * Fix issues cloudbuilder finds.
@@ -197,7 +196,7 @@ To view examples for how you can leverage this module, please see the [examples]
 | <a name="input_vrf_peer_subnet_pri"></a> [vrf\_peer\_subnet\_pri](#input\_vrf\_peer\_subnet\_pri) | Subnet used for point to point Metal VRF BGP Neighbor connection across the Primary interconnection | `string` | n/a | yes |
 | <a name="input_vrf_peer_subnet_sec"></a> [vrf\_peer\_subnet\_sec](#input\_vrf\_peer\_subnet\_sec) | Subnet used for point to point Metal VRF BGP Neighbor connection across the Secondary interconnection | `string` | n/a | yes |
 | <a name="input_bastion_plan"></a> [bastion\_plan](#input\_bastion\_plan) | Which plan to use for the ubuntu based bastion host. | `string` | `"m3.small.x86"` | no |
-| <a name="input_management_plan"></a> [management\_plan](#input\_management\_plan) | Which plan to use for the windows management host. | `string` | `"m3.small.x86"` | no |
+| <a name="input_windows_management_plan"></a> [management\_plan](#input\_management\_plan) | Which plan to use for the windows management host. | `string` | `"m3.small.x86"` | no |
 
 ## Outputs
 
