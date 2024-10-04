@@ -82,13 +82,9 @@ variable "esxi_management_gateway" {
   type        = string
   description = "Management Network Gateway for ESXi default TCP/IP Stack (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > F8)"
 }
-variable "esxi_domain" {
+variable "zone_name" {
   type        = string
-  description = "Domain Name to be configured in ESXi FQDN along with name in Map above (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > J6:K6)"
-}
-variable "esxi_mgmt_vlan" {
-  type        = string
-  description = "VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > C8)"
+  description = "DNS Zone name to use for deployment (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > J6:K6)"
 }
 variable "esxi_password" {
   type        = string
@@ -112,12 +108,62 @@ variable "management_plan" {
   default     = "m3.small.x86"
   description = "Which plan to use for the windows management host."
 }
+variable "management_name" {
+  type        = string
+  description = "Hostname for the Windows management host"
+  default     = "management"
+}
+variable "management_ip" {
+  type        = string
+  description = "IP address for the Windows management host"
+}
 variable "bastion_plan" {
   type        = string
   default     = "m3.small.x86"
   description = "Which plan to use for the ubuntu based bastion host."
 }
+variable "bastion_name" {
+  type        = string
+  description = "Hostname for the Bastion host"
+  default     = "bastion"
+}
+variable "bastion_ip" {
+  type        = string
+  description = "IP address for the Bastion host"
+}
 variable "esxi_network_space" {
   type        = string
   description = "Overall Network space for the VCF project"
+}
+variable "cloudbuilder_name" {
+  type        = string
+  description = "Hostname for the Cloudbuilder appliance"
+  default     = "cloudbuilder"
+}
+variable "cloudbuilder_ip" {
+  type        = string
+  description = "IP address for the Cloudbuilder appliance"
+}
+variable "nsx_devices" {
+  type = map(object({
+    name = string # Short form hostname of system (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I6:L6)
+    ip   = string # Management Network IP address for VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I7:L7)
+  }))
+  description = "Map containing NSX Cluster host and IP details"
+}
+variable "sddc_manager_name" {
+  type        = string
+  description = "Hostname for the SDDC Manager"
+}
+variable "sddc_manager_ip" {
+  type        = string
+  description = "IP address for the SDDC Manager"
+}
+variable "vcenter_name" {
+  type        = string
+  description = "Hostname for the vCenter Server"
+}
+variable "vcenter_ip" {
+  type        = string
+  description = "IP address for the vCenter Server"
 }
