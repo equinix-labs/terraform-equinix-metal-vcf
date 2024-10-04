@@ -103,17 +103,17 @@ variable "esxi_version_slug" {
   type        = string
   description = "Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md"
 }
-variable "management_plan" {
+variable "windows_management_plan" {
   type        = string
   default     = "m3.small.x86"
   description = "Which plan to use for the windows management host."
 }
-variable "management_name" {
+variable "windows_management_name" {
   type        = string
   description = "Hostname for the Windows management host"
   default     = "management"
 }
-variable "management_ip" {
+variable "windows_management_ip" {
   type        = string
   description = "IP address for the Windows management host"
 }

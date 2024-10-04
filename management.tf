@@ -7,17 +7,17 @@ resource "random_password" "management" {
 
 resource "equinix_metal_device" "management" {
   project_id = var.metal_project_id
-  hostname   = var.management_name
+  hostname   = var.windows_management_name
 
   operating_system    = "windows_2022"
-  plan                = var.management_plan
+  plan                = var.windows_management_plan
   metro               = var.metro
   project_ssh_key_ids = [module.ssh.equinix_metal_ssh_key_id]
 
   user_data = templatefile("${path.module}/templates/management-userdata.tmpl", {
     bastion_vlan_id   = var.vcf_vrf_networks["bastion"].vlan_id
     bastion_address   = var.bastion_ip
-    address           = var.management_ip
+    address           = var.windows_management_ip
     prefix            = split("/", var.vcf_vrf_networks["bastion"].subnet)[1]
     gateway_address   = cidrhost(var.vcf_vrf_networks["bastion"].subnet, 1)
     admin_password    = random_password.management.result
