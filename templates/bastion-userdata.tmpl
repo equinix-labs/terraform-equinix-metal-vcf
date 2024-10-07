@@ -1,6 +1,6 @@
 ## template: jinja
 #cloud-config
-hostname: bastion
+hostname: ${hostname}
 package_update: true
 package_upgrade: true
 package_reboot_if_required: true
@@ -48,16 +48,17 @@ write_files:
   content: |
     bind-interfaces
     interface=bond0.${bastion_vlan_id}
-    host-record=sfo01-m01-esx01.${domain},172.16.11.101
-    host-record=sfo01-m01-esx02.${domain},172.16.11.102
-    host-record=sfo01-m01-esx03.${domain},172.16.11.103
-    host-record=sfo01-m01-esx04.${domain},172.16.11.104
-    host-record=sfo-m01-vc01.${domain},172.16.10.62
-    host-record=sfo-m01-nsx01.${domain},172.16.10.65
-    host-record=sfo-m01-nsx01a.${domain},172.16.10.66
-    host-record=sfo-m01-nsx01b.${domain},172.16.10.67
-    host-record=sfo-m01-nsx01c.${domain},172.16.10.68
-    host-record=sfo-vcf01.${domain},172.16.10.59
+    host-record=${esx01_name}.${zone_name},${esx01_ip}
+    host-record=${esx02_name}.${zone_name},${esx02_ip}
+    host-record=${esx03_name}.${zone_name},${esx03_ip}
+    host-record=${esx04_name}.${zone_name},${esx04_ip}
+    host-record=${vcenter_name}.${zone_name},${vcenter_ip}
+    host-record=${nsx_vip_name}.${zone_name},${nsx_vip_ip}
+    host-record=${nsx_node_1_name}.${zone_name},${nsx_node_1_ip}
+    host-record=${nsx_node_2_name}.${zone_name},${nsx_node_2_ip}
+    host-record=${nsx_node_3_name}.${zone_name},${nsx_node_3_ip}
+    host-record=${sddc_manager_name}.${zone_name},${sddc_manager_ip}
+    host-record=${cloudbuilder_name}.${zone_name},${cloudbuilder_ip}
 - path: /etc/chrony/conf.d/vcf.conf
   append: true
   content: |
@@ -115,7 +116,7 @@ runcmd:
   nameserver 147.75.207.208
   nameserver 1.1.1.1
   nameserver 8.8.8.8
-  search ${domain}
+  search ${zone_name}
   EOF
 - systemctl restart networking
 - systemctl restart dnsmasq

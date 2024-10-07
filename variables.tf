@@ -7,14 +7,6 @@ variable "metal_project_id" {
   type        = string
   description = "Equinix Metal Project UUID, can be found in the General Tab of the Organization Settings https://deploy.equinix.com/developers/docs/metal/identity-access-management/organizations/#organization-settings-and-roles"
 }
-variable "equinix_client_id" {
-  type        = string
-  description = "Client ID for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview"
-}
-variable "equinix_client_secret" {
-  type        = string
-  description = "Client Secret for Equinix Fabric API interaction https://developer.equinix.com/docs?page=/dev-docs/fabric/overview"
-}
 variable "metro" {
   type        = string
   description = "Equinix Metal Metro where Metal resources are going to be deployed https://deploy.equinix.com/developers/docs/metal/locations/metros/#metros-quick-reference"
@@ -90,28 +82,16 @@ variable "esxi_management_gateway" {
   type        = string
   description = "Management Network Gateway for ESXi default TCP/IP Stack (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > F8)"
 }
-variable "esxi_dns_server" {
+variable "zone_name" {
   type        = string
-  description = "DNS Server to be configured in ESXi (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > F6:G6)"
-}
-variable "esxi_domain" {
-  type        = string
-  description = "Domain Name to be configured in ESXi FQDN along with name in Map above (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > J6:K6)"
-}
-variable "esxi_mgmt_vlan" {
-  type        = string
-  description = "VLAN ID of Management VLAN for ESXi Management Network portgroup/VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > C8)"
-}
-variable "esxi_ntp_server" {
-  type        = string
-  description = "NTP Server to be configured in ESXi (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > F8:G8)"
+  description = "DNS Zone name to use for deployment (vcf-ems-deployment-parameter.xlsx > Deploy Parameters Sheet > J6:K6)"
 }
 variable "esxi_password" {
   type        = string
   sensitive   = true
   description = "mkpasswd Pre-hashed root password to be set for ESXi instances (Hash the password from vcf-ems-deployment-parameter.xlsx > Credentials Sheet > C8 using 'mkpasswd --method=SHA-512' from Linux whois package)"
   validation {
-    condition     = length(var.esxi_password) > 98 && substr(var.esxi_password, 0, 3) == "$6$"
+    condition     = length(var.esxi_password) >= 98 && substr(var.esxi_password, 0, 3) == "$6$"
     error_message = "The esxi_password value must be a valid SHA 512 password hash, starting with \"$6$\". Use 'mkpasswd --method=SHA-512' from the whois package to generate a valid hash."
   }
 }
@@ -123,17 +103,67 @@ variable "esxi_version_slug" {
   type        = string
   description = "Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md"
 }
-variable "management_plan" {
+variable "windows_management_plan" {
   type        = string
   default     = "m3.small.x86"
   description = "Which plan to use for the windows management host."
+}
+variable "windows_management_name" {
+  type        = string
+  description = "Hostname for the Windows management host"
+  default     = "management"
+}
+variable "windows_management_ip" {
+  type        = string
+  description = "IP address for the Windows management host"
 }
 variable "bastion_plan" {
   type        = string
   default     = "m3.small.x86"
   description = "Which plan to use for the ubuntu based bastion host."
 }
+variable "bastion_name" {
+  type        = string
+  description = "Hostname for the Bastion host"
+  default     = "bastion"
+}
+variable "bastion_ip" {
+  type        = string
+  description = "IP address for the Bastion host"
+}
 variable "esxi_network_space" {
   type        = string
   description = "Overall Network space for the VCF project"
+}
+variable "cloudbuilder_name" {
+  type        = string
+  description = "Hostname for the Cloudbuilder appliance"
+  default     = "cloudbuilder"
+}
+variable "cloudbuilder_ip" {
+  type        = string
+  description = "IP address for the Cloudbuilder appliance"
+}
+variable "nsx_devices" {
+  type = map(object({
+    name = string # Short form hostname of system (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I6:L6)
+    ip   = string # Management Network IP address for VMK0 (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > I7:L7)
+  }))
+  description = "Map containing NSX Cluster host and IP details"
+}
+variable "sddc_manager_name" {
+  type        = string
+  description = "Hostname for the SDDC Manager"
+}
+variable "sddc_manager_ip" {
+  type        = string
+  description = "IP address for the SDDC Manager"
+}
+variable "vcenter_name" {
+  type        = string
+  description = "Hostname for the vCenter Server"
+}
+variable "vcenter_ip" {
+  type        = string
+  description = "IP address for the vCenter Server"
 }

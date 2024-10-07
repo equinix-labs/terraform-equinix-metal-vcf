@@ -1,7 +1,5 @@
 provider "equinix" {
-  client_id     = var.equinix_client_id
-  client_secret = var.equinix_client_secret
-  auth_token    = var.metal_auth_token
+  auth_token = var.metal_auth_token
 }
 
 # Provision Metal VRF for VCF Management Domain and VCF Management/Underlay Routing

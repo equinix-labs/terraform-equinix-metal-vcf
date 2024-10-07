@@ -2,8 +2,6 @@
 # and configure BGP Peering Details on VRF Interconnections
 module "metal_vrf" {
   source                       = "./modules/metal_vrf_w_interconnection_service_tokens"
-  equinix_client_id            = var.equinix_client_id
-  equinix_client_secret        = var.equinix_client_secret
   metal_auth_token             = var.metal_auth_token
   metal_project_id             = var.metal_project_id
   metal_metro                  = var.metro
@@ -44,14 +42,14 @@ module "vcf_metal_devices" {
   esxi_assigned_vlans     = [for r in module.metal_vrf_gateways_w_dynamic_neighbor : r.vlan_uuid]
   for_each                = var.esxi_devices
   metal_metro             = var.metro
-  esxi_dns_server         = var.esxi_dns_server
-  esxi_domain             = var.esxi_domain
+  esxi_dns_server         = var.bastion_ip
+  esxi_domain             = var.zone_name
   esxi_management_gateway = var.esxi_management_gateway
   esxi_management_ip      = each.value.mgmt_ip
-  esxi_mgmt_vlan          = var.esxi_mgmt_vlan
+  esxi_mgmt_vlan          = var.vcf_vrf_networks["mgmt"].vlan_id
   vm_mgmt_vlan            = var.vcf_vrf_networks["vm-mgmt"].vlan_id
-  esxi_hostname           = each.key
-  esxi_ntp_server         = var.esxi_ntp_server
+  esxi_hostname           = each.value.name
+  esxi_ntp_server         = var.bastion_ip
   esxi_password           = var.esxi_password
   esxi_management_subnet  = var.esxi_management_subnet
   esxi_version_slug       = var.esxi_version_slug
