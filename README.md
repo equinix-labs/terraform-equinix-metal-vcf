@@ -3,7 +3,7 @@
 [![run-pre-commit-hooks](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/pre-commit.yaml/badge.svg)](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/pre-commit.yaml)
 [![generate-terraform-docs](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/documentation.yaml/badge.svg)](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/documentation.yaml)
 
-`terraform-equinix-metal-vcf` is a minimal Terraform module that utilizes the [Terraform provider for Equinix](https://registry.terraform.io/namespaces/equinix) to provision digital infrastructure and demonstrate higher level integrations.
+`terraform-equinix-metal-vcf` is a minimal Terraform module that utilizes the [Terraform provider for Equinix](https://registry.terraform.io/namespaces/equinix) to provision, configure and setup an Equinix Metal hardware environment with the pre-requisites for a VCF 5.1.1 installation.
 
 <img src="assets/8-VCF_on_Metal_ft_Metal_VRF.png" width="608" height="552" alt="Target Metal Architecture featuring Metal VRF for Underlay routing">
 
