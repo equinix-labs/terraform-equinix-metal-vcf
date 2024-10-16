@@ -2,6 +2,10 @@
 
 This Terraform module deploys a VMware Cloud Foundation (VCF) environment on Equinix Metal.
 
+## Examples
+
+To view examples for how you can leverage this module, please see the [examples](examples/) directory.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
