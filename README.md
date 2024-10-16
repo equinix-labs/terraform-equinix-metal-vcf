@@ -126,10 +126,6 @@ The output will be the string you need to use in the `esxi_password` variable ne
   * Fix issues cloudbuilder finds.
   * Push deploy button and wait while VCF deploys.
 
-## Examples
-
-To view examples for how you can leverage this module, please see the [examples](examples/) directory.
-
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
