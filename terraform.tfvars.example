@@ -72,18 +72,10 @@ vcf_vrf_networks = {
   "NSXt_Uplink1" = {
     vlan_id        = "2711"
     vlan_name      = "NSXt_Edge_Uplink1"
-    subnet         = "172.27.11.0/24"
-    enable_dyn_nei = true
-    dyn_nei_range  = "172.27.11.2/31"
-    dyn_nei_asn    = "65101"
   },
   "NSXt_Uplink2" = {
     vlan_id        = "2712"
     vlan_name      = "NSXt_Edge_Uplink2"
-    subnet         = "172.27.12.0/24"
-    enable_dyn_nei = true
-    dyn_nei_range  = "172.27.12.2/31"
-    dyn_nei_asn    = "65101"
   }
 }
 
@@ -145,29 +137,29 @@ zone_name = "sfo.rainpole.io"
 ## ESXi device details
 esxi_network_space      = "172.16.0.0/16"
 esxi_management_subnet  = "255.255.255.0"          # Management Network Subnet Mask for VMK0
-esxi_management_gateway = "172.16.11.1"            #The gateway of the mgmt subnet                                                                                               # Management Network Gateway for default TCP/IP Stack
-esxi_password           = ""                       # Pre-hashed root password to be set for ESXi instances https://github.com/equinix-labs/terraform-equinix-metal-vcf?tab=readme-ov-file#custom-root-password
+esxi_management_gateway = "172.16.11.1"            # The gateway of the mgmt subnet                                                                                               # Management Network Gateway for default TCP/IP Stack
+esxi_password           = ""                       # Pre-hashed root password to be set for ESXi instances https://github.com/equinix-labs/terraform-equinix-metal-vcf?tab=readme-ov-file#generating-custom-root-password
 esxi_plan               = "n3.xlarge.opt-m4s2.x86" # Slug for target hardware plan type. The only officially supported server plan for ESXi/VCF is the 'n3.xlarge.opt-m4s2' https://deploy.equinix.com/product/servers/n3-xlarge-opt-m4s2/
 esxi_version_slug       = "vmware_vcf_5_1"         # Slug for ESXi OS version to be deployed on Metal Instances https://github.com/equinixmetal-images/changelog/blob/main/vmware-esxi/x86_64/8.md
 
 ## vcenter host details
 vcenter_name = "sfo-m01-vc01"
-vcenter_ip   = "172.16.10.62" #This IP should be in the vm-mgmt subnet
+vcenter_ip   = "172.16.10.62" # This IP should be in the vm-mgmt subnet
 
 ## SDDC host details
 sddc_manager_name = "sfo-vcf01"
-sddc_manager_ip   = "172.16.10.59" #This IP should be in the vm-mgmt subnet
+sddc_manager_ip   = "172.16.10.59" # This IP should be in the vm-mgmt subnet
 
 ## bastion/DNS/NTP host details
 bastion_plan = "m3.small.x86"
 bastion_name = "bastion"
-bastion_ip   = "172.16.9.2" #This IP should be in the bastion subnet
+bastion_ip   = "172.16.9.2" # This IP should be in the bastion subnet
 
 ## Windows management host details
 windows_management_plan = "m3.small.x86"
 windows_management_name = "management"
-windows_management_ip   = "172.16.9.3" #This IP should be in the bastion subnet
+windows_management_ip   = "172.16.9.3" # This IP should be in the bastion subnet
 
-## Cloudbuilder host details
+## Cloud Builder host details
 cloudbuilder_name = "cloudbuilder"
-cloudbuilder_ip   = "172.16.10.2" #This IP should be in the vm-mgmt subnet
+cloudbuilder_ip   = "172.16.10.2" # This IP should be in the vm-mgmt subnet

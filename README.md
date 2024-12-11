@@ -1,11 +1,13 @@
-# terraform-equinix-metal-vcf
+# VMware VCF Cluster on Equinix Metal
 
 [![run-pre-commit-hooks](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/pre-commit.yaml/badge.svg)](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/pre-commit.yaml)
 [![generate-terraform-docs](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/documentation.yaml/badge.svg)](https://github.com/equinix-labs/terraform-equinix-metal-vcf/actions/workflows/documentation.yaml)
 
 `terraform-equinix-metal-vcf` is a minimal Terraform module that utilizes the [Terraform provider for Equinix](https://registry.terraform.io/namespaces/equinix) to provision, configure and setup an Equinix Metal hardware environment with the pre-requisites for a VCF 5.1.1 installation.
 
-<img src="assets/8-VCF_on_Metal_ft_Metal_VRF.png" width="608" height="552" alt="Target Metal Architecture featuring Metal VRF for Underlay routing">
+## Network Architecture Diagram
+
+<img src="assets/1-VCF_on_Metal_ft_Metal_VRF.png" width="608" height="552" alt="Target Metal Architecture featuring Metal VRF for Underlay routing">
 
 ## Usage
 
@@ -19,11 +21,13 @@ To use this module in a new project, create a file such as: [examples/vcf_manage
 
 ## Pre-Requisites
 
-### You are responsible for the following
+### Please note the following Requirement Specifics from VCF Cloud Builder 
 
 #### Physical Network
 
 * DHCP with an appropriate scope size (one IP per physical NIC per host) is configured for the ESXi Host Overlay (TEP) network. Providing static IP pool is also supported but some Day-N operations like stretching a cluster will not be allowed if static IPs are used.
+
+  * **Note:** Equinix Metal doesn't currently provide DHCP or DHCP relay. If DHCP is desired for TEP port IP assignment, this must be provided by some other instance(s) with the Overlay VLANs assigned.
 
 #### Physical Hardware and ESXi Host
 
@@ -31,21 +35,16 @@ To use this module in a new project, create a file such as: [examples/vcf_manage
   * **Note:** The Equinix Support team can assist with ensuring that BIOS configuration is brought into compliance with vSAN recommendations should it be discovered that this is not already the case.
 
 * Physical hardware health status is 'healthy' without any errors.
-
   * **Note:** The Equinix Support team can assist with ensuring hardware is brought into a healthy state should it be discovered otherwise.
-
-* ~~All hosts are in synchronization with a central time server (NTP).~~
-
-  * ~~**Note:** While this module does configure the user provided NTP server details, the provided NTP server IP must be reachable by the Metal Instances through VRF Interconnection.~~
 
 #### Supporting Infrastructure
 
 * DNS server for name resolution. Management IP of hosts is registered and queryable as both a forward (hostname-to-IP), and reverse (IP-to-Hostname) entry.
-  * **Note:** While this module does configure the user provided DNS server details, the provided DNS server IP must be reachable by the Metal Instances through VRF Interconnection.
+  * **Note:** While this module does configure the user provided DNS server details, the provided DNS server IP must be reachable by the Metal Instances through VRF Interconnection and the provided DNS server is meant for demo or Proof of Concept purposes only
 
 ---
 
-### This module _does_ provide for the following VCF Infrastructure requirements as required by Cloud Builder
+### This module _does_ provide for the following VCF Infrastructure configuration as required by Cloud Builder
 
 #### Network
 
@@ -77,12 +76,37 @@ To use this module in a new project, create a file such as: [examples/vcf_manage
 
 * All hosts are configured with a DNS server for name resolution.
 
-## Custom root password
+## Module Customization Overview
 
-### Generating custom root password
+### Download Cloud Builder Deployment Parameter Guide spreadsheet from Broadcom
+
+* [VCF 5.1.1 Release Downloads](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Cloud%20Foundation&displayGroup=VMware%20Cloud%20Foundation%205.1&release=5.1.1&os=&servicePk=208634&language=EN)
+
+<img src="assets/2-VCF_5.1.1_Downloads.png" width="336" height="293" alt="Broadcom Support Site - VCF 5.1.1 Downloads">
+
+### Clone repo
+
+* `git clone git@github.com:equinix-labs/terraform-equinix-metal-vcf.git`
+
+### Copy and Modify tfvars file
+
+#### Customize and align CLoud Builder Deployment Parameter Guide spreadsheet and tfvars files
+
+* Copy the `terraform.tfvars.example` file to `terraform.tfvars` 
+
+  * Fill in Metal API Key, Project ID, and deployment Metro variables on lines [2](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L2), [3](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L3), and [6](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L6) respectively.
+    * **Note:** there are more secure methods of implementing the API key, but that's out of scope for this readme
+  
+  * If interconnecting VRF Fabric VCs to BGP Neighbor(s), Fill in eBGP Peering details for VRF on lines [8-21](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L8) of the tfvars file.
+  
+  * Fill in the same values you used in the vcf-ems-deployment-parameter_X.X.X spreadsheet. 
+    * **Note:** that defined variables in variables.tf file have descriptions indicating the spreasheet cell that should have aligned values. Default values in the `terraform.tfvars.example` file should align with the defaults in the Deployment Parameter spreadsheet.
+
+    * For more about the "Cloud Builder Deployment Parameter Guide" spreadsheet file and its configuration, see [About the Deployment Parameter Workbook on docs.vmware.com](https://docs.vmware.com/en/VMware-Cloud-Foundation/5.1/vcf-deploy/GUID-08E5E911-7B4B-4E1C-AE9B-68C90124D1B9.html) (requires a login and entitlements).
+
+#### Generating custom root password
 
 To generate a password hash of your desired ESXi root password run the 'mkpasswd' command on a Linux system with the 'whois' package installed as follows
-<!-- TODO: there is no good way to generate this password on Windows or Mac. -->
 
 ```shell
 mkpasswd --method=SHA-512
@@ -90,41 +114,72 @@ mkpasswd --method=SHA-512
 
 You'll be prompted to enter the desired password sting you wish to hash, then press enter.
 
-![Alt text](assets/9-mkpasswd_example.png "mkpasswd Example")
+<img src="assets/3-mkpasswd_example.png" width="540" height="47" alt="mkpasswd command Example">
 
-The output will be the string you need to use in the `esxi_password` variable near the end of the `terraform.tfvars.example` file
+Alternatively, you can instead use [mkpasswd.net](https://www.mkpasswd.net/) to generate a pasword hash. Be sure to select `crypt-sha512` in the `Type` dropdown.
+
+<img src="assets/4-mkpasswd.net.png" width="294" height="126" alt="mkpasswd.net Site">
+<img src="assets/5-mkpasswd.net_example.png" width="294" height="126" alt="mkpasswd.net Example">
+
+The output will be the string you need to use in the `esxi_password` variable at line [143](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L143) of the `terraform.tfvars.example` file
 
 ## Terraform Deployment Workflow
-
-### Preparation
-
-* Download the vcf-ems-deployment-parameter_X.X.X spreadsheet for the VCF version you're deploying from VMware and fill it out for your environment. For more about the "Cloud Builder Deployment Parameter Guide" spreadsheet file and its configuration, see [About the Deployment Parameter Workbook on docs.vmware.com](https://docs.vmware.com/en/VMware-Cloud-Foundation/5.2/vcf-deploy/GUID-08E5E911-7B4B-4E1C-AE9B-68C90124D1B9.html) (requires a login and entitlements).
-* Copy the terraform.tfvars.example file to terraform.tfvars and fill it with the same values you used in the vcf-ems-deployment-parameter_X.X.X spreadsheet.
 
 ### Deployment
 
 * Deploy this Terraform module by running `terraform init -upgrade` and `terraform apply`.
+
 * Note the following values that you'll need later:
   * The public IP address of the bastion host: `terraform output -raw bastion_public_ip`
   * The private IP address of the bastion host: `terraform output -raw bastion_private_ip`
-  * The public IP address of the management host: `terraform output -raw management_public_ip`
-  * The password for the management host: `terraform output -raw management_password`
-  * The DNS address of the ESX01 host: `terraform output -raw esx01_address`
+  * The public IP address of the management host: `terraform output -raw windows_management_rdp_address`
+  * The password for the management host: `terraform output -raw windows_management_password`
+  * The DNS address of the ESX01 host: `terraform output -raw esx01_vmk0_address`
+
 * The following steps should be run on the management host.
   * RDP to the public IP of management host you noted earlier.
     * Username: `SYSTEM\Admin`
-    * Password: Use the password you noted earlier.
-  * Download the Cloudbuilder OVA from VMware
+    * Password: Use the password you noted earlier. (`terraform output -raw management_password`)
+
+  * Download the Cloud Builder OVA from VMware
+    * [VCF 5.1.1 Release Downloads](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Cloud%20Foundation&displayGroup=VMware%20Cloud%20Foundation%205.1&release=5.1.1&os=&servicePk=208634&language=EN)
+      
+      <img src="assets/6-VCF_5.1.1_Download_OVA.png" width="336" height="293" alt="Broadcom Support Site - VCF 5.1.1 Downloads">
+
   * Log in to one of the ESXi hosts
     * Use the DNS address of the ESX01 host you noted earlier. (Our example uses: <https://sfo01-m01-esx01.sfo.rainpole.io>)
     * Username: `root`
     * Password: the custom root password you used to generate the hash earlier.
-  * Deploy Cloudbuilder OVA on ESXi, we recommend following VMware's documentation for this. <https://docs.vmware.com/en/VMware-Cloud-Foundation/5.1/vcf-deploy/GUID-78EEF782-CF21-4228-97E0-37B8D2165B81.html>
+
+  * Deploy Cloud Builder OVA to one of the ESXi devices provisioned by Terraform, we recommend following VMware's documentation for this. <https://docs.vmware.com/en/VMware-Cloud-Foundation/5.1/vcf-deploy/GUID-78EEF782-CF21-4228-97E0-37B8D2165B81.html>
     * You will need to use the bastion host private IP you noted earlier as the DNS and NTP server during the OVA deployment.
-  * Login to cloudbuilder at the address you installed it at using the username/password you chose during the OVA deployment.
-  * Upload the vcf-ems-deployment-parameter spreadsheet to cloudbuilder when it asks for it.
-  * Fix issues cloudbuilder finds.
-  * Push deploy button and wait while VCF deploys.
+
+  * Login to Cloud Builder at the address and username/password specified during OVA deployment.
+
+  * Upload the vcf-ems-deployment-parameter spreadsheet to Cloud Builder when it asks for it.
+
+  * Fix issues Cloud Builder finds.
+  
+  * Push deploy button and wait while VCF deploys. 
+    * **Note:** This process can take more than an hour to complete
+    * If deploy fails, it is recommended to delete ESXi devices and re-deploy. Depending on where the process failed, Cloud Builder can end up leaving the ESXi devices config in an state that requires significant manual effort to clean-up before a subsequent attempt would pass the Cloud Builder pre-checks. Redeploying may be faster even if Cloud Builder must be re-deployed as well.
+
+  * Create Interconnections to VRF and NSX-T Edge Uplinks by logging into Equinix Fabric and Redeeming the Fabric Service Tokens generated by this module
+    * Management VRF Tokens: `terraform output -raw metal_vrf_interconnection_tokens`
+    * NSX-T Uplink Tokens: `terraform output -raw nst-t_uplink_interconnection_tokens`
+    * Create Fabric Connections redeeming these tokens as shown in the Equinix Fabric Documentation. <https://docs.equinix.com/en-us/Content/Interconnection/Fabric/service%20tokens/Fabric-create-connection-with-Zside.htm>
+
+### Known issues
+* `terraform destroy` sees timeout on "bastion" Metal Gateway resource as well as Metal VLANs.
+  * This is a known issue because of the `null resource` used to configure BGP Dynamic Neighbor range on this Metal Gateway via curl command.
+  * If the destroy operation times out, simply run `terraform destroy` again to successfully remove this resource.
+    * **Note:** the "bastion" Metal Gateway resource is not required for a production deployment, only for PoCs where the "bastion" device is required to fulfill Cloud Builder prerequisites. Considerin removing the "bastion" device, gateway, and VLAN from the deployment if these prerequisites are satisfied by services accessible from VRF Interconnection uplinks.
+
+### Cloud Builder deployment tips
+* VMware OVF Tool can significantly speed up the deployment of the Cloud Builder appliance and allow for easily repeatable Cloud Builder deployment.
+  * [OVF Tool Downloads on Broadcom Developer Portal](https://developer.broadcom.com/tools/open-virtualization-format-ovf-tool/latest)
+  * Example OVF Tool command (windows): 
+    * `.\ovftool.exe --name=cloudbuilder --X:injectOvfEnv --acceptAllEulas --noSSLVerify --diskMode=thin --datastore="datastore1" --net:'Network 1=VM Network' --powerOn --prop:guestinfo.ROOT_PASSWORD=VMwareDemo123! --prop:guestinfo.ADMIN_PASSWORD=VMwareDemo123! --prop:guestinfo.ip0=172.16.10.2 --prop:guestinfo.netmask0=255.255.255.0 --prop:guestinfo.gateway=172.16.10.1 --prop:guestinfo.hostname=cloudbuilder --prop:guestinfo.DNS=172.16.9.2 --prop:guestinfo.ntp=172.16.9.2 .\VMware-Cloud-Builder-5.1.1.0-23480823_OVF10.ova  vi://root:VMwareDemo123!@172.16.11.101`
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

@@ -6,8 +6,9 @@ resource "equinix_metal_vlan" "vlan" {
   description = var.vrfgw_vlan_name
 }
 
-## Provision Reserved IP Block for VRF Gateway
+## Provision Reserved IP Block for VRF Gateway if Subnet is provided
 resource "equinix_metal_reserved_ip_block" "vrf_gateway_ip_block" {
+  count = var.vrfgw_subnet != ""  ? 1 : 0
   description = join(" ", ["Reserved gateway IP block", var.vrfgw_subnet, "taken from one of the ranges in the VRF's pool of address space ip_ranges."])
   project_id  = var.metal_project_id
   metro       = var.vrfgw_metro
@@ -17,18 +18,19 @@ resource "equinix_metal_reserved_ip_block" "vrf_gateway_ip_block" {
   cidr        = split("/", var.vrfgw_subnet)[1]
 }
 
-## Provision Metal VRF Gateway for VLAN
+## Provision Metal VRF Gateway for VLAN if Subnet is provided
 resource "equinix_metal_gateway" "vrf_gateway" {
+  count = var.vrfgw_subnet != ""  ? 1 : 0
   project_id        = var.metal_project_id
   vlan_id           = equinix_metal_vlan.vlan.id
-  ip_reservation_id = equinix_metal_reserved_ip_block.vrf_gateway_ip_block.id
+  ip_reservation_id = equinix_metal_reserved_ip_block.vrf_gateway_ip_block[count.index].id
 }
 
 ## If Dynamic Neighbor Subnet and ASN are specified, configure BGP Dynamic Neighbors on Metal Gateway
 resource "null_resource" "vrf_bgp_dynamic_neighbor" {
-  count = var.vrfgw_enable_dynamic_neighbor ? 1 : 0
+  count = var.vrfgw_subnet != "" && var.vrfgw_enable_dynamic_neighbor ? 1 : 0
   triggers = {
-    gateway_uuid   = equinix_metal_gateway.vrf_gateway.id
+    gateway_uuid   = equinix_metal_gateway.vrf_gateway[count.index].id
     neighbor_range = var.vrfgw_dynamic_neighbor_range
     neighbor_asn   = var.vrfgw_dynamic_neighbor_asn
   }
@@ -38,7 +40,7 @@ curl -s "https://api.equinix.com/metal/v1/metal-gateways/$GATEWAY_UUID/bgp-dynam
 EOM
     interpreter = ["bash", "-c"]
     environment = {
-      GATEWAY_UUID   = equinix_metal_gateway.vrf_gateway.id
+      GATEWAY_UUID   = equinix_metal_gateway.vrf_gateway[count.index].id
       AUTH_TOKEN     = var.metal_auth_token
       NEIGHBOR_RANGE = var.vrfgw_dynamic_neighbor_range
       NEIGHBOR_ASN   = var.vrfgw_dynamic_neighbor_asn

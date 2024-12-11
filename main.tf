@@ -7,7 +7,7 @@ module "metal_vrf" {
   metal_metro                  = var.metro
   metal_vrf_asn                = var.metal_vrf_asn
   metal_vrf_peer_asn           = var.vrf_peer_asn
-  metal_vrf_ip_ranges          = concat([var.vrf_peer_subnet], [for r in var.vcf_vrf_networks : r.subnet])
+  metal_vrf_ip_ranges          = concat([var.vrf_peer_subnet], [for r in var.vcf_vrf_networks : r.subnet if r.subnet != ""])
   metal_vrf_peer_subnet_pri    = var.vrf_peer_subnet_pri
   metal_vrf_peer_subnet_sec    = var.vrf_peer_subnet_sec
   metal_vrf_metal_bgp_peer_pri = var.vrf_bgp_metal_peer_ip_pri
@@ -54,4 +54,16 @@ module "vcf_metal_devices" {
   esxi_management_subnet  = var.esxi_management_subnet
   esxi_version_slug       = var.esxi_version_slug
   esxi_reservation_id     = each.value.reservation_id
+}
+
+# Create Fabric VC Service Tokens for NSX-T Uplink VLANs
+resource "equinix_metal_connection" "nsxt_uplink_connection_metal" {
+  type               = "shared"
+  name               = "nsx-t_uplink_connection"
+  metro              = var.metro
+  redundancy         = "redundant"
+  project_id         = var.metal_project_id
+  service_token_type = "z_side"
+  vlans = [var.vcf_vrf_networks["NSXt_Uplink1"].vlan_id, var.vcf_vrf_networks["NSXt_Uplink2"].vlan_id]
+  depends_on = [module.metal_vrf_gateways_w_dynamic_neighbor]
 }
