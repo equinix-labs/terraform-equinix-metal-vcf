@@ -21,7 +21,7 @@ To use this module in a new project, create a file such as: [examples/vcf_manage
 
 ## Pre-Requisites
 
-### Please note the following Requirement Specifics from VCF Cloud Builder 
+### Please note the following Requirement Specifics from VCF Cloud Builder
 
 #### Physical Network
 
@@ -92,14 +92,14 @@ To use this module in a new project, create a file such as: [examples/vcf_manage
 
 #### Customize and align CLoud Builder Deployment Parameter Guide spreadsheet and tfvars files
 
-* Copy the `terraform.tfvars.example` file to `terraform.tfvars` 
+* Copy the `terraform.tfvars.example` file to `terraform.tfvars`
 
   * Fill in Metal API Key, Project ID, and deployment Metro variables on lines [2](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L2), [3](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L3), and [6](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L6) respectively.
     * **Note:** there are more secure methods of implementing the API key, but that's out of scope for this readme
   
   * If interconnecting VRF Fabric VCs to BGP Neighbor(s), Fill in eBGP Peering details for VRF on lines [8-21](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L8) of the tfvars file.
   
-  * Fill in the same values you used in the vcf-ems-deployment-parameter_X.X.X spreadsheet. 
+  * Fill in the same values you used in the vcf-ems-deployment-parameter_X.X.X spreadsheet.
     * **Note:** that defined variables in variables.tf file have descriptions indicating the spreasheet cell that should have aligned values. Default values in the `terraform.tfvars.example` file should align with the defaults in the Deployment Parameter spreadsheet.
 
     * For more about the "Cloud Builder Deployment Parameter Guide" spreadsheet file and its configuration, see [About the Deployment Parameter Workbook on docs.vmware.com](https://docs.vmware.com/en/VMware-Cloud-Foundation/5.1/vcf-deploy/GUID-08E5E911-7B4B-4E1C-AE9B-68C90124D1B9.html) (requires a login and entitlements).
@@ -143,7 +143,7 @@ The output will be the string you need to use in the `esxi_password` variable at
 
   * Download the Cloud Builder OVA from VMware
     * [VCF 5.1.1 Release Downloads](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Cloud%20Foundation&displayGroup=VMware%20Cloud%20Foundation%205.1&release=5.1.1&os=&servicePk=208634&language=EN)
-      
+
       <img src="assets/6-VCF_5.1.1_Download_OVA.png" width="336" height="293" alt="Broadcom Support Site - VCF 5.1.1 Downloads">
 
   * Log in to one of the ESXi hosts
@@ -159,8 +159,8 @@ The output will be the string you need to use in the `esxi_password` variable at
   * Upload the vcf-ems-deployment-parameter spreadsheet to Cloud Builder when it asks for it.
 
   * Fix issues Cloud Builder finds.
-  
-  * Push deploy button and wait while VCF deploys. 
+
+  * Push deploy button and wait while VCF deploys.
     * **Note:** This process can take more than an hour to complete
     * If deploy fails, it is recommended to delete ESXi devices and re-deploy. Depending on where the process failed, Cloud Builder can end up leaving the ESXi devices config in an state that requires significant manual effort to clean-up before a subsequent attempt would pass the Cloud Builder pre-checks. Redeploying may be faster even if Cloud Builder must be re-deployed as well.
 
@@ -178,7 +178,7 @@ The output will be the string you need to use in the `esxi_password` variable at
 ### Cloud Builder deployment tips
 * VMware OVF Tool can significantly speed up the deployment of the Cloud Builder appliance and allow for easily repeatable Cloud Builder deployment.
   * [OVF Tool Downloads on Broadcom Developer Portal](https://developer.broadcom.com/tools/open-virtualization-format-ovf-tool/latest)
-  * Example OVF Tool command (windows): 
+  * Example OVF Tool command (windows):
     * `.\ovftool.exe --name=cloudbuilder --X:injectOvfEnv --acceptAllEulas --noSSLVerify --diskMode=thin --datastore="datastore1" --net:'Network 1=VM Network' --powerOn --prop:guestinfo.ROOT_PASSWORD=VMwareDemo123! --prop:guestinfo.ADMIN_PASSWORD=VMwareDemo123! --prop:guestinfo.ip0=172.16.10.2 --prop:guestinfo.netmask0=255.255.255.0 --prop:guestinfo.gateway=172.16.10.1 --prop:guestinfo.hostname=cloudbuilder --prop:guestinfo.DNS=172.16.9.2 --prop:guestinfo.ntp=172.16.9.2 .\VMware-Cloud-Builder-5.1.1.0-23480823_OVF10.ova  vi://root:VMwareDemo123!@172.16.11.101`
 
 <!-- BEGIN_TF_DOCS -->

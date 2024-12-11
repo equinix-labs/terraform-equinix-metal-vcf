@@ -64,6 +64,6 @@ resource "equinix_metal_connection" "nsxt_uplink_connection_metal" {
   redundancy         = "redundant"
   project_id         = var.metal_project_id
   service_token_type = "z_side"
-  vlans = [var.vcf_vrf_networks["NSXt_Uplink1"].vlan_id, var.vcf_vrf_networks["NSXt_Uplink2"].vlan_id]
-  depends_on = [module.metal_vrf_gateways_w_dynamic_neighbor]
+  vlans              = [var.vcf_vrf_networks["NSXt_Uplink1"].vlan_id, var.vcf_vrf_networks["NSXt_Uplink2"].vlan_id]
+  depends_on         = [module.metal_vrf_gateways_w_dynamic_neighbor]
 }
