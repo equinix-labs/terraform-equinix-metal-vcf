@@ -8,7 +8,7 @@ resource "equinix_metal_vlan" "vlan" {
 
 ## Provision Reserved IP Block for VRF Gateway if Subnet is provided
 resource "equinix_metal_reserved_ip_block" "vrf_gateway_ip_block" {
-  count       = var.vrfgw_subnet != ""  ? 1 : 0
+  count       = var.vrfgw_subnet != "" ? 1 : 0
   description = join(" ", ["Reserved gateway IP block", var.vrfgw_subnet, "taken from one of the ranges in the VRF's pool of address space ip_ranges."])
   project_id  = var.metal_project_id
   metro       = var.vrfgw_metro
@@ -20,7 +20,7 @@ resource "equinix_metal_reserved_ip_block" "vrf_gateway_ip_block" {
 
 ## Provision Metal VRF Gateway for VLAN if Subnet is provided
 resource "equinix_metal_gateway" "vrf_gateway" {
-  count            = var.vrfgw_subnet != ""  ? 1 : 0
+  count             = var.vrfgw_subnet != ""  ? 1 : 0
   project_id        = var.metal_project_id
   vlan_id           = equinix_metal_vlan.vlan.id
   ip_reservation_id = equinix_metal_reserved_ip_block.vrf_gateway_ip_block[count.index].id
