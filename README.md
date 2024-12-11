@@ -215,6 +215,7 @@ The output will be the string you need to use in the `esxi_password` variable at
 
 | Name | Type |
 |------|------|
+| [equinix_metal_connection.nsxt_uplink_connection_metal](https://registry.terraform.io/providers/equinix/equinix/latest/docs/resources/metal_connection) | resource |
 | [equinix_metal_device.bastion](https://registry.terraform.io/providers/equinix/equinix/latest/docs/resources/metal_device) | resource |
 | [equinix_metal_device.management](https://registry.terraform.io/providers/equinix/equinix/latest/docs/resources/metal_device) | resource |
 | [equinix_metal_port.bastion_bond0](https://registry.terraform.io/providers/equinix/equinix/latest/docs/resources/metal_port) | resource |
@@ -243,7 +244,7 @@ The output will be the string you need to use in the `esxi_password` variable at
 | <a name="input_sddc_manager_name"></a> [sddc\_manager\_name](#input\_sddc\_manager\_name) | Hostname for the SDDC Manager | `string` | n/a | yes |
 | <a name="input_vcenter_ip"></a> [vcenter\_ip](#input\_vcenter\_ip) | IP address for the vCenter Server | `string` | n/a | yes |
 | <a name="input_vcenter_name"></a> [vcenter\_name](#input\_vcenter\_name) | Hostname for the vCenter Server | `string` | n/a | yes |
-| <a name="input_vcf_vrf_networks"></a> [vcf\_vrf\_networks](#input\_vcf\_vrf\_networks) | Map of Objects representing configuration specifics for various network segments required for VCF Management and Underlay Networking | <pre>map(object({<br/>    vlan_id        = string                # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > C7:C10) 802.1q VLAN number<br/>    vlan_name      = string                # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > D7:D10) Preferred Description of Metal VLAN<br/>    subnet         = string                # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > E7:E10) CIDR Subnet to be used within this Metal VLAN<br/>    enable_dyn_nei = optional(bool, false) # Whether or not to configure BGP Dynamic Neighbor functionality on the gateway, only use for NSX-t Edge uplink VLANs if NSX-t will peer with Metal VRF<br/>    dyn_nei_range  = optional(string, "")  # CIDR Range of IPs that the Metal VRF should expect BGP Peering from<br/>    dyn_nei_asn    = optional(string, "")  # ASN that the Metal VRF should expect BGP Peering from<br/>  }))</pre> | n/a | yes |
+| <a name="input_vcf_vrf_networks"></a> [vcf\_vrf\_networks](#input\_vcf\_vrf\_networks) | Map of Objects representing configuration specifics for various network segments required for VCF Management and Underlay Networking | <pre>map(object({<br/>    vlan_id        = string                # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > C7:C10) 802.1q VLAN number<br/>    vlan_name      = string                # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > D7:D10) Preferred Description of Metal VLAN<br/>    subnet         = optional(string, "")  # (vcf-ems-deployment-parameter.xlsx > Hosts and Networks Sheet > E7:E10) CIDR Subnet to be used within this Metal VLAN<br/>    enable_dyn_nei = optional(bool, false) # Whether or not to configure BGP Dynamic Neighbor functionality on the gateway, only use for NSX-t Edge uplink VLANs if NSX-t will peer with Metal VRF<br/>    dyn_nei_range  = optional(string, "")  # CIDR Range of IPs that the Metal VRF should expect BGP Peering from<br/>    dyn_nei_asn    = optional(string, "")  # ASN that the Metal VRF should expect BGP Peering from<br/>  }))</pre> | n/a | yes |
 | <a name="input_vrf_bgp_customer_peer_ip_pri"></a> [vrf\_bgp\_customer\_peer\_ip\_pri](#input\_vrf\_bgp\_customer\_peer\_ip\_pri) | IP of BGP Neighbor on Primary Interconnection that Metal VRF should expect to peer with | `string` | n/a | yes |
 | <a name="input_vrf_bgp_customer_peer_ip_sec"></a> [vrf\_bgp\_customer\_peer\_ip\_sec](#input\_vrf\_bgp\_customer\_peer\_ip\_sec) | IP of BGP Neighbor on Secondary Interconnection that Metal VRF should expect to peer with | `string` | n/a | yes |
 | <a name="input_vrf_bgp_md5_pri"></a> [vrf\_bgp\_md5\_pri](#input\_vrf\_bgp\_md5\_pri) | MD5 Shared Password for BGP session authentication | `string` | n/a | yes |
@@ -267,18 +268,21 @@ The output will be the string you need to use in the `esxi_password` variable at
 | Name | Description |
 |------|-------------|
 | <a name="output_bastion_public_ip"></a> [bastion\_public\_ip](#output\_bastion\_public\_ip) | The public IP address of the bastion host. Used for troubleshooting. |
-| <a name="output_cloudbuilder_default_gateway"></a> [cloudbuilder\_default\_gateway](#output\_cloudbuilder\_default\_gateway) | Cloudbuilder Default Gateway to use during OVA deployment. |
-| <a name="output_cloudbuilder_hostname"></a> [cloudbuilder\_hostname](#output\_cloudbuilder\_hostname) | Cloudbuilder Hostname to use during OVA deployment. |
-| <a name="output_cloudbuilder_ip"></a> [cloudbuilder\_ip](#output\_cloudbuilder\_ip) | Cloudbuilder IP to use during OVA deployment. |
-| <a name="output_cloudbuilder_subnet_mask"></a> [cloudbuilder\_subnet\_mask](#output\_cloudbuilder\_subnet\_mask) | Cloudbuilder Subnet Mask to use during OVA deployment. |
-| <a name="output_cloudbuilder_web_address"></a> [cloudbuilder\_web\_address](#output\_cloudbuilder\_web\_address) | Cloudbuilder Web Address |
+| <a name="output_cloudbuilder_default_gateway"></a> [cloudbuilder\_default\_gateway](#output\_cloudbuilder\_default\_gateway) | Cloud Builder Default Gateway to use during OVA deployment. |
+| <a name="output_cloudbuilder_hostname"></a> [cloudbuilder\_hostname](#output\_cloudbuilder\_hostname) | Cloud Builder Hostname to use during OVA deployment. |
+| <a name="output_cloudbuilder_ip"></a> [cloudbuilder\_ip](#output\_cloudbuilder\_ip) | Cloud Builder IP to use during OVA deployment. |
+| <a name="output_cloudbuilder_subnet_mask"></a> [cloudbuilder\_subnet\_mask](#output\_cloudbuilder\_subnet\_mask) | Cloud Builder Subnet Mask to use during OVA deployment. |
+| <a name="output_cloudbuilder_web_address"></a> [cloudbuilder\_web\_address](#output\_cloudbuilder\_web\_address) | Cloud Builder Web Address |
 | <a name="output_dns_domain_name"></a> [dns\_domain\_name](#output\_dns\_domain\_name) | DNS Domain Name to use during OVA deployment. |
 | <a name="output_dns_domain_search_paths"></a> [dns\_domain\_search\_paths](#output\_dns\_domain\_search\_paths) | DNS Domain Search Paths to use during OVA deployment. |
 | <a name="output_dns_server"></a> [dns\_server](#output\_dns\_server) | DNS Server to use during OVA deployment. |
-| <a name="output_esx01_web_address"></a> [esx01\_web\_address](#output\_esx01\_web\_address) | The web address of the first ESXi host to use in a browser on the management host. |
+| <a name="output_esx01_vmk0_address"></a> [esx01\_vmk0\_address](#output\_esx01\_vmk0\_address) | The web address of the first ESXi host to use in a browser on the management host. |
+| <a name="output_metal_vrf_interconnection_tokens"></a> [metal\_vrf\_interconnection\_tokens](#output\_metal\_vrf\_interconnection\_tokens) | Fabric Service Tokens for Metal VRF Interconnection. |
+| <a name="output_nsxt_uplink_interconnection_tokens"></a> [nsxt\_uplink\_interconnection\_tokens](#output\_nsxt\_uplink\_interconnection\_tokens) | Fabric Service Tokens for NSX-T Uplink VLANs Interconnection. |
 | <a name="output_ntp_server"></a> [ntp\_server](#output\_ntp\_server) | NTP Server to use during OVA deployment. |
 | <a name="output_ssh_private_key"></a> [ssh\_private\_key](#output\_ssh\_private\_key) | Path to the SSH Private key to use to connect to bastion and management hosts over SSH. |
 | <a name="output_windows_management_password"></a> [windows\_management\_password](#output\_windows\_management\_password) | Randomly generated password used for the Admin accounts on the management host. |
+| <a name="output_windows_management_public_ip"></a> [windows\_management\_public\_ip](#output\_windows\_management\_public\_ip) | Assigned Public IP on the management host. |
 | <a name="output_windows_management_rdp_address"></a> [windows\_management\_rdp\_address](#output\_windows\_management\_rdp\_address) | The public IP address of the windows management host. |
 <!-- END_TF_DOCS -->
 
