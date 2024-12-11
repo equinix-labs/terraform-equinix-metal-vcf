@@ -170,12 +170,14 @@ The output will be the string you need to use in the `esxi_password` variable at
     * Create Fabric Connections redeeming these tokens as shown in the Equinix Fabric Documentation. <https://docs.equinix.com/en-us/Content/Interconnection/Fabric/service%20tokens/Fabric-create-connection-with-Zside.htm>
 
 ### Known issues
+
 * `terraform destroy` sees timeout on "bastion" Metal Gateway resource as well as Metal VLANs.
   * This is a known issue because of the `null resource` used to configure BGP Dynamic Neighbor range on this Metal Gateway via curl command.
   * If the destroy operation times out, simply run `terraform destroy` again to successfully remove this resource.
     * **Note:** the "bastion" Metal Gateway resource is not required for a production deployment, only for PoCs where the "bastion" device is required to fulfill Cloud Builder prerequisites. Considerin removing the "bastion" device, gateway, and VLAN from the deployment if these prerequisites are satisfied by services accessible from VRF Interconnection uplinks.
 
 ### Cloud Builder deployment tips
+
 * VMware OVF Tool can significantly speed up the deployment of the Cloud Builder appliance and allow for easily repeatable Cloud Builder deployment.
   * [OVF Tool Downloads on Broadcom Developer Portal](https://developer.broadcom.com/tools/open-virtualization-format-ovf-tool/latest)
   * Example OVF Tool command (windows):
