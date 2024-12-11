@@ -64,9 +64,9 @@ output "cloudbuilder_web_address" {
 }
 output "metal_vrf_interconnection_tokens" {
   description = "Fabric Service Tokens for Metal VRF Interconnection."
-  value = [for r in module.metal_vrf.vrf_interconnection_service_tokens : join( " = ", [tostring(r.role), tostring(r.id)])]
+  value       = [for r in module.metal_vrf.vrf_interconnection_service_tokens : join( " = ", [tostring(r.role), tostring(r.id)])]
 }
 output "nst-t_uplink_interconnection_tokens" {
   description = "Fabric Service Tokens for NSX-T Uplink VLANs Interconnection."
-  value = [for r in equinix_metal_connection.nsxt_uplink_connection_metal.service_tokens : join( " = ", [tostring(r.role), tostring(r.id)])]
+  value       = [for r in equinix_metal_connection.nsxt_uplink_connection_metal.service_tokens : join( " = ", [tostring(r.role), tostring(r.id)])]
 }
