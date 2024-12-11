@@ -20,7 +20,7 @@ resource "equinix_metal_reserved_ip_block" "vrf_gateway_ip_block" {
 
 ## Provision Metal VRF Gateway for VLAN if Subnet is provided
 resource "equinix_metal_gateway" "vrf_gateway" {
-  count             = var.vrfgw_subnet != ""  ? 1 : 0
+  count             = var.vrfgw_subnet != "" ? 1 : 0
   project_id        = var.metal_project_id
   vlan_id           = equinix_metal_vlan.vlan.id
   ip_reservation_id = equinix_metal_reserved_ip_block.vrf_gateway_ip_block[count.index].id

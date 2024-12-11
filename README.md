@@ -96,9 +96,9 @@ To use this module in a new project, create a file such as: [examples/vcf_manage
 
   * Fill in Metal API Key, Project ID, and deployment Metro variables on lines [2](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L2), [3](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L3), and [6](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L6) respectively.
     * **Note:** there are more secure methods of implementing the API key, but that's out of scope for this readme
-  
+
   * If interconnecting VRF Fabric VCs to BGP Neighbor(s), Fill in eBGP Peering details for VRF on lines [8-21](https://github.com/equinix-labs/terraform-equinix-metal-vcf/blob/ab13ea8e370a5140384bd91adbcf77375305b237/terraform.tfvars.example#L8) of the tfvars file.
-  
+
   * Fill in the same values you used in the vcf-ems-deployment-parameter_X.X.X spreadsheet.
     * **Note:** that defined variables in variables.tf file have descriptions indicating the spreasheet cell that should have aligned values. Default values in the `terraform.tfvars.example` file should align with the defaults in the Deployment Parameter spreadsheet.
 
